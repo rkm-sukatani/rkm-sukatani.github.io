@@ -18,7 +18,7 @@ export function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {
     { label: "Tentang RKM", shortLabel: "Tentang", href: "/tentang" },
     { label: "Layanan Jenazah", shortLabel: "Layanan", href: "/layanan" },
     { label: "Keuangan & Iuran", shortLabel: "Keuangan", href: "/keuangan" },
-    { label: "Pengurus", shortLabel: "Pengurus", href: "/pengurus" },
+    { label: "Struktur Organisasi", shortLabel: "Struktur", href: "/struktur-organisasi" },
     { label: "AD/ART", shortLabel: "AD/ART", href: "/ad-art" },
   ];
 

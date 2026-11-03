@@ -9,7 +9,7 @@ RKM terintegrasi secara kelembagaan dengan DKM Masjid Nurul Falah Sukatani
 
 Situs ini direplikasi dari tema & struktur `nurul-falah.github.io`. Seluruh fakta
 diambil dari repo tersebut (`src/data/masjid.json`, `src/data/adArt.ts`) dan
-dikumpulkan di `src/data/rkm.json`. Identitas, pendirian, wilayah, pengurus, dan iuran RKM
+dikumpulkan di `src/data/rkm.json`. Identitas, pendirian, wilayah, struktur organisasi, dan iuran RKM
 bersumber dari Berita Acara No. 001/RKM/VIII/2023 dan konfirmasi Ketua RKM (3 Nov 2026). Isian yang belum ada sumbernya ditandai
 **(menyusul)** dan tidak boleh dikarang.
 
@@ -29,5 +29,5 @@ bun run dev -- --port 5174
   mengunggah `dist/` ke GitHub Pages setiap push ke `main`
   (aktifkan *Settings → Pages → Source: GitHub Actions* di repo).
 - Build menyalin `index.html` ke `404.html` dan ke setiap rute SPA
-  (`/tentang`, `/layanan`, `/keuangan`, `/pengurus`, `/aturan`, `/catatan`, `/ad-art`)
+  (`/tentang`, `/layanan`, `/keuangan`, `/struktur-organisasi` (jalur lama `/pengurus` dialihkan), `/aturan`, `/catatan`, `/ad-art`)
   agar kunjungan langsung mendapat HTTP 200.

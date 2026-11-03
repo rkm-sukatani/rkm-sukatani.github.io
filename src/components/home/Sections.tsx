@@ -286,59 +286,133 @@ function PersonList({ names }: { names: string[] }) {
   );
 }
 
-export function PengurusSection() {
+const LINE = "bg-emerald-300";
+
+function OrgBox({
+  role,
+  names,
+  variant = "default",
+  children,
+  className = "",
+}: {
+  role: string;
+  names: string[];
+  variant?: "syura" | "ketua" | "default" | "seksi";
+  children?: React.ReactNode;
+  className?: string;
+}) {
+  const styles = {
+    syura: "bg-[#064e3b] text-emerald-50 border-[#064e3b] shadow-lg shadow-emerald-900/20",
+    ketua: "bg-white text-slate-900 border-amber-400 border-2 shadow-md shadow-amber-900/10",
+    default: "bg-emerald-50 text-slate-900 border-emerald-300",
+    seksi: "bg-white text-slate-900 border-slate-200 shadow-sm",
+  }[variant];
+  const roleColor = variant === "syura" ? "text-amber-300" : variant === "ketua" ? "text-amber-700" : "text-emerald-700";
+  return (
+    <div className={`relative z-10 w-full rounded-2xl border p-4 text-left ${styles} ${className}`}>
+      <h3 className={`text-[11px] font-bold uppercase tracking-wider ${roleColor}`}>{role}</h3>
+      {names.length === 1 ? (
+        <div className="font-bold mt-1 text-sm sm:text-base">{names[0]}</div>
+      ) : variant === "syura" ? (
+        <ul className="mt-2 grid sm:grid-cols-2 gap-x-6 gap-y-1 text-sm">
+          {names.map((n) => (
+            <li key={n} className="flex items-start gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-300 mt-2 shrink-0"></span>
+              {n}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="mt-2 text-xs">
+          <PersonList names={names} />
+        </div>
+      )}
+      {children}
+    </div>
+  );
+}
+
+function VLine({ className = "" }: { className?: string }) {
+  return <div aria-hidden="true" className={`w-0.5 mx-auto ${LINE} ${className}`} />;
+}
+
+export function StrukturOrganisasiSection() {
   const c = rkm.coordinator;
   const p = rkm.pengurus;
+  const seksiCount = p.seksi.length;
   return (
-    <section id="pengurus" className="py-16 bg-white border-y border-slate-200 scroll-mt-20">
+    <section id="struktur-organisasi" className="py-16 bg-white border-y border-slate-200 scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <SectionHeader
-          id="pengurus"
-          badge="Kepengurusan"
-          title="Susunan Pengurus RKM"
+          id="struktur-organisasi"
+          badge="Organisasi"
+          title="Struktur Organisasi RKM"
           subtitle={`Ditetapkan dalam musyawarah pendirian, ${rkm.founding.date} (${rkm.founding.document}).`}
         />
-        <div className="grid md:grid-cols-4 gap-4 text-left text-sm mb-4">
-          <div className="md:col-span-1 p-4 rounded-xl bg-[#064e3b] text-emerald-50">
-            <div className="font-bold text-amber-300 mb-2 flex items-center gap-1.5"><Users className="w-4 h-4" /> Majelis Syura</div>
-            <ul className="space-y-1">
-              {p.majelisSyura.map((n) => (
-                <li key={n}>{n}</li>
-              ))}
-            </ul>
+
+        <div role="group" aria-label="Bagan struktur organisasi RKM Sukatani" className="flex flex-col items-center">
+          {/* Level 1: Majelis Syura */}
+          <OrgBox role="Majelis Syura" names={p.majelisSyura} variant="syura" className="max-w-xl" />
+          <VLine className="h-8" />
+
+          {/* Level 2: Ketua */}
+          <OrgBox role="Ketua" names={[p.ketua]} variant="ketua" className="max-w-xs" />
+
+          {/* Level 3: Sekretaris & Bendahara (cabang dari garis Ketua) */}
+          <div className="w-full flex flex-col items-center lg:flex-row lg:items-stretch lg:justify-center">
+            <VLine className="h-6 lg:hidden" />
+            <div className="w-full max-w-xs lg:w-64 lg:py-6 flex items-center">
+              <OrgBox role="Sekretaris" names={[p.sekretaris]} />
+            </div>
+            <div aria-hidden="true" className="hidden lg:flex items-center w-16">
+              <div className={`h-0.5 w-full ${LINE}`} />
+            </div>
+            <VLine className="h-6 lg:h-auto lg:mx-0" />
+            <div aria-hidden="true" className="hidden lg:flex items-center w-16">
+              <div className={`h-0.5 w-full ${LINE}`} />
+            </div>
+            <div className="w-full max-w-xs lg:w-64 lg:py-6 flex items-center">
+              <OrgBox role="Bendahara" names={[p.bendahara]} />
+            </div>
           </div>
-          {[
-            { role: "Ketua", name: p.ketua },
-            { role: "Bendahara", name: p.bendahara },
-            { role: "Sekretaris", name: p.sekretaris },
-          ].map((o) => (
-            <div key={o.role} className="p-4 rounded-xl bg-emerald-50 border border-emerald-300">
-              <div className="text-xs font-bold uppercase tracking-wider text-emerald-700">{o.role}</div>
-              <div className="font-bold text-slate-900 mt-1">{o.name}</div>
-            </div>
-          ))}
+          <VLine className="h-6 lg:h-8" />
+
+          {/* Level 4: Seksi-seksi */}
+          <div className="w-full grid grid-cols-1 lg:grid-cols-4 lg:gap-4 text-xs">
+            {p.seksi.map((sk, i) => (
+              <div key={sk.name} className="relative flex flex-col items-center">
+                {/* garis horizontal penghubung antarseksi (desktop) */}
+                <div
+                  aria-hidden="true"
+                  className={`hidden lg:block absolute top-0 h-0.5 ${LINE} ${
+                    i === 0 ? "left-1/2 -right-2" : i === seksiCount - 1 ? "-left-2 right-1/2" : "-left-2 -right-2"
+                  }`}
+                />
+                <VLine className={`h-6 ${i === 0 ? "hidden lg:block" : ""}`} />
+                <OrgBox role={sk.name} names={sk.members} variant="seksi" className="max-w-md lg:max-w-none h-full">
+                  {"note" in sk && <p className="text-[11px] text-slate-500 mt-2 leading-relaxed">{sk.note}</p>}
+                  {sk.name === "Seksi Perlengkapan" && (
+                    <a
+                      href={`https://wa.me/${c.whatsapp}?text=${encodeURIComponent(`Assalamu'alaikum ${c.name} (${c.role})`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#047857] font-mono mt-3 flex items-center gap-1.5 font-semibold hover:underline"
+                    >
+                      <Phone className="w-3.5 h-3.5" /> {c.phone}
+                    </a>
+                  )}
+                </OrgBox>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left text-xs">
-          {p.seksi.map((sk) => (
-            <div key={sk.name} className="p-4 rounded-xl bg-slate-50 border border-slate-200">
-              <div className="font-bold text-slate-900 mb-2 text-sm">{sk.name}</div>
-              <PersonList names={sk.members} />
-              {"note" in sk && <p className="text-[11px] text-slate-500 mt-2 leading-relaxed">{sk.note}</p>}
-              {sk.name === "Seksi Perlengkapan" && (
-                <a
-                  href={`https://wa.me/${c.whatsapp}?text=${encodeURIComponent(`Assalamu'alaikum ${c.name} (${c.role})`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#047857] font-mono mt-3 flex items-center gap-1.5 font-semibold hover:underline"
-                >
-                  <Phone className="w-3.5 h-3.5" /> {c.phone} ({c.name})
-                </a>
-              )}
-            </div>
-          ))}
-        </div>
-        <div className="mt-4 text-xs text-left text-slate-500">
-          Catatan: {p.note} Sumber: {rkm.founding.document}; konfirmasi Ketua RKM, 3 Nov 2026.
+
+        <div className="mt-6 text-xs text-left text-slate-500 space-y-1">
+          <p>
+            Catatan: {p.note} Urutan bagan mengikuti susunan organisasi dalam {rkm.founding.document} (Majelis Syura, Ketua,
+            Bendahara, Sekretaris, serta seksi-seksi); garis penghubung pada bagan bersifat ilustratif.
+          </p>
+          <p>Sumber: {p.source}.</p>
         </div>
         <div className="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-left text-slate-600">
           <b>Koordinasi dengan DKM:</b> RKM terintegrasi secara kelembagaan dengan {rkm.parentOrganization}.{" "}

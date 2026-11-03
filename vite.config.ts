@@ -9,7 +9,8 @@ const SPA_ROUTES = [
   "tentang",
   "layanan",
   "keuangan",
-  "pengurus",
+  "struktur-organisasi",
+  "pengurus", // jalur lama, dialihkan ke /struktur-organisasi oleh App.tsx
   "aturan",
   "catatan",
 ];

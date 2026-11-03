@@ -19,7 +19,7 @@ export function Footer({ onNavigate }: FooterProps) {
     { href: "/tentang", label: "Tentang RKM" },
     { href: "/layanan", label: "Layanan Pemulasaraan Jenazah" },
     { href: "/keuangan", label: "Keuangan & Iuran RKM" },
-    { href: "/pengurus", label: "Pengurus & Kontak" },
+    { href: "/struktur-organisasi", label: "Struktur Organisasi & Kontak" },
     { href: "/ad-art", label: "AD/ART Organisasi DKM & RKM" },
   ];
 

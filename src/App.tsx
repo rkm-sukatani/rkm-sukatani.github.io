@@ -7,7 +7,7 @@ import {
   TentangSection,
   LayananSection,
   KeuanganSection,
-  PengurusSection,
+  StrukturOrganisasiSection,
   AturanSection,
   CatatanSection,
 } from "@/components/home/Sections";
@@ -16,13 +16,31 @@ const SECTION_PATH_MAP: Record<string, string> = {
   "/tentang": "#tentang",
   "/layanan": "#layanan",
   "/keuangan": "#keuangan",
-  "/pengurus": "#pengurus",
+  "/struktur-organisasi": "#struktur-organisasi",
   "/aturan": "#aturan",
   "/catatan": "#catatan",
 };
 
+// Jalur lama yang dialihkan agar tautan lama tidak rusak.
+const LEGACY_REDIRECTS: Record<string, string> = {
+  "/pengurus": "/struktur-organisasi",
+  "#pengurus": "#struktur-organisasi",
+};
+
+function applyLegacyRedirect() {
+  if (typeof window === "undefined") return;
+  const path = window.location.pathname.replace(/\/+$/, "");
+  const newPath = LEGACY_REDIRECTS[path];
+  const newHash = LEGACY_REDIRECTS[window.location.hash];
+  if (newPath || newHash) {
+    const target = (newPath || window.location.pathname) + window.location.search + (newHash || window.location.hash);
+    window.history.replaceState(window.history.state, "", target);
+  }
+}
+
 function getInitialPath(): string {
   if (typeof window === "undefined") return "/";
+  applyLegacyRedirect();
   const params = new URLSearchParams(window.location.search);
   if (params.get("page") === "ad-art" || window.location.hash === "#ad-art-page") return "/ad-art";
   const cleaned = window.location.pathname.replace(/\/+$/, "");
@@ -92,7 +110,7 @@ export function App() {
           <TentangSection />
           <LayananSection />
           <KeuanganSection />
-          <PengurusSection />
+          <StrukturOrganisasiSection />
           <AturanSection onOpenAdArt={() => handleNavigate("/ad-art")} />
           <CatatanSection />
         </main>
