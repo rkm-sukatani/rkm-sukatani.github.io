@@ -28,7 +28,7 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
-              Pelayanan Fardhu Kifayah Jenazah Warga, <span className="text-amber-300">RKM Nurul Falah</span>
+              Pelayanan Fardhu Kifayah Jenazah Warga, <span className="text-amber-300">{rkm.name}</span>
             </h1>
 
             <p className="text-emerald-100 text-base sm:text-lg max-w-2xl leading-relaxed">

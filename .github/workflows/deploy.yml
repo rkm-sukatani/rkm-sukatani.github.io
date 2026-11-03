@@ -1,4 +1,4 @@
-name: Deploy RKM Sukatani Site to GitHub Pages
+name: Deploy RKM TPU SUKATANI Site to GitHub Pages
 
 on:
   push:

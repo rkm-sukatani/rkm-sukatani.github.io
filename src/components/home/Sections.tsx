@@ -42,7 +42,7 @@ export function TentangSection() {
       <SectionHeader
         id="tentang"
         badge="Profil Lembaga"
-        title="Tentang RKM Nurul Falah Sukatani"
+        title={`Tentang ${rkm.name}`}
         subtitle="Rukun Kematian Muslim (RKM) adalah bidang pelayanan jenazah / fardhu kifayah yang terintegrasi secara kelembagaan dengan DKM Masjid Nurul Falah Sukatani."
       />
       <div className="grid lg:grid-cols-3 gap-6 text-left">
@@ -67,7 +67,7 @@ export function TentangSection() {
           </div>
           <dl className="text-sm space-y-2">
             <div>
-              <dt className="text-emerald-300 text-xs">Nama</dt>
+              <dt className="text-emerald-300 text-xs">Nama resmi (AD/ART)</dt>
               <dd className="font-semibold">{rkm.fullName}</dd>
             </div>
             <div>

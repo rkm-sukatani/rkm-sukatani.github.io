@@ -29,11 +29,11 @@ export function Footer({ onNavigate }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 pb-8 border-b border-[#065f46]">
           <div className="space-y-3 md:col-span-2">
             <div className="flex items-center gap-3 text-white font-bold text-lg">
-              <img src="/favicon.svg" alt="Logo RKM Nurul Falah Sukatani" className="w-7 h-7 rounded-lg shadow-sm" />
-              <span>{rkm.fullName}</span>
+              <img src="/favicon.svg" alt={`Logo ${rkm.name}`} className="w-7 h-7 rounded-lg shadow-sm" />
+              <span>{rkm.name}</span>
             </div>
             <p className="text-slate-400 leading-relaxed max-w-md">
-              Terintegrasi secara kelembagaan dengan {rkm.parentOrganization}.
+              {rkm.fullName}, terintegrasi secara kelembagaan dengan {rkm.parentOrganization}.
             </p>
             <div className="text-slate-400">
               <b>Alamat:</b> {rkm.address.fullAddress}.
@@ -72,7 +72,7 @@ export function Footer({ onNavigate }: FooterProps) {
         </div>
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-slate-400">
-          <div>&copy; 2026 RKM Nurul Falah Sukatani. Seluruh hak cipta dilindungi.</div>
+          <div>&copy; 2026 {rkm.name}. Seluruh hak cipta dilindungi.</div>
           <div className="text-emerald-300 font-semibold">Amanah &amp; Transparan dalam Pelayanan Fardhu Kifayah</div>
         </div>
       </div>

@@ -42,11 +42,11 @@ export function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {
           <a href="/" onClick={(e) => handleNavClick(e, "/")} className="flex items-center gap-2.5 sm:gap-3 group text-left shrink-0">
             <img
               src="/favicon.svg"
-              alt="Logo RKM Nurul Falah Sukatani"
+              alt={`Logo ${rkm.name}`}
               className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl shadow-md shadow-emerald-900/20 group-hover:scale-105 transition-transform"
             />
             <div>
-              <div className="font-bold text-base sm:text-lg leading-tight text-[#064e3b]">RKM Nurul Falah Sukatani</div>
+              <div className="font-bold text-base sm:text-lg leading-tight text-[#064e3b]">{rkm.name}</div>
               <div className="text-[11px] sm:text-xs text-slate-500 font-medium tracking-wide">Rukun Kematian Muslim · Desa Wangunsari</div>
             </div>
           </a>
