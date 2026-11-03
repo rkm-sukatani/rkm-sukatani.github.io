@@ -15,6 +15,9 @@ import {
   CheckCircle2,
   ExternalLink,
   Landmark,
+  MapPin,
+  Quote,
+  TreePine,
 } from "lucide-react";
 import rkm from "@/data/rkm.json";
 
@@ -43,7 +46,7 @@ export function TentangSection() {
         id="tentang"
         badge="Profil Lembaga"
         title={`Tentang ${rkm.name}`}
-        subtitle="Rukun Kematian Muslim (RKM) adalah bidang pelayanan jenazah / fardhu kifayah yang terintegrasi secara kelembagaan dengan DKM Masjid Nurul Falah Sukatani."
+        subtitle={`Rukun Kematian Muslim (RKM) adalah bidang pelayanan jenazah / fardhu kifayah yang terintegrasi secara kelembagaan dengan DKM Masjid Nurul Falah Sukatani. ${rkm.coverage.summary}`}
       />
       <div className="grid lg:grid-cols-3 gap-6 text-left">
         <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-4">
@@ -60,6 +63,24 @@ export function TentangSection() {
           <div className="text-sm text-slate-700 leading-relaxed">
             <b>Struktur:</b> RKM berada dalam <i>{rkm.bidang}</i>, salah satu bidang pelaksana DKM Nurul Falah (AD Pasal 9).
           </div>
+          <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-sm text-slate-700 leading-relaxed">
+            <div className="font-bold text-emerald-900 flex items-center gap-2 mb-1">
+              <MapPin className="w-4 h-4" /> Jangkauan RKM lebih luas dari DKM
+            </div>
+            <div className="grid sm:grid-cols-2 gap-3 mt-2">
+              <div className="rounded-lg bg-white border border-emerald-300 p-3">
+                <div className="text-xs text-emerald-700 font-semibold">RKM</div>
+                <div className="font-bold text-slate-900">{rkm.coverage.rt}</div>
+                <div className="text-xs text-slate-600">2 kampung: Kp. Sukatani &amp; Kp. Tespong</div>
+              </div>
+              <div className="rounded-lg bg-white border border-slate-200 p-3">
+                <div className="text-xs text-slate-500 font-semibold">DKM</div>
+                <div className="font-bold text-slate-900">RT 03–06</div>
+                <div className="text-xs text-slate-600">1 kampung</div>
+              </div>
+            </div>
+            <div className="text-[11px] text-slate-500 mt-2">Sumber: {rkm.coverage.source}</div>
+          </div>
         </div>
         <div className="bg-[#064e3b] text-emerald-50 rounded-2xl p-6 sm:p-8 space-y-3 shadow-sm">
           <div className="font-bold text-amber-300 flex items-center gap-2">
@@ -72,7 +93,14 @@ export function TentangSection() {
             </div>
             <div>
               <dt className="text-emerald-300 text-xs">Alamat</dt>
-              <dd>{rkm.address.fullAddress}, {rkm.address.provinsi} {rkm.address.kodepos}</dd>
+              <dd>
+                {rkm.address.fullAddress}, {rkm.address.provinsi} {rkm.address.kodepos}{" "}
+                <span className="italic text-amber-200">(belum dikonfirmasi)</span>
+              </dd>
+            </div>
+            <div>
+              <dt className="text-emerald-300 text-xs">Wilayah layanan</dt>
+              <dd>{rkm.coverage.rt} · Kp. Sukatani &amp; Kp. Tespong</dd>
             </div>
             <div>
               <dt className="text-emerald-300 text-xs">AD/ART ditetapkan</dt>
@@ -120,7 +148,34 @@ export function LayananSection() {
             );
           })}
         </div>
-        <div className="mt-8 grid md:grid-cols-2 gap-5 text-left">
+        <div id="wilayah-layanan" className="mt-8 grid md:grid-cols-2 gap-5 text-left">
+          <div className="p-5 rounded-2xl border border-emerald-300 bg-emerald-50 text-sm text-slate-700">
+            <div className="font-bold text-slate-900 mb-1 flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-emerald-700" /> Wilayah Layanan RKM
+            </div>
+            <div className="text-2xl font-extrabold text-emerald-900">{rkm.coverage.rt}</div>
+            <div className="text-sm">Dua kampung: <b>Kp. Sukatani</b> dan <b>Kp. Tespong</b>.</div>
+            <div className="text-xs text-slate-600 mt-1">{rkm.coverage.dkmComparison}</div>
+            <blockquote className="mt-3 border-l-4 border-amber-400 pl-3 text-xs italic text-slate-700 flex gap-1.5">
+              <Quote className="w-3.5 h-3.5 shrink-0 text-amber-500" />“{rkm.coverage.quote}”
+            </blockquote>
+            <div className="text-[11px] text-slate-500 mt-2">Sumber: {rkm.coverage.source}</div>
+          </div>
+          <div className="p-5 rounded-2xl border border-emerald-300 bg-emerald-50 text-sm text-slate-700">
+            <div className="font-bold text-slate-900 mb-2 flex items-center gap-2">
+              <TreePine className="w-4 h-4 text-emerald-700" /> {rkm.landWakaf.title}
+            </div>
+            <ul className="space-y-1.5">
+              {rkm.landWakaf.roles.map((r) => (
+                <li key={r.bani} className="flex items-center justify-between gap-3 rounded-lg bg-white border border-emerald-200 px-3 py-2">
+                  <span className="font-semibold text-slate-900">{r.bani}</span>
+                  <span className="text-xs text-emerald-800">{r.role}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="text-xs text-slate-600 mt-2">{rkm.landWakaf.note}</div>
+            <div className="text-[11px] text-slate-500 mt-1">Sumber: {rkm.landWakaf.source}</div>
+          </div>
           <div className="p-5 rounded-2xl border border-amber-200 bg-amber-50 text-sm text-slate-700">
             <div className="font-bold text-slate-900 mb-1">Alur pelaporan &amp; pelayanan saat ada warga wafat</div>
             <Placeholder>(menyusul — SOP belum tercantum di sumber)</Placeholder>
@@ -192,7 +247,14 @@ export function PengurusSection() {
     <section id="pengurus" className="py-16 bg-white border-y border-slate-200 scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <SectionHeader id="pengurus" badge="Kepengurusan" title="Pengurus & Kontak RKM" />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left text-xs">
+        <div className="mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-left text-slate-700">
+          <b>Catatan:</b> {rkm.leadership.note}
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 text-left text-xs">
+          <div className="p-4 rounded-xl bg-slate-50 border border-dashed border-slate-300">
+            <div className="font-bold text-slate-800 mb-0.5">Ketua RKM</div>
+            <div><Placeholder>{rkm.leadership.ketuaRkm}</Placeholder></div>
+          </div>
           <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 shadow-2xs">
             <div className="font-bold text-slate-800 mb-0.5 flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> {c.role}</div>
             <div className="text-slate-600 font-medium">{c.name}</div>
