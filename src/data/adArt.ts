@@ -1,9 +1,20 @@
+// AD/ART Rukun Kematian Masyarakat (RKM) & Pengelolaan TPU Kampung Sukatani RW 03.
+// Sumber: "AD ART RKM KP.SUKATANI 2023.pdf" (Pak Badar Rustandi). DRAF terkoreksi, menunggu konfirmasi Pak Badar.
+// Teks dipertahankan; perbaikan & penanda "[belum dikonfirmasi: ...]" dicatat di /workspace/rkm-plans/adart-rkm-terkoreksi.md.
+// Dihasilkan dari satu sumber (rkm-plans/gen/adart_rkm.py) agar sama persis dengan naskah .md.
+
+export type AdArtItemStyle = "plain" | "ayat" | "huruf" | "bagian";
+
 export interface AdArtPasal {
   number: string;
   title: string;
+  /** plain = tanpa nomor; ayat = (1), (2); huruf = a., b.; bagian = A./B. dengan butir 1., 2. */
+  style: AdArtItemStyle;
+  intro?: string;
   highlight?: boolean;
   badge?: string;
   items: Array<{
+    label?: string;
     text: string;
     subItems?: string[];
   }>;
@@ -14,7 +25,7 @@ export interface AdArtBab {
   part: "AD" | "ART";
   babNumber: string;
   title: string;
-  summary: string;
+  summary?: string;
   pasals: AdArtPasal[];
 }
 
@@ -23,754 +34,1179 @@ export interface AdArtDocument {
   subtitle: string;
   organization: string;
   address: string;
+  documentYear: string;
   establishedDate: string;
-  hijriDate: string;
+  draftNotice?: { title: string; text: string };
   mukadimah: {
     bismillah: string;
     opening: string;
-    quranQuote: {
-      text: string;
-      source: string;
-    };
+    quranQuote?: { text: string; source: string };
     body: string[];
   };
   babs: AdArtBab[];
+  susunan?: {
+    note: string;
+    groups: Array<{ title: string; members: string[] }>;
+    ketentuan: string;
+  };
+  pengesahan?: {
+    paragraphs: string[];
+    place: string;
+    date: string;
+    signatureNote?: string;
+  };
   signatories: Array<{
     role: string;
     name: string;
     status: string;
   }>;
+  penutup?: string[];
+}
+
+/** Penanda isian yang belum diputuskan: "[belum dikonfirmasi: ...]" atau "(menyusul)". */
+export const UNCONFIRMED_PATTERN = /(\[belum dikonfirmasi(?::[^\]]*)?\]|\(menyusul\))/g;
+
+export function hasUnconfirmed(text: string): boolean {
+  return /\[belum dikonfirmasi|\(menyusul\)/.test(text);
 }
 
 export const adArtData: AdArtDocument = {
-  title: "Anggaran Dasar & Anggaran Rumah Tangga (AD/ART)",
-  subtitle: "Aturan Dasar & Tata Tertib Organisasi",
-  organization: "Dewan Kemakmuran Masjid (DKM) & Rukun Kematian Muslim (RKM) Masjid Nurul Falah Sukatani",
-  address: "Kp. Sukatani, RT 05 RW 03, Desa Wangunsari, Kecamatan Cisolok, Kabupaten Sukabumi, Provinsi Jawa Barat 43366",
-  establishedDate: "1 November 2026 M",
-  hijriDate: "21 Jumadil Awal 1448 H",
-  mukadimah: {
-    bismillah: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
-    opening:
-      "Segala puji bagi Allah Subhanahu wa Ta'ala, Tuhan semesta alam yang telah memerintahkan hamba-Nya untuk memakmurkan rumah-rumah-Nya di muka bumi, sebagaimana firman-Nya dalam Al-Qur'an:",
-    quranQuote: {
-      text: "Hanyalah yang memakmurkan masjid-masjid Allah ialah orang-orang yang beriman kepada Allah dan hari kemudian, serta tetap mendirikan shalat, menunaikan zakat dan tidak takut (kepada siapapun) selain kepada Allah, maka merekalah orang-orang yang diharapkan termasuk golongan orang-orang yang mendapat petunjuk.",
-      source: "QS. At-Taubah: 18",
-    },
-    body: [
-      "Masjid bukan sekadar bangunan fisik tempat bersujud, melainkan pusat peradaban, pembinaan akhlak dan generasi, pemberdayaan ekonomi umat, serta jaring pengaman sosial masyarakat. Demi mewujudkan tata kelola masjid yang Murni dalam niat dan adab, Mandiri dalam kehormatan dan ekonomi, serta Tumbuh Berkelanjutan dalam pembinaan sumber daya manusia dan pembangunan fisik yang terukur, maka diperlukan pedoman organisasi yang jelas, adil, transparan, dan mengikat seluruh elemen pengurus serta jamaah.",
-      "Dengan mengharap ridha dan pertolongan Allah Subhanahu wa Ta'ala, jamaah dan pengurus Masjid Nurul Falah Sukatani menetapkan Anggaran Dasar dan Anggaran Rumah Tangga (AD/ART) Dewan Kemakmuran Masjid (DKM) & Rukun Kematian Muslim (RKM) Masjid Nurul Falah Sukatani sebagai berikut:",
-    ],
+  "title": "Anggaran Dasar & Anggaran Rumah Tangga (AD/ART)",
+  "subtitle": "Pedoman Dasar Penyelenggaraan Organisasi, Kepengurusan, Pelayanan Kematian, dan Pengelolaan Taman Pemakaman Umum",
+  "organization": "Rukun Kematian Masyarakat (RKM) dan Pengelolaan Taman Pemakaman Umum (TPU) Kampung Sukatani RW 03",
+  "address": "Kampung Sukatani RW 03, Desa Wangunsari, Kecamatan Cisolok, Kabupaten Sukabumi, Provinsi Jawa Barat",
+  "documentYear": "TAHUN 2026 [belum dikonfirmasi: sampul menulis 'TAHUN 2026', sedangkan Lembar Pengesahan menulis 'Pada tanggal: 4 Agustus 2023' dan nama berkas memuat '2023'; tahun penetapan menunggu jawaban Pak Badar]",
+  "establishedDate": "4 Agustus 2023 [belum dikonfirmasi: sampul menulis 'TAHUN 2026'; tanggal penetapan menunggu jawaban Pak Badar]",
+  "draftNotice": {
+    "title": "Draf — menunggu konfirmasi Pak Badar Rustandi (Pendiri RKM)",
+    "text": "Naskah ini disalin dari AD/ART RKM yang disusun Pak Badar Rustandi. Penomoran ayat dipulihkan, salah ketik dan ejaan dibetulkan, dan susunan pengurus disamakan dengan bagan struktur terbaru (koreksi Ketua RKM, 3 November 2026). Bagian yang masih perlu dijelaskan tidak ditafsirkan: teks aslinya dibiarkan dan diberi tanda “belum dikonfirmasi”. Naskah belum berlaku sampai dikonfirmasi."
   },
-  babs: [
-    // ==================== ANGGARAN DASAR (AD) ====================
+  "mukadimah": {
+    "bismillah": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+    "opening": "Dengan memanjatkan puji syukur kehadirat Allah SWT, serta memohon rahmat dan ridha-Nya, masyarakat Kampung Sukatani RW 03 menyadari bahwa kematian merupakan ketentuan Allah SWT yang pasti dihadapi oleh setiap manusia. Oleh karena itu, penyelenggaraan kewajiban terhadap orang yang meninggal dunia merupakan tanggung jawab keagamaan dan sosial yang perlu dilaksanakan secara bersama-sama.",
+    "body": [
+      "Dalam kehidupan bermasyarakat, diperlukan suatu wadah yang mampu mengoordinasikan pelayanan kematian, membantu keluarga yang mengalami musibah, serta mengelola fasilitas pemakaman umum secara tertib, terarah, dan bertanggung jawab.",
+      "Atas dasar kesadaran tersebut, masyarakat Kampung Sukatani RW 03 membentuk Rukun Kematian Masyarakat (RKM) dan Pengelolaan Taman Pemakaman Umum (TPU) sebagai organisasi sosial kemasyarakatan yang berlandaskan nilai-nilai ajaran Islam, semangat gotong royong, persaudaraan, kepedulian, dan tanggung jawab bersama.",
+      "Bahwa pengelolaan organisasi merupakan amanah yang harus dilaksanakan dengan penuh kejujuran, keadilan, keterbukaan, dan tanggung jawab. Setiap pengurus wajib menjaga kepercayaan masyarakat serta menjalankan tugas sesuai dengan ketentuan syariat Islam dan aturan organisasi.",
+      "Untuk menjamin keberlangsungan organisasi, ketertiban administrasi, kepastian kewenangan, serta pengelolaan keuangan dan aset secara bertanggung jawab, dipandang perlu menetapkan Anggaran Dasar dan Anggaran Rumah Tangga sebagai pedoman penyelenggaraan organisasi.",
+      "Berdasarkan pertimbangan tersebut, disusunlah Anggaran Dasar dan Anggaran Rumah Tangga Rukun Kematian Masyarakat (RKM) dan Pengelolaan Taman Pemakaman Umum (TPU) Kampung Sukatani RW 03."
+    ]
+  },
+  "babs": [
     {
-      id: "ad-bab-1",
-      part: "AD",
-      babNumber: "BAB I",
-      title: "Nama, Waktu, dan Kedudukan",
-      summary: "Identitas resmi kelembagaan DKM & RKM Nurul Falah serta kedudukan hukumnya di Kp. Sukatani.",
-      pasals: [
+      "id": "ad-bab-i",
+      "part": "AD",
+      "babNumber": "BAB I",
+      "title": "Nama, Kedudukan, dan Wilayah Kerja",
+      "pasals": [
         {
-          number: "Pasal 1",
-          title: "Nama Organisasi",
-          items: [
+          "number": "Pasal 1",
+          "title": "Nama Organisasi",
+          "style": "plain",
+          "items": [
             {
-              text: "Organisasi ini bernama Dewan Kemakmuran Masjid (DKM) Masjid Nurul Falah Sukatani, yang terintegrasi secara kelembagaan dengan Rukun Kematian Muslim (RKM) Nurul Falah Sukatani, selanjutnya dalam AD/ART ini disebut DKM Nurul Falah.",
-            },
-          ],
+              "text": "Organisasi ini bernama Rukun Kematian Masyarakat (RKM) dan Pengelolaan Taman Pemakaman Umum (TPU), selanjutnya disebut RKM."
+            }
+          ]
         },
         {
-          number: "Pasal 2",
-          title: "Waktu Pendirian",
-          items: [
+          "number": "Pasal 2",
+          "title": "Kedudukan",
+          "style": "plain",
+          "items": [
             {
-              text: "DKM Nurul Falah didirikan oleh masyarakat Muslim Kp. Sukatani untuk jangka waktu yang tidak ditentukan selama Masjid Nurul Falah berdiri dan berfungsi sebagai tempat ibadah serta pusat kegiatan umat.",
-            },
-          ],
+              "text": "RKM berkedudukan di Kampung Sukatani RW 03, Desa Wangunsari, Kecamatan Cisolok, Kabupaten Sukabumi, Provinsi Jawa Barat."
+            }
+          ]
         },
         {
-          number: "Pasal 3",
-          title: "Kedudukan",
-          items: [
+          "number": "Pasal 3",
+          "title": "Wilayah Kerja",
+          "style": "ayat",
+          "items": [
             {
-              text: "DKM Nurul Falah berkedudukan di Masjid Nurul Falah, beralamat di Kp. Sukatani, RT 05 RW 03, Desa Wangunsari, Kecamatan Cisolok, Kabupaten Sukabumi, Provinsi Jawa Barat, Kode Pos 43366.",
+              "text": "Wilayah pelayanan utama RKM meliputi masyarakat Kampung Sukatani RW 03, yang mencakup RT 01, RT 02, RT 03, RT 04, RT 05, dan RT 06. [belum dikonfirmasi: apakah Kp. Citespong termasuk wilayah pelayanan (Konfirmasi Ketua RKM, 3 Nov 2026 menyebut Kp. Sukatani & Kp. Citespong); teks asli dipertahankan]"
             },
-          ],
-        },
-      ],
+            {
+              "text": "Keanggotaan RKM tidak terbatas pada warga Kampung Sukatani RW 03. Masyarakat dari luar wilayah tersebut dapat diterima menjadi anggota sepanjang menyatakan kesediaan untuk menaati AD/ART dan ketentuan organisasi. [belum dikonfirmasi: ketentuan serupa juga ada di Pasal 10 ayat (2); dipertahankan, tidak digabung]"
+            },
+            {
+              "text": "Pelayanan kepada anggota dari luar wilayah dilaksanakan sesuai ketentuan organisasi, kemampuan RKM, serta hasil musyawarah yang sah."
+            },
+            {
+              "text": "Perluasan wilayah pelayanan dapat dilakukan berdasarkan kesepakatan musyawarah organisasi."
+            }
+          ]
+        }
+      ]
     },
     {
-      id: "ad-bab-2",
-      part: "AD",
-      babNumber: "BAB II",
-      title: "Asas, Aqidah, dan Doktrin Nilai Dasar",
-      summary: "Landasan syariat Islam dan penguncian 3 Pilar Nilai Dasar (Murni, Mandiri, Tumbuh Berkelanjutan).",
-      pasals: [
+      "id": "ad-bab-ii",
+      "part": "AD",
+      "babNumber": "BAB II",
+      "title": "Asas, Landasan, dan Sifat Organisasi",
+      "pasals": [
         {
-          number: "Pasal 4",
-          title: "Asas dan Aqidah",
-          items: [
+          "number": "Pasal 4",
+          "title": "Asas",
+          "style": "plain",
+          "items": [
             {
-              text: "DKM Nurul Falah berasaskan Islam yang berpedoman pada Al-Qur'an dan As-Sunnah sesuai dengan pemahaman Ahlussunnah wal Jama'ah.",
-            },
-            {
-              text: "Dalam kehidupan berbangsa dan bernegara, DKM Nurul Falah mematuhi hukum dan peraturan perundang-undangan yang berlaku di Negara Kesatuan Republik Indonesia sepanjang tidak bertentangan dengan syariat Islam.",
-            },
-          ],
+              "text": "RKM berasaskan Pancasila dan berlandaskan nilai-nilai ajaran agama Islam."
+            }
+          ]
         },
         {
-          number: "Pasal 5",
-          title: "Doktrin 3 (Tiga) Pilar Nilai Dasar",
-          highlight: true,
-          badge: "Fondasi Utama",
-          items: [
+          "number": "Pasal 5",
+          "title": "Landasan Organisasi",
+          "style": "huruf",
+          "intro": "Dalam menjalankan kegiatan, RKM berpedoman pada:",
+          "items": [
             {
-              text: "1. MURNI (Integritas Niat & Kebersihan Adab):",
-              subItems: [
-                "Mengelola dan memakmurkan masjid semata-mata lillahi ta'ala.",
-                "Bebas Politisasi: Menolak segala bentuk politik praktis, barter suara, maupun kesepakatan transaksional dengan partai politik atau calon legislatif/eksekutif yang menggadaikan independensi masjid dan marwah warga.",
-                "Musyawarah Beradab: Mengedepankan musyawarah yang santun, terjadwal, fokus pada solusi, dan berkeadilan; serta menolak segala bentuk penghakiman sepihak, fitnah, caci maki, atau intimidasi personal.",
-                "Transparansi Total: Pelaporan keuangan dan program kerja wajib terbuka 100% melalui papan informasi (mading) masjid dan portal web resmi (https://nurul-falah.github.io).",
-              ],
+              "text": "Al-Qur'an dan As-Sunnah."
             },
             {
-              text: "2. MANDIRI (Kedaulatan Marwah & Berdikari):",
-              subItems: [
-                "Pantang Mengemis (Anti-Nyapir): Dilarang keras menghimpun dana dengan cara meminta-minta di jalan raya (nyapir) atau cara-cara lain yang merendahkan martabat dan kehormatan umat Islam.",
-                "Mengutamakan kemandirian melalui swadaya gotong royong jamaah serta kemitraan wakaf dan infaq umat yang terhormat.",
-              ],
+              "text": "Ketentuan syariat Islam."
             },
             {
-              text: "3. TUMBUH BERKELANJUTAN (Pertumbuhan SDM & Pembangunan Taktis):",
-              subItems: [
-                "Menempatkan pembangunan manusia (pemakmuran ibadah, pendidikan Al-Qur'an anak-anak, kaderisasi imam muda, majelis ilmu, dan kepedulian sosial) di atas sekadar kemegahan fisik bangunan.",
-                "Melaksanakan pembangunan fisik masjid secara bertahap, rasional, terukur, bebas dari jeratan utang yang membebani jamaah, dan mendahulukan sarana fungsional agar ibadah warga tidak pernah terhenti.",
-              ],
+              "text": "Prinsip ukhuwah Islamiyah."
             },
-          ],
+            {
+              "text": "Prinsip tolong-menolong dalam kebaikan."
+            },
+            {
+              "text": "Musyawarah dan mufakat."
+            },
+            {
+              "text": "Amanah, kejujuran, keadilan, dan tanggung jawab."
+            },
+            {
+              "text": "Peraturan perundang-undangan yang berlaku."
+            }
+          ]
         },
-      ],
+        {
+          "number": "Pasal 6",
+          "title": "Sifat Organisasi",
+          "style": "huruf",
+          "intro": "RKM merupakan organisasi sosial kemasyarakatan yang bersifat:",
+          "items": [
+            {
+              "text": "Keagamaan."
+            },
+            {
+              "text": "Sosial dan kemanusiaan."
+            },
+            {
+              "text": "Kekeluargaan."
+            },
+            {
+              "text": "Gotong royong."
+            },
+            {
+              "text": "Mandiri."
+            },
+            {
+              "text": "Tidak berorientasi pada keuntungan pribadi."
+            }
+          ]
+        }
+      ]
     },
     {
-      id: "ad-bab-3",
-      part: "AD",
-      babNumber: "BAB III",
-      title: "Visi, Misi, dan Fungsi",
-      summary: "Arah strategis peradaban umat meliputi Idarah, Imarah, Ri'ayah, serta Ijtima'iyah & Muamalah.",
-      pasals: [
+      "id": "ad-bab-iii",
+      "part": "AD",
+      "babNumber": "BAB III",
+      "title": "Maksud dan Tujuan",
+      "pasals": [
         {
-          number: "Pasal 6",
-          title: "Visi",
-          items: [
+          "number": "Pasal 7",
+          "title": "Maksud",
+          "style": "plain",
+          "items": [
             {
-              text: "Terwujudnya Masjid Nurul Falah Sukatani sebagai pusat peradaban umat yang Murni dalam adab dan niat, Mandiri dalam ekonomi dan marwah, serta Tumbuh Berkelanjutan dalam membina generasi rabbani dan masyarakat madani.",
-            },
-          ],
+              "text": "RKM dibentuk sebagai wadah pelayanan sosial dan keagamaan masyarakat dalam membantu penyelenggaraan kewajiban terhadap warga yang meninggal dunia serta mengelola Taman Pemakaman Umum (TPU)."
+            }
+          ]
         },
         {
-          number: "Pasal 7",
-          title: "Misi",
-          items: [
+          "number": "Pasal 8",
+          "title": "Tujuan",
+          "style": "huruf",
+          "intro": "RKM bertujuan:",
+          "items": [
             {
-              text: "Idarah (Tata Kelola & Administrasi): Menyelenggarakan manajemen organisasi, administrasi, dan keuangan masjid secara satu pintu, modern, transparan, dan akuntabel.",
+              "text": "Membantu masyarakat dalam penyelenggaraan pengurusan jenazah sesuai tuntunan syariat Islam."
             },
             {
-              text: "Imarah (Pemakmuran & Pendidikan): Menghidupkan shalat berjamaah lima waktu, pembinaan baca-tulis Al-Qur'an (TPA) anak-anak setiap hari, kaderisasi imam dan pengajar muda, serta kajian rutin bagi bapak-bapak, ibu-ibu, dan remaja.",
+              "text": "Meringankan beban keluarga yang mengalami musibah kematian."
             },
             {
-              text: "Ri'ayah (Pembangunan & Pemeliharaan Fisik): Melaksanakan pembangunan dan pemeliharaan Masjid Nurul Falah 2 lantai beserta sarana pendukungnya (sanitasi, tempat wudhu, selasar ibadah) secara bertahap dan berkualitas.",
+              "text": "Mengoordinasikan pelayanan pemakaman masyarakat."
             },
             {
-              text: "Ijtima'iyah & Muamalah (Sosial, RKM & Baitul Mal): Mengelola layanan fardhu kifayah pengurusan jenazah (RKM), penyaluran zakat/infaq (UPZ), serta pinjaman kebajikan warga tanpa riba (Qardhul Hasan melalui Baitul Mal).",
+              "text": "Mengelola dan memelihara Taman Pemakaman Umum."
             },
-          ],
-        },
-      ],
+            {
+              "text": "Meningkatkan kepedulian sosial dan semangat gotong royong."
+            },
+            {
+              "text": "Menjaga persatuan dan kerukunan masyarakat."
+            },
+            {
+              "text": "Mengelola keuangan dan kekayaan organisasi secara amanah, tertib, dan transparan."
+            },
+            {
+              "text": "Menjamin keberlangsungan pelayanan organisasi bagi masyarakat."
+            }
+          ]
+        }
+      ]
     },
     {
-      id: "ad-bab-4",
-      part: "AD",
-      babNumber: "BAB IV",
-      title: "Kedaulatan, Keanggotaan, dan Kepengurusan",
-      summary: "Definisi jamaah dan susunan struktur organisasi DKM & RKM Nurul Falah.",
-      pasals: [
+      "id": "ad-bab-iv",
+      "part": "AD",
+      "babNumber": "BAB IV",
+      "title": "Ruang Lingkup Kegiatan",
+      "pasals": [
         {
-          number: "Pasal 8",
-          title: "Jamaah",
-          items: [
+          "number": "Pasal 9",
+          "title": "",
+          "style": "huruf",
+          "intro": "Ruang lingkup kegiatan RKM meliputi:",
+          "items": [
             {
-              text: "Jamaah Masjid Nurul Falah adalah seluruh warga Muslim yang berdomisili di lingkungan Kp. Sukatani (khususnya RT 05 RW 03 Desa Wangunsari dan sekitarnya) serta kaum Muslimin yang secara aktif mengikuti kegiatan ibadah dan kemakmuran di Masjid Nurul Falah.",
-            },
-          ],
-        },
-        {
-          number: "Pasal 9",
-          title: "Struktur Organisasi",
-          items: [
-            {
-              text: "Dewan Penasehat / Pembina: Tokoh agama, sesepuh masyarakat, dan aparatur lingkungan setempat yang memberikan nasihat syar'i dan pertimbangan kebijaksanaan.",
+              "text": "Pelayanan dan bantuan pengurusan jenazah."
             },
             {
-              text: "Pengurus Harian (Pelaksana): Terdiri atas Ketua DKM, Sekretaris DKM, dan Bendahara DKM.",
+              "text": "Koordinasi penyelenggaraan pemakaman."
             },
             {
-              text: "Bidang-Bidang Pelaksana:",
-              subItems: [
-                "Bidang Imarah (Dakwah, Ibadah, Pendidikan TPA & Remaja/Risma)",
-                "Bidang Ri'ayah (Pembangunan, Pemeliharaan Sarana & Kebersihan/Marbot)",
-                "Bidang Sosial & RKM (Pelayanan Jenazah / Fardhu Kifayah)",
-                "Bidang Zakat & Baitul Mal (UPZ & Pinjaman Kebajikan Warga)",
-              ],
+              "text": "Pengelolaan dan pemeliharaan Taman Pemakaman Umum."
             },
-          ],
-        },
-      ],
+            {
+              "text": "Pengadaan dan pemeliharaan perlengkapan kematian."
+            },
+            {
+              "text": "Penggalangan dana berdasarkan kesepakatan masyarakat."
+            },
+            {
+              "text": "Pengelolaan administrasi dan keuangan organisasi."
+            },
+            {
+              "text": "Pemberian bantuan kepada keluarga yang mengalami musibah kematian sesuai kemampuan organisasi."
+            },
+            {
+              "text": "Kegiatan sosial dan keagamaan lainnya yang sesuai dengan tujuan organisasi."
+            }
+          ]
+        }
+      ]
     },
     {
-      id: "ad-bab-5",
-      part: "AD",
-      babNumber: "BAB V",
-      title: "Musyawarah dan Pengambilan Keputusan",
-      summary: "Jenis-jenis forum musyawarah resmi serta syarat mutlak keabsahan musyawarah.",
-      pasals: [
+      "id": "ad-bab-v",
+      "part": "AD",
+      "babNumber": "BAB V",
+      "title": "Keanggotaan",
+      "pasals": [
         {
-          number: "Pasal 10",
-          title: "Jenis Musyawarah",
-          items: [
+          "number": "Pasal 10",
+          "title": "",
+          "style": "ayat",
+          "items": [
             {
-              text: "Musyawarah Tahunan (Musyawarah Ramadhan): Forum evaluasi tahunan, penyampaian laporan pertanggungjawaban program dan keuangan, serta penetapan rencana kerja tahun berjalan yang diselenggarakan setiap bulan Ramadhan.",
+              "text": "Keanggotaan RKM terbuka bagi masyarakat Kampung Sukatani RW 03 maupun masyarakat dari luar wilayah tersebut."
             },
             {
-              text: "Musyawarah Pleno / Pemilihan Pengurus: Forum tertinggi untuk memilih atau menetapkan Ketua DKM pada akhir masa jabatan atau apabila terjadi kekosongan jabatan.",
+              "text": "Calon anggota dari luar wilayah dapat diterima setelah menyatakan kesediaan menaati AD/ART dan memenuhi ketentuan keanggotaan yang ditetapkan organisasi. [belum dikonfirmasi: ketentuan serupa juga ada di Pasal 3 ayat (2); dipertahankan, tidak digabung]"
             },
             {
-              text: "Musyawarah Pengurus / Rapat Koordinasi: Rapat berkala antar pengurus untuk membahas pelaksanaan program kerja dan teknis pembangunan.",
+              "text": "Setiap anggota berhak memperoleh pelayanan sesuai ketentuan organisasi."
             },
             {
-              text: "Musyawarah Khusus Warga: Pertemuan bersama jamaah untuk membahas agenda strategis tertentu yang membutuhkan kesepakatan bersama warga.",
-            },
-          ],
-        },
-        {
-          number: "Pasal 11",
-          title: "Keabsahan Musyawarah",
-          highlight: true,
-          badge: "Ketentuan Krusial",
-          items: [
-            {
-              text: "Setiap musyawarah resmi mengatasnamakan DKM Nurul Falah WAJIB diketahui, disetujui, dan diundang secara sah oleh Ketua DKM (atau pejabat yang diberikan mandat tertulis oleh Ketua DKM).",
+              "text": "Setiap anggota berhak memperoleh informasi mengenai kegiatan dan pengelolaan keuangan organisasi."
             },
             {
-              text: "Pertemuan yang diadakan secara mendadak, sepihak, tanpa pemberitahuan agenda yang jelas, atau tanpa koordinasi dan persetujuan Ketua DKM dinyatakan TIDAK SAH dan keputusannya tidak mengikat organisasi.",
+              "text": "Setiap anggota berkewajiban menjaga persatuan, mendukung kegiatan organisasi, dan menaati AD/ART."
             },
-          ],
-        },
-      ],
+            {
+              "text": "Setiap anggota berkewajiban menjaga serta memelihara fasilitas organisasi sesuai kemampuan dan ketentuan yang disepakati."
+            },
+            {
+              "text": "Hak dan kewajiban anggota dilaksanakan secara adil tanpa membedakan kedudukan sosial."
+            }
+          ]
+        }
+      ]
     },
     {
-      id: "ad-bab-6",
-      part: "AD",
-      babNumber: "BAB VI",
-      title: "Keuangan dan Kekayaan Organisasi",
-      summary: "Sumber pendanaan halal dan penerapan Sistem Kas Satu Pintu (BSI 7203516578).",
-      pasals: [
+      "id": "ad-bab-vi",
+      "part": "AD",
+      "babNumber": "BAB VI",
+      "title": "Struktur Organisasi",
+      "pasals": [
         {
-          number: "Pasal 12",
-          title: "Sumber Dana",
-          items: [
+          "number": "Pasal 11",
+          "title": "",
+          "style": "huruf",
+          "intro": "Struktur organisasi RKM terdiri atas:",
+          "items": [
             {
-              text: "Swadaya Jamaah Sukatani: Infaq kotak amal Jum'at/pengajian (penggabungan kas bapak-bapak dan ibu-ibu), iuran sukarela warga, iuran RKM, serta gotong royong tenaga dan material.",
+              "text": "Pendiri."
             },
             {
-              text: "Donatur & Wakaf Umat: Wakaf tunai, wakaf material, dan infaq jariyah dari para muhsinin/simpatisan luar maupun dalam daerah yang tidak mengikat.",
+              "text": "Majelis Syura."
             },
             {
-              text: "Dana Zakat dan Sosial (UPZ & Baitul Mal): Dana zakat fitrah, zakat maal, dan fidyah yang dikelola khusus sesuai syariat bagi para mustahiq.",
+              "text": "Ketua."
             },
-          ],
+            {
+              "text": "Sekretaris."
+            },
+            {
+              "text": "Bendahara."
+            },
+            {
+              "text": "Seksi Pemakaman."
+            },
+            {
+              "text": "Seksi Pengurusan Jenazah Perempuan."
+            },
+            {
+              "text": "Seksi Perlengkapan."
+            },
+            {
+              "text": "Seksi Penggalangan Dana."
+            }
+          ]
         },
         {
-          number: "Pasal 13",
-          title: "Sistem Kas Satu Pintu, Keterbukaan Uang Fisik, & Status Aset Wakaf",
-          highlight: true,
-          badge: "Hak Keuangan Jamaah",
-          items: [
+          "number": "Pasal 12",
+          "title": "Pendiri",
+          "style": "ayat",
+          "items": [
             {
-              text: "Kesiapan Menunjukkan Uang Fisik: Pengurus DKM maupun RKM wajib bersedia menunjukkan uang fisik kas dan/atau bukti mutasi rekening kapan pun diminta oleh warga, dengan sikap terbuka dan tanpa merasa tersinggung, karena mengetahui keamanan keuangan adalah hak bagi setiap jamaah.",
+              "text": "Pendiri RKM adalah Badar Rustandi."
             },
             {
-              text: "Seluruh dana infaq operasional dan pembangunan masjid (baik dari jamaah bapak-bapak maupun ibu-ibu) disatukan dalam satu kesatuan kas DKM Nurul Falah.",
+              "text": "Pendiri merupakan pihak yang memprakarsai pembentukan organisasi dan memimpin musyawarah pendirian."
             },
             {
-              text: "Penyimpanan dana wajib mengutamakan rekening bank syariah resmi atas nama masjid (Bank Syariah Indonesia / BSI No. Rek. 7203516578 a.n. MASJID NURUL FALAH SUKATANI).",
+              "text": "Pendiri mempunyai tanggung jawab moral dalam menjaga maksud, tujuan, dan nilai dasar pendirian organisasi."
             },
             {
-              text: "Status Mutlak Aset Wakaf & Infaq: Seluruh lahan, bangunan, material, inventaris, maupun dana yang telah diserahkan kepada DKM/RKM Nurul Falah sebagai wakaf atau infaq otomatis berstatus milik Allah SWT untuk kemaslahatan umat, sehingga tidak dapat ditarik kembali atau diklaim kepemilikan pribadinya oleh siapapun (baik oleh donatur, ahli waris, maupun pengurus) dalam kondisi apapun.",
-            },
-          ],
+              "text": "Pendiri menjalankan peran sesuai dengan AD/ART dan mekanisme musyawarah organisasi."
+            }
+          ]
         },
-      ],
+        {
+          "number": "Pasal 13",
+          "title": "Majelis Syura",
+          "style": "ayat",
+          "items": [
+            {
+              "text": "Majelis Syura merupakan unsur pertimbangan, nasihat, dan pengawasan organisasi."
+            },
+            {
+              "text": "Majelis Syura memberikan pertimbangan terhadap kebijakan strategis organisasi."
+            },
+            {
+              "text": "Majelis Syura membantu menjaga pelaksanaan organisasi agar sesuai dengan syariat Islam dan ketentuan AD/ART."
+            },
+            {
+              "text": "Majelis Syura dapat memberikan pertimbangan terhadap persoalan kepengurusan dan penyelesaian perselisihan."
+            },
+            {
+              "text": "Pelaksanaan fungsi Majelis Syura dilakukan melalui musyawarah dan tidak bersifat sepihak."
+            }
+          ]
+        }
+      ]
     },
     {
-      id: "ad-bab-7",
-      part: "AD",
-      babNumber: "BAB VII",
-      title: "Perubahan Anggaran Dasar dan Penutup",
-      summary: "Mekanisme kuorum dan mufakat untuk perubahan Anggaran Dasar.",
-      pasals: [
+      "id": "ad-bab-vii",
+      "part": "AD",
+      "babNumber": "BAB VII",
+      "title": "Keuangan dan Kekayaan Organisasi",
+      "pasals": [
         {
-          number: "Pasal 14",
-          title: "Perubahan Anggaran Dasar",
-          items: [
+          "number": "Pasal 14",
+          "title": "Sumber Keuangan",
+          "style": "huruf",
+          "intro": "Sumber keuangan organisasi dapat berasal dari:",
+          "items": [
             {
-              text: "Perubahan terhadap Anggaran Dasar ini hanya dapat dilakukan melalui Musyawarah Tahunan atau Musyawarah Khusus yang dihadiri oleh sekurang-kurangnya 2/3 (dua pertiga) pengurus aktif dan perwakilan tokoh jamaah, serta disetujui secara mufakat.",
-            },
-          ],
-        },
-      ],
-    },
-
-    // ==================== ANGGARAN RUMAH TANGGA (ART) ====================
-    {
-      id: "art-bab-1",
-      part: "ART",
-      babNumber: "BAB I",
-      title: "Hak, Kewajiban, dan Adab Jamaah & Pengurus",
-      summary: "Hak dan kewajiban jamaah serta kriteria integritas pengurus DKM.",
-      pasals: [
-        {
-          number: "Pasal 1",
-          title: "Hak dan Kewajiban Jamaah",
-          items: [
-            {
-              text: "Hak Jamaah:",
-              subItems: [
-                "Menggunakan fasilitas Masjid Nurul Falah untuk ibadah, pengajian, dan kegiatan keislaman sesuai tata tertib masjid.",
-                "Mendapatkan pelayanan sosial keagamaan, termasuk layanan RKM (pengurusan jenazah) dan akses program Baitul Mal sesuai ketentuan yang berlaku.",
-                "Memperoleh informasi laporan keuangan dan perkembangan pembangunan secara transparan melalui mading masjid dan portal web resmi.",
-                "Meminta pengurus DKM atau RKM untuk menunjukkan uang fisik kas maupun bukti saldo rekening guna memastikan keamanan keuangan masjid.",
-                "Menyampaikan saran, masukan, atau pertanyaan secara santun, beradab, dan konstruktif di dalam forum resmi maupun langsung kepada pengurus.",
-              ],
+              "text": "Iuran masyarakat berdasarkan kesepakatan. [belum dikonfirmasi: nominal iuran Rp 4.000 per anggota per bulan, iuran pendatang (non-anggota) Rp 600.000, dan santunan kematian Rp 600.000 per anggota (konfirmasi Burhan, 3 Nov 2026) belum tercantum di naskah; menunggu keputusan apakah dimasukkan ke AD/ART]"
             },
             {
-              text: "Kewajiban & Adab Jamaah:",
-              subItems: [
-                "Menjaga kesucian, kebersihan, ketertiban, dan fasilitas masjid.",
-                "Memperhatikan Maklumat Resmi: Setiap informasi, laporan keuangan, skema pembangunan, dan maklumat yang telah ditempelkan di Papan Informasi (Mading) Masjid dan/atau dipublikasikan di Portal Web Resmi dianggap telah disampaikan secara sah kepada seluruh warga. Warga wajib membaca dan melakukan tabayyun sebelum menyimpulkan sesuatu.",
-                "Menjaga Adab & Bebas Asap Rokok: Menjaga ketenangan saat shalat dan pengajian anak-anak berlangsung, menjaga kebersihan area wudhu dan toilet, serta dilarang merokok di dalam ruang ibadah maupun area teras masjid.",
-                "Memelihara ukhuwah Islamiyah, kerukunan warga, serta mematuhi keputusan musyawarah yang telah ditetapkan secara sah.",
-                "Menghindari ghibah, provokasi, penyebaran berita yang belum terkonfirmasi (tabayyun), atau tindakan yang memecah belah jamaah.",
-              ],
+              "text": "Sumbangan sukarela yang tidak mengikat."
             },
-          ],
+            {
+              "text": "Bantuan dari masyarakat dan pihak lain yang sah."
+            },
+            {
+              "text": "Hasil kegiatan organisasi yang sah."
+            },
+            {
+              "text": "Sumber penerimaan lainnya yang tidak bertentangan dengan hukum dan syariat Islam."
+            }
+          ]
         },
         {
-          number: "Pasal 2",
-          title: "Syarat Pengurus DKM",
-          items: [
+          "number": "Pasal 15",
+          "title": "Pengelolaan Keuangan dan Kekayaan",
+          "style": "ayat",
+          "items": [
             {
-              text: "Beragama Islam, berakhlak mulia, dan menjaga shalat lima waktu.",
+              "text": "Seluruh dana dan kekayaan yang diperoleh atas nama RKM merupakan kekayaan organisasi."
             },
             {
-              text: "Jujur (shiddiq), dapat dipercaya (amanah), komunikatif (tabligh), dan memiliki kecakapan (fathanah) sesuai bidang tugasnya.",
+              "text": "Dana dan kekayaan organisasi tidak boleh digunakan untuk kepentingan pribadi."
             },
             {
-              text: "Berkomitmen memegang teguh 3 Pilar Nilai Dasar (Murni, Mandiri, Tumbuh Berkelanjutan).",
+              "text": "Pengelolaan keuangan wajib dilaksanakan secara tertib, transparan, dan dapat dipertanggungjawabkan."
             },
             {
-              text: "Tidak menggunakan jabatan DKM untuk kepentingan politik praktis atau keuntungan pribadi.",
+              "text": "Setiap penerimaan dan pengeluaran wajib dicatat dalam administrasi organisasi."
             },
-          ],
-        },
-      ],
+            {
+              "text": "Penggunaan dana harus sesuai dengan tujuan organisasi."
+            },
+            {
+              "text": "Kekayaan organisasi meliputi uang, perlengkapan, inventaris, dan aset lain yang diperoleh secara sah."
+            },
+            {
+              "text": "Laporan keuangan disampaikan kepada forum musyawarah sebagai bentuk pertanggungjawaban."
+            }
+          ]
+        }
+      ]
     },
     {
-      id: "art-bab-2",
-      part: "ART",
-      babNumber: "BAB II",
-      title: "Tugas Pokok dan Wewenang Pengurus",
-      summary: "Rincian tupoksi Ketua, Sekretaris, Bendahara, dan Bidang-Bidang serta disiplin koordinasi.",
-      pasals: [
+      "id": "ad-bab-viii",
+      "part": "AD",
+      "babNumber": "BAB VIII",
+      "title": "Musyawarah dan Pengambilan Keputusan",
+      "pasals": [
         {
-          number: "Pasal 3",
-          title: "Ketua DKM",
-          items: [
+          "number": "Pasal 16",
+          "title": "",
+          "style": "ayat",
+          "items": [
             {
-              text: "Memimpin, mengoordinasikan, dan mengendalikan seluruh kebijakan strategis serta kegiatan DKM & RKM Nurul Falah.",
+              "text": "Musyawarah merupakan mekanisme utama dalam pengambilan keputusan organisasi."
             },
             {
-              text: "Menetapkan visi, tahapan prioritas pembangunan, serta mengesahkan pengangkatan/pergantian pengurus bidang dan marbot.",
+              "text": "Musyawarah dilaksanakan dengan mengutamakan kepentingan bersama dan kemaslahatan masyarakat."
             },
             {
-              text: "Memberikan persetujuan atas penyelenggaraan musyawarah resmi dan pengeluaran dana strategis/pembangunan.",
+              "text": "Setiap peserta musyawarah diberikan kesempatan menyampaikan pendapat, usulan, alasan, dan bukti pendukung yang dapat diperiksa."
             },
             {
-              text: "Mengingat kesibukan kerja profesional Ketua DKM, pelaksanaan teknis harian di lapangan didelegasikan kepada Sekretaris dan Ketua-Ketua Bidang sesuai porsi tanggung jawab masing-masing dengan tetap berada dalam garis koordinasi Ketua DKM.",
+              "text": "Setiap usulan yang berkaitan dengan kebijakan, penggunaan dana, perubahan fasilitas, atau tindakan organisasi harus disertai alasan yang jelas serta bukti atau dasar pertimbangan yang dapat dipertanggungjawabkan."
             },
             {
-              text: "Keabsahan Koordinasi Daring/Virtual: Mengingat seluruh pengurus DKM/RKM mengabdi secara sukarela tanpa gaji (non-profit) dan memiliki kewajiban mencari nafkah bagi keluarganya, maka koordinasi, arahan kebijakan, maupun rapat yang dilakukan secara daring/virtual (melalui WhatsApp, telepon, atau dokumen digital) memiliki kekuatan hukum yang sama sahnya dengan kehadiran fisik.",
-            },
-          ],
-        },
-        {
-          number: "Pasal 4",
-          title: "Sekretaris DKM",
-          highlight: true,
-          badge: "Disiplin Koordinasi",
-          items: [
-            {
-              text: "Menjalankan administrasi kesekretariatan, surat-menyurat, arsip, serta pengumuman/maklumat resmi kepada warga.",
+              "text": "Usulan yang tidak disertai bukti atau dasar yang memadai tidak dapat dijadikan dasar pengambilan keputusan."
             },
             {
-              text: "Kewajiban Penyampaian Informasi: Sekretaris wajib meneruskan secara utuh, akurat, dan tepat waktu setiap penjelasan, skema pendanaan, dan arahan kebijakan dari Ketua DKM kepada pengurus lain serta warga agar tidak terjadi kesalahpahaman (miskomunikasi).",
+              "text": "Usulan atau tindakan yang nyata-nyata bertentangan dengan syariat Islam, menimbulkan mafsadat, atau berpotensi mendatangkan kerusakan dan kerugian bagi organisasi maupun masyarakat, dinyatakan tertolak dan tidak dapat dilaksanakan."
             },
             {
-              text: "Kepatuhan Koordinasi: Sekretaris dilarang menginisiasi atau memaksakan penyelenggaraan musyawarah warga tanpa persetujuan Ketua DKM, terlebih apabila Ketua DKM telah menginstruksikan penundaan demi menjaga kondusivitas dan meredam potensi konflik warga.",
+              "text": "Keputusan diutamakan melalui mufakat. Apabila mufakat tidak tercapai, keputusan dapat diambil melalui mekanisme yang disepakati dalam musyawarah."
             },
             {
-              text: "Mencatat notulensi setiap musyawarah resmi dan mempublikasikan hasilnya di mading masjid.",
-            },
-          ],
-        },
-        {
-          number: "Pasal 5",
-          title: "Bendahara DKM",
-          items: [
-            {
-              text: "Menerima, menyimpan, membukukan, dan mengeluarkan dana kas DKM atas sepengetahuan dan persetujuan Ketua DKM.",
-            },
-            {
-              text: "Menyusun laporan keuangan berkala (bulanan/tahunan) yang memisahkan dengan jelas antara Pos Dana Pembangunan/Renovasi Masjid, Pos Dana Operasional/Infaq Umum Masjid, dan Pos Dana Sosial / RKM / Baitul Mal / UPZ.",
-            },
-            {
-              text: "Mempublikasikan laporan posisi saldo, pemasukan, dan pengeluaran secara rutin di mading fisik masjid dan menyerahkan datanya untuk diperbarui di portal digital.",
-            },
-            {
-              text: "Bersama pengurus DKM atau RKM bersedia menunjukkan uang fisik disaat ada warga yang meminta, tanpa merasa tersinggung, karena mengetahui keamanan keuangan adalah hak bagi setiap jamaah.",
-            },
-          ],
-        },
-        {
-          number: "Pasal 6",
-          title: "Bidang Imarah (Dakwah, Pendidikan & Ibadah)",
-          items: [
-            {
-              text: "Mengatur jadwal imam rawatib, khatib Jum'at, muadzin, serta pemeliharaan syiar Ramadhan dan Hari Besar Islam (PHBI) secara efisien tanpa memberatkan warga dengan pungutan minimal.",
-            },
-            {
-              text: "Mengelola kegiatan rutin:",
-              subItems: [
-                "TPA / Belajar Mengaji Anak-Anak (Setiap hari ba'da Maghrib – Isya), termasuk pelatihan shalat berjamaah Maghrib, kaderisasi imam shalat Isya, dan Training of Trainers (ToT) pengajar Al-Qur'an muda.",
-                "Kajian Mingguan Bapak-Bapak (Setiap malam Kamis ba'da Maghrib – Isya).",
-                "Kajian Mingguan Ibu-Ibu (Setiap hari Jum'at pukul 07.00 – 09.00 WIB).",
-                "Kajian Bulanan / Tabligh Gabungan (1x sebulan).",
-              ],
-            },
-          ],
-        },
-        {
-          number: "Pasal 7",
-          title: "Bidang Ri'ayah (Pembangunan, Pemeliharaan, Audio & Inventaris)",
-          items: [
-            {
-              text: "Merencanakan dan mengawasi pelaksanaan tahapan pembangunan fisik Masjid Nurul Falah sesuai blueprint teknis dan kemampuan kas.",
-            },
-            {
-              text: "Memelihara instalasi listrik, tata suara (sound system indoor & outdoor), sarana wudhu, toilet, saluran irigasi/sanitasi, dan perlengkapan ibadah.",
-            },
-            {
-              text: "Mengoordinasikan tugas Marbot Masjid dalam menjaga kebersihan harian, pembukaan/penutupan masjid, dan kesiapan sarana sebelum waktu shalat.",
-            },
-            {
-              text: "Tata Tertib Pengeras Suara (Audio Indoor & Outdoor): Penggunaan pengeras suara luar (outdoor) diatur secara tertib dan santun (untuk adzan, iqomah, pengumuman penting/kematian RKM, dan syiar yang terukur) serta hanya boleh dioperasikan oleh petugas yang berwenang.",
-            },
-            {
-              text: "Perlindungan Inventaris Masjid & RKM: Seluruh inventaris masjid dan RKM (keranda, meja portabel UPZ, peralatan audio, lemari, perkakas bangunan) adalah harta wakaf/umat yang wajib dicatat, dirawat, dan dilarang dibawa pulang atau digunakan untuk kepentingan pribadi tanpa izin resmi pengurus.",
-            },
-          ],
-        },
-        {
-          number: "Pasal 8",
-          title: "Bidang Pelayanan Jenazah (RKM) & Baitul Mal / UPZ",
-          items: [
-            {
-              text: "Rukun Kematian Muslim (RKM): Mengelola perlengkapan pemulasaraan jenazah (keranda, kain kafan, pemandian, liang lahat) dan mengoordinasikan fardhu kifayah saat ada warga yang wafat, dengan pelaporan yang terintegrasi di bawah DKM.",
-            },
-            {
-              text: "Unit Pengumpul Zakat (UPZ): Menghimpun, mendata mustahiq secara objektif dan adil, serta mendistribusikan zakat fitrah dan zakat maal sesuai ketentuan syariat:",
-              subItems: [
-                "Penentuan daftar Mustahiq (penerima zakat) ditetapkan secara objektif melalui musyawarah pengurus berdasarkan kriteria syariat (asnaf zakat), bebas dari nepotisme atau pilih kasih.",
-              ],
-            },
-            {
-              text: "Baitul Mal (Pinjaman Warga): Mengelola dana kebajikan untuk membantu pinjaman darurat warga tanpa bunga/riba (Qardhul Hasan) dengan ketentuan:",
-              subItems: [
-                "Pinjaman bersifat Qardhul Hasan (0% bunga/riba), diprioritaskan khusus untuk kebutuhan darurat/mendesak warga jamaah sesuai kemampuan kas sosial.",
-                "Setiap pinjaman wajib dicatat secara tertulis dan peminjam tidak diperkenankan mengajukan pinjaman baru sebelum pinjaman sebelumnya dilunasi.",
-              ],
-            },
-          ],
-        },
-      ],
+              "text": "Setiap keputusan penting wajib dituangkan dalam berita acara atau dokumen administrasi organisasi."
+            }
+          ]
+        }
+      ]
     },
     {
-      id: "art-bab-3",
-      part: "ART",
-      babNumber: "BAB III",
-      title: "Masa Jabatan, Penyelesaian Pelanggaran Etika, dan Pergantian Pengurus",
-      summary: "Periode khidmat 10 tahun, tata cara musyawarah etik bersama MUI (anti-tradisi barbar), perlindungan marwah pengurus, dan kebebasan generasi berikutnya.",
-      pasals: [
+      "id": "ad-bab-ix",
+      "part": "AD",
+      "babNumber": "BAB IX",
+      "title": "Perubahan Anggaran Dasar",
+      "pasals": [
         {
-          number: "Pasal 9",
-          title: "Masa Jabatan & Kewajiban Estafet Program",
-          items: [
+          "number": "Pasal 17",
+          "title": "",
+          "style": "ayat",
+          "items": [
             {
-              text: "Masa khidmat kepengurusan DKM Nurul Falah adalah 10 (sepuluh) tahun untuk satu periode dan dapat dipilih kembali melalui musyawarah.",
+              "text": "Perubahan Anggaran Dasar hanya dapat dilakukan melalui musyawarah organisasi yang sah. [belum dikonfirmasi: peserta dan kuorum musyawarah untuk perubahan Anggaran Dasar belum diatur]"
             },
             {
-              text: "Pengurus melaksanakan amanah secara sukarela (tathawwu') sebagai amal shalih.",
+              "text": "Usulan perubahan harus disertai alasan yang jelas dan dasar atau bukti pendukung yang dapat dipertanggungjawabkan."
             },
             {
-              text: "Siapa pun pengurus yang terpilih pada periode baru wajib menjaga kesinambungan dan melanjutkan program kerja jangka panjang yang telah dirintis oleh kepengurusan sebelumnya.",
-            },
-          ],
-        },
-        {
-          number: "Pasal 10",
-          title: "Berakhirnya Jabatan dan Pergantian Terhormat",
-          highlight: true,
-          badge: "Perlindungan Marwah",
-          items: [
-            {
-              text: "Jabatan pengurus berakhir karena: (a) Habis masa periode kepengurusan; (b) Mengundurkan diri atas permintaan sendiri; (c) Meninggal dunia atau berhalangan tetap; atau (d) Diberhentikan melalui mekanisme organisasi yang sah karena melanggar syariat atau AD/ART secara berat.",
+              "text": "Usulan yang tidak memiliki dasar yang memadai, atau yang bertentangan dengan syariat Islam maupun menimbulkan mafsadat dan kerusakan, ditolak dan tidak dapat ditetapkan."
             },
             {
-              text: "Perlindungan Marwah & Larangan Kudeta Sepihak: Evaluasi atau pergantian Ketua DKM maupun pengurus HANYA dapat dilakukan melalui Musyawarah Resmi yang dijadwalkan secara terbuka, diberitahukan sekurang-kurangnya 7 (tujuh) hari sebelumnya, dihadiri oleh pihak yang bersangkutan untuk memberikan penjelasan (hak jawab), serta dilaksanakan secara adil dan terhormat.",
+              "text": "Perubahan harus didasarkan pada kebutuhan organisasi dan kepentingan masyarakat."
             },
             {
-              text: "Setiap upaya penggulingan, penyidangan sepihak, atau pemaksaan pergantian pengurus melalui rapat mendadak tanpa kehadiran dan persetujuan yang bersangkutan adalah BATAL DEMI HUKUM ORGANISASI dan merupakan pelanggaran berat terhadap adab kemasjidan.",
-            },
-            {
-              text: "Kebebasan Menerima Amanah Generasi Berikutnya: Jabatan di dalam DKM adalah amanah sukarela dan tidak boleh dipaksakan kepada siapapun (termasuk keluarga atau keturunan pengurus sebelumnya) apabila penunjukan tersebut tidak disertai dukungan ikhlas dan jaminan tata krama musyawarah yang sehat dari warga.",
-            },
-            {
-              text: "Masa Transisi & Mekanisme Pengunduran Diri yang Manusiawi: Apabila seorang pengurus terbukti melakukan kesalahan fatal yang mengharuskan pergantian kepengurusan, proses pergantian wajib dilakukan secara manusiawi dan beradab melalui pemberian masa tenggang/transisi (1 hingga 3 bulan). Pengurus yang bersangkutan diberikan kesempatan untuk menyelesaikan laporan pertanggungjawaban serta mengundurkan diri atas kesadaran sendiri secara terhormat, guna menghindari stigma pengusiran sepihak dan menjaga keharmonisan sosial warga.",
-            },
-          ],
-        },
-        {
-          number: "Pasal 11",
-          title: "Penyelesaian Pelanggaran Etika Pengurus & Peniadaan Tradisi Barbar",
-          highlight: true,
-          badge: "Mediasi MUI & Keadilan",
-          items: [
-            {
-              text: "Larangan Tradisi Barbar, Komplotan, & Main Hakim Sendiri: Apabila terdapat seorang pengurus DKM atau RKM yang melakukan kekhilafan individu, seperti melontarkan bahasa atau ucapan yang dinilai kurang etis bagi warga, maka dilarang keras melakukan penghakiman massa, penggalangan komplotan, penghasutan, petisi liar, keributan sepihak, intimidasi, demonstrasi/gerudukan, atau tradisi barbar di lingkungan masjid maupun kampung.",
-            },
-            {
-              text: "Wajib Melalui Musyawarah Resmi yang Dihadiri MUI: Tata cara menyikapi atau mengadili dugaan pelanggaran etika pengurus WAJIB ditempuh melalui forum Musyawarah Resmi yang tertib dan WAJIB dihadiri oleh perwakilan Majelis Ulama Indonesia (MUI) setempat sebagai penengah (mediator) serta pemberi pertimbangan hukum syar'i yang netral dan objektif.",
-            },
-            {
-              text: "Sanksi Proporsional & Tolok Ukur Kesalahan (Bukan Pidana Fatal = Tidak Boleh Diturunkan): Pengurus yang terbukti melakukan kekhilafan lisan atau etika TIDAK SERTA-MERTA DIBERHENTIKAN dari jabatannya, melainkan dipertimbangkan secara adil dan bijaksana berdasarkan bobot kesalahan individu tersebut:",
-              subItems: [
-                "Kekhilafan Lisan / Etika Ringan: Diselesaikan melalui tabayyun, nasihat/teguran kekeluargaan, permohonan maaf terbuka, dan ishlah (perdamaian) yang disaksikan oleh MUI.",
-                "Pelanggaran Sedang / Berulang: Diberikan teguran tertulis dan pembinaan adab di bawah bimbingan Dewan Penasehat serta MUI.",
-                "Pelanggaran Administratif & Perdata Ringan: Tidak dapat dijadikan alasan untuk menurunkan pengurus dari jabatannya, melainkan diselesaikan secara musyawarah dan pemulihan keadaan.",
-                "Pelanggaran Fatal (Pidana Terbukti / Penggelapan Kas / Khianat Syariat Berat): Dipertimbangkan sanksi pengunduran diri secara terhormat melalui masa transisi beradab atas rekomendasi MUI dalam Musyawarah Resmi.",
-              ],
-            },
-            {
-              text: "Pertanggungjawaban Bersifat Individual: Kekhilafan seorang pengurus merupakan tanggung jawab pribadi individu yang bersangkutan dan tidak dapat dijadikan alasan untuk merombak atau menjatuhkan kepengurusan DKM/RKM secara keseluruhan.",
-            },
-            {
-              text: "Penanganan Persoalan 100% Baru & Jaminan Perlindungan Marwah: Apabila ditemukan persoalan yang 100% baru dan belum pernah terjadi sebelumnya, maka pengurus DKM atau warga berhak meminta diadakannya Musyawarah Resmi untuk membahas kasus tersebut secara jernih dan mencarikan solusi yang tidak merugikan satu sama lain, dengan ketentuan:",
-              subItems: [
-                "Tetap melindungi marwah dan kehormatan masing-masing individu agar tidak menjadi faktor yang membebani warga yang berkeinginan menjadi anggota atau pengurus DKM/RKM karena hak harga dirinya dilindungi oleh AD/ART ini.",
-                "Apabila sanksi diperlukan, maka sanksi ditentukan secara proporsional sesuai tingkat kesalahan; misalnya jika kesalahan tersebut bukan merupakan tindak korupsi/penggelapan kas, maka sanksinya cukup berbentuk Surat Peringatan (SP) saja.",
-              ],
-            },
-          ],
-        },
-      ],
+              "text": "Setiap perubahan wajib dicatat dan menjadi bagian dari dokumen resmi organisasi."
+            }
+          ]
+        }
+      ]
     },
     {
-      id: "art-bab-4",
-      part: "ART",
-      babNumber: "BAB IV",
-      title: "Tata Tertib Musyawarah Beradab",
-      summary: "Prosedur undangan H-3, alokasi waktu agenda, serta larangan keras menyerang pribadi (ad hominem) dan intimidasi.",
-      pasals: [
+      "id": "ad-bab-x",
+      "part": "AD",
+      "babNumber": "BAB X",
+      "title": "Pembubaran Organisasi",
+      "pasals": [
         {
-          number: "Pasal 12",
-          title: "Prosedur Penyelenggaraan & Mengikatnya Keputusan Musyawarah",
-          highlight: true,
-          badge: "SOP Musyawarah",
-          items: [
+          "number": "Pasal 18",
+          "title": "",
+          "style": "ayat",
+          "items": [
             {
-              text: "Undangan & Agenda Tertulis: Undangan musyawarah wajib disampaikan minimal 3 (tiga) hari sebelum pelaksanaan (kecuali keadaan darurat bencana/kematian) dengan mencantumkan daftar agenda dan alokasi waktu yang jelas.",
+              "text": "Pembubaran RKM hanya dapat dilakukan melalui musyawarah khusus. [belum dikonfirmasi: pengertian, peserta, dan kuorum 'musyawarah khusus' belum diatur dalam AD/ART]"
             },
             {
-              text: "Struktur Acara Musyawarah: Setiap musyawarah wajib dipimpin oleh pimpinan rapat/moderator yang menjaga ketertiban acara dengan urutan baku:",
-              subItems: [
-                "1. Pembukaan dan pembacaan ayat suci Al-Qur'an / doa awal majelis;",
-                "2. Pembacaan tata tertib dan susunan agenda beserta batas waktu masing-masing sesi;",
-                "3. Pemaparan materi/laporan oleh Ketua DKM atau pengurus terkait tanpa interupsi sebelum sesi pemaparan selesai;",
-                "4. Sesi tanya jawab dan diskusi solusi yang terarah pada pokok bahasan;",
-                "5. Pengambilan kesimpulan / mufakat yang dicatat secara tertulis beserta tindak lanjutnya;",
-                "6. Doa penutup (kafaratul majelis) dan mushafahah (bersalam-salaman).",
-              ],
+              "text": "Keputusan pembubaran harus mempertimbangkan kepentingan masyarakat dan keberlangsungan pelayanan sosial."
             },
             {
-              text: "Konsekuensi Ketidakhadiran (Absen = Menerima Keputusan): Warga atau pengurus yang telah diundang secara sah pada Musyawarah Resmi (termasuk Musyawarah Tahunan Ramadhan) namun memilih tidak hadir tanpa alasan syar'i, dianggap menyetujui dan wajib tunduk pada seluruh keputusan yang diambil dalam musyawarah tersebut, serta tidak berhak menggugat atau membuat forum tandingan di luar musyawarah.",
-            },
-          ],
-        },
-        {
-          number: "Pasal 13",
-          title: "Larangan di Dalam Musyawarah",
-          highlight: true,
-          badge: "Adab Majelis",
-          items: [
-            {
-              text: "Membahas urusan pribadi atau menyerang kehormatan personal (ad hominem) pengurus maupun warga di luar agenda kerja organisasi.",
+              "text": "Penyelesaian seluruh aset, kewajiban, dan administrasi organisasi wajib dilakukan secara transparan dan dapat dipertanggungjawabkan."
             },
             {
-              text: "Berbicara dengan nada tinggi, mencaci maki, menghina, mengintimidasi, atau memotong pembicaraan sebelum diberikan izin oleh pimpinan musyawarah.",
-            },
-            {
-              text: "Mengubah forum musyawarah menjadi ajang pencarian kesalahan atau pengadilan sepihak terhadap pengurus yang telah bekerja secara sukarela.",
-            },
-            {
-              text: "Apabila seorang peserta melanggar ketentuan di atas dan telah diperingatkan sebanyak 2 (dua) kali oleh pimpinan musyawarah namun tetap tidak mengindahkan, pimpinan musyawarah berhak mencabut hak bicara peserta tersebut atau menutup/menunda jalannya musyawarah demi menjaga kehormatan masjid.",
-            },
-          ],
-        },
-      ],
+              "text": "Penyelesaian kekayaan organisasi dilakukan berdasarkan keputusan musyawarah dan ketentuan hukum yang berlaku."
+            }
+          ]
+        }
+      ]
     },
     {
-      id: "art-bab-5",
-      part: "ART",
-      babNumber: "BAB V",
-      title: "Pedoman Program Jangka Panjang, Pembangunan, dan Pendanaan",
-      summary: "Kewajiban melanjutkan program jangka panjang lintas pengurus dengan sistem evaluasi konstruktif-berdasar, tahapan pembangunan anti-mangkrak, dan kode etik pendanaan.",
-      pasals: [
+      "id": "ad-bab-xi",
+      "part": "AD",
+      "babNumber": "BAB XI",
+      "title": "Ketentuan Penutup Anggaran Dasar",
+      "pasals": [
         {
-          number: "Pasal 14",
-          title: "Kewajiban Melanjutkan Program Jangka Panjang & Sistem Evaluasi Konstruktif",
-          highlight: true,
-          badge: "Estafet & Evaluasi Objektif",
-          items: [
+          "number": "Pasal 19",
+          "title": "",
+          "style": "ayat",
+          "items": [
             {
-              text: "Kewajiban Keberlanjutan Lintas Kepengurusan: Siapa pun yang menjabat sebagai Pengurus DKM maupun RKM wajib melanjutkan Program Kerja Jangka Panjang (Visi Strategis 3–10 Tahun) yang telah ditetapkan, sehingga pergantian pengurus tidak menghentikan pembangunan masjid maupun program pembinaan umat yang sedang berjalan.",
+              "text": "Hal-hal yang belum diatur dalam Anggaran Dasar akan diatur lebih lanjut dalam Anggaran Rumah Tangga."
             },
             {
-              text: "Lingkup Program Jangka Panjang yang Wajib Dilanjutkan:",
-              subItems: [
-                "Program Kajian & Pembinaan SDM Jangka Panjang: Pelatihan baca-tulis Al-Qur'an anak-anak setiap hari, pembiasaan shalat berjamaah Maghrib, kaderisasi imam shalat Isya bagi generasi muda, pelatihan pengajar Al-Qur'an (ToT), serta kajian rutin mingguan bapak-bapak, ibu-ibu, dan kajian bulanan.",
-                "Program Pembangunan & Revitalisasi Masjid: Penyelesaian tahapan pembangunan fisik Masjid Nurul Falah 2 lantai beserta fasilitas sanitasi, tempat wudhu, dan sarana belajar sesuai blueprint teknis.",
-                "Program Layanan Sosial & Keumatan: Pengelolaan kas satu pintu, pelayanan jenazah RKM, UPZ, serta Baitul Mal pinjaman warga.",
-              ],
+              "text": "Anggaran Rumah Tangga merupakan bagian yang tidak terpisahkan dari Anggaran Dasar."
             },
             {
-              text: "Sistem Evaluasi dan Perbaikan yang Objektif, Konstruktif, dan Berdasar: Agar pelaksanaan program jangka panjang tetap objektif dan relevan, setiap penyesuaian atau penyempurnaan program wajib melalui mekanisme evaluasi berkala yang memenuhi prinsip:",
-              subItems: [
-                "Konstruktif (Membangun): Evaluasi bertujuan mencari solusi perbaikan dan meningkatkan efektivitas program, bukan mencari-cari kesalahan pengurus sebelumnya atau menyerang kehormatan pribadi.",
-                "Berdasar Data & Fakta (Evidence-Based): Setiap usulan perbaikan wajib memiliki landasan yang jelas, terukur, dan berbasis data nyata di lapangan (laporan keuangan, rekap realisasi tugas, kehadiran jamaah, atau kajian teknis konstruksi), bukan berdasarkan asumsi sepihak atau sentimen subjektif.",
-                "Terdokumentasi & Mufakat: Hasil evaluasi dan tindak lanjut perbaikan disepakati dalam musyawarah resmi serta dicatat secara terbuka sebagai pedoman bersama.",
-              ],
-            },
-          ],
-        },
-        {
-          number: "Pasal 15",
-          title: "Prinsip Pembangunan Bertahap & Anti-Mangkrak",
-          highlight: true,
-          badge: "Strategi Pembangunan",
-          items: [
-            {
-              text: "Pembangunan Masjid Nurul Falah 2 Lantai (Luas Lahan 500 m², Total Bangunan 344 m²) wajib dilaksanakan secara taktis dan bertahap sesuai ketersediaan dana riil di kas masjid:",
-              subItems: [
-                "Tahap 1: Pembangunan Jalur Sanitasi / Irigasi Air & Akses Lingkungan;",
-                "Tahap 2: Pembangunan Teras Masjid Sisi Utara (Area Ibadah & Jum'atan Sementara);",
-                "Tahap 3: Pembangunan Area Wudhu Terpisah dan Kamar Mandi/Toilet;",
-                "Tahap 4: Pembangunan Struktur Bangunan Utama 2 Lantai (Pondasi, Kolom, Sloof, & Dak Mezzanine);",
-                "Tahap 5: Pembangunan Dinding, Fasad, Mihrab, dan Penyelesaian Akhir (Finishing).",
-              ],
-            },
-            {
-              text: "Larangan Pembongkaran Prematur: Bangunan utama masjid yang lama DILARANG DIBONGKAR sebelum area ibadah darurat (Teras Sisi Utara) dan sarana sanitasi/wudhu selesai dibangun serta sebelum dana untuk struktur utama mencukupi, guna memastikan kegiatan shalat berjamaah warga tidak terputus dan pembangunan tidak mangkrak di tengah jalan.",
-            },
-          ],
-        },
-        {
-          number: "Pasal 16",
-          title: "Kode Etik Penghimpunan Dana",
-          items: [
-            {
-              text: "Penghimpunan dana pembangunan wajib menjaga kemuliaan Islam dan harga diri warga Kp. Sukatani.",
-            },
-            {
-              text: "Larangan Mutlak: Pengurus maupun panitia pembangunan dilarang:",
-              subItems: [
-                "Meminta-minta sumbangan di pinggir jalan raya dengan jaring/kotak (nyapir);",
-                "Mengajukan atau menerima bantuan yang disertai syarat dukungan politik praktis/suara pemilu;",
-                "Menetapkan pungutan wajib dengan nominal paksaan yang memberatkan warga kurang mampu (termasuk penghapusan batas minimal infaq PHBI).",
-              ],
-            },
-            {
-              text: "Seluruh konfirmasi wakaf dan infaq digital diarahkan ke rekening resmi masjid dan dilengkapi dengan fasilitas QRIS/kode pembayaran yang sah.",
-            },
-          ],
-        },
-      ],
+              "text": "Ketentuan Anggaran Rumah Tangga tidak boleh bertentangan dengan Anggaran Dasar."
+            }
+          ]
+        }
+      ]
     },
     {
-      id: "art-bab-6",
-      part: "ART",
-      babNumber: "BAB VI",
-      title: "Penutup",
-      summary: "Penanganan persoalan baru dengan perlindungan marwah individu dan mulai berlakunya AD/ART.",
-      pasals: [
+      "id": "art-bab-i",
+      "part": "ART",
+      "babNumber": "BAB I",
+      "title": "Tugas dan Wewenang Pengurus",
+      "pasals": [
         {
-          number: "Pasal 17",
-          title: "Ketentuan Penutup & Penanganan Persoalan Baru",
-          items: [
+          "number": "Pasal 20",
+          "title": "Pendiri dan Majelis Syura",
+          "style": "ayat",
+          "items": [
             {
-              text: "Hal-hal teknis operasional yang belum diatur secara rinci dalam Anggaran Rumah Tangga ini akan ditetapkan melalui Keputusan Pengurus DKM Nurul Falah sepanjang tidak bertentangan dengan jiwa dan pasal-pasal AD/ART ini.",
+              "text": "Pendiri berperan menjaga maksud dan tujuan awal pembentukan RKM."
             },
             {
-              text: "Apabila terdapat persoalan yang 100% baru dan tidak pernah terjadi sebelumnya, pengurus DKM atau warga berhak meminta diadakan musyawarah resmi untuk membahas kasus tersebut dan mencarikan solusi yang tidak merugikan satu sama lain. Jika sanksi diperlukan, maka sanksi ditentukan sesuai tingkat kesalahan (misalnya jika tidak korupsi, sanksinya cukup berbentuk Surat Peringatan saja), dengan tetap melindungi marwah masing-masing individu agar warga tidak terbebani untuk menjadi anggota atau pengurus DKM/RKM.",
+              "text": "Majelis Syura memberikan nasihat dan pertimbangan kepada pengurus dalam menjalankan organisasi."
             },
             {
-              text: "Anggaran Dasar dan Anggaran Rumah Tangga ini mulai berlaku sejak tanggal ditetapkan.",
+              "text": "Majelis Syura melakukan pengawasan terhadap pelaksanaan kebijakan organisasi."
             },
-          ],
+            {
+              "text": "Majelis Syura memberikan pertimbangan apabila terdapat persoalan yang menyangkut pelanggaran AD/ART."
+            },
+            {
+              "text": "Majelis Syura membantu menyelesaikan perselisihan melalui tabayyun dan musyawarah."
+            },
+            {
+              "text": "Setiap pelaksanaan kewenangan tetap berpedoman pada AD/ART."
+            }
+          ]
         },
-      ],
+        {
+          "number": "Pasal 21",
+          "title": "Tugas dan Tanggung Jawab Pengurus",
+          "style": "bagian",
+          "items": [
+            {
+              "label": "A.",
+              "text": "KETUA",
+              "subItems": [
+                "Memimpin dan mengoordinasikan seluruh kegiatan RKM.",
+                "Bertanggung jawab terhadap pelaksanaan program organisasi.",
+                "Mengawasi pelaksanaan tugas seluruh pengurus dan seksi.",
+                "Mewakili organisasi dalam hubungan dengan pihak lain.",
+                "Mengambil keputusan administratif sesuai kewenangan dan hasil musyawarah.",
+                "Menjaga agar organisasi berjalan sesuai dengan tujuan pendirian, syariat Islam, dan AD/ART."
+              ]
+            },
+            {
+              "label": "B.",
+              "text": "SEKRETARIS",
+              "subItems": [
+                "Mengelola administrasi dan surat-menyurat organisasi.",
+                "Membuat dan menyimpan berita acara serta notulen musyawarah.",
+                "Menyimpan dokumen dan arsip organisasi.",
+                "Menyusun laporan kegiatan bersama ketua.",
+                "Membantu kelancaran administrasi kepengurusan."
+              ]
+            },
+            {
+              "label": "C.",
+              "text": "BENDAHARA",
+              "subItems": [
+                "Mengelola penerimaan dan pengeluaran keuangan organisasi.",
+                "Mencatat seluruh transaksi keuangan.",
+                "Menyimpan bukti penerimaan dan pengeluaran.",
+                "Menyusun laporan keuangan secara berkala.",
+                "Menjaga keamanan dan keterbukaan keuangan organisasi.",
+                "Melaporkan kondisi keuangan kepada ketua dan forum musyawarah."
+              ]
+            },
+            {
+              "label": "D.",
+              "text": "SEKSI PEMAKAMAN",
+              "subItems": [
+                "Mengoordinasikan persiapan tempat pemakaman.",
+                "Membantu pelaksanaan proses pemakaman.",
+                "Menjaga ketertiban dan kelayakan area pemakaman.",
+                "Mengoordinasikan kebutuhan petugas pemakaman.",
+                "Melaporkan kebutuhan dan kondisi TPU kepada ketua."
+              ]
+            },
+            {
+              "label": "E.",
+              "text": "SEKSI PENGURUSAN JENAZAH PEREMPUAN",
+              "subItems": [
+                "Membantu pelaksanaan pengurusan jenazah perempuan.",
+                "Mengoordinasikan petugas yang diperlukan.",
+                "Membantu penyediaan perlengkapan pengurusan jenazah.",
+                "Melaksanakan tugas berdasarkan tuntunan syariat Islam.",
+                "Menjaga kehormatan dan privasi jenazah serta keluarga yang berduka."
+              ]
+            },
+            {
+              "label": "F.",
+              "text": "SEKSI PERLENGKAPAN",
+              "subItems": [
+                "Mengelola perlengkapan milik organisasi.",
+                "Melakukan pencatatan seluruh inventaris.",
+                "Menjaga dan memelihara perlengkapan.",
+                "Mengoordinasikan relawan masyarakat.",
+                "Melaporkan kebutuhan perlengkapan kepada ketua."
+              ]
+            },
+            {
+              "label": "G.",
+              "text": "SEKSI PENGGALANGAN DANA",
+              "subItems": [
+                "Membantu pengumpulan dana berdasarkan keputusan dan kesepakatan organisasi.",
+                "Melaksanakan koordinasi penggalangan dana pada masing-masing RT.",
+                "Menyerahkan seluruh hasil penerimaan kepada bendahara.",
+                "Menyampaikan laporan pengumpulan dana.",
+                "Menjaga keterbukaan dan kejelasan sumber penerimaan."
+              ]
+            }
+          ]
+        }
+      ]
     },
+    {
+      "id": "art-bab-ii",
+      "part": "ART",
+      "babNumber": "BAB II",
+      "title": "Masa Bakti dan Pemberhentian Pengurus",
+      "pasals": [
+        {
+          "number": "Pasal 22",
+          "title": "Masa Bakti Ketua dan Pengurus",
+          "style": "ayat",
+          "items": [
+            {
+              "text": "Mengingat RKM merupakan organisasi sosial keagamaan yang menjalankan amanah pelayanan berdasarkan nilai-nilai ajaran Islam, masa bakti ketua dan pengurus tidak ditentukan oleh batas waktu atau periode jabatan tertentu."
+            },
+            {
+              "text": "Ketua dan pengurus tetap menjalankan amanah kepengurusan secara berkelanjutan sepanjang masih mampu melaksanakan tugas dan tanggung jawabnya dengan baik serta menaati syariat Islam dan ketentuan organisasi."
+            },
+            {
+              "text": "Ketua atau pengurus dapat diberhentikan sebelum berakhirnya masa bakti [belum dikonfirmasi: ayat (1) menyatakan masa bakti tidak ditentukan oleh batas waktu, sehingga frasa 'sebelum berakhirnya masa bakti' perlu dijelaskan Pak Badar; teks asli dipertahankan] apabila terbukti melakukan perbuatan yang bertentangan dengan hukum dan syariat Islam, melanggar ketentuan AD/ART, menyalahgunakan wewenang, atau melakukan tindakan yang merugikan organisasi dan masyarakat."
+            },
+            {
+              "text": "Pemberhentian juga dapat dilakukan apabila ketua atau pengurus tidak lagi mampu menjalankan tugas dan tanggung jawabnya secara objektif, mengundurkan diri, meninggal dunia, atau mengalami keadaan lain yang menyebabkan tidak dapat melaksanakan amanah kepengurusan."
+            },
+            {
+              "text": "Pemberhentian sebagaimana dimaksud pada ayat (3) dan ayat (4) harus didasarkan pada bukti dan pertimbangan yang dapat dipertanggungjawabkan."
+            },
+            {
+              "text": "Sebelum keputusan pemberhentian ditetapkan, pengurus yang bersangkutan harus diberikan kesempatan untuk menyampaikan klarifikasi atau pembelaan diri."
+            },
+            {
+              "text": "Keputusan pemberhentian ditetapkan melalui musyawarah yang sah dengan melibatkan unsur pengurus, Majelis Syura, dan perwakilan masyarakat sesuai mekanisme organisasi."
+            },
+            {
+              "text": "Pergantian ketua atau pengurus dilakukan melalui musyawarah dan ditetapkan dalam berita acara pergantian kepengurusan."
+            },
+            {
+              "text": "Seluruh proses pemberhentian dan pergantian pengurus wajib mengedepankan prinsip amanah, keadilan, tabayyun, musyawarah, dan kemaslahatan bersama."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "art-bab-iii",
+      "part": "ART",
+      "babNumber": "BAB III",
+      "title": "Pengelolaan Administrasi dan Keuangan",
+      "pasals": [
+        {
+          "number": "Pasal 23",
+          "title": "Administrasi Organisasi",
+          "style": "ayat",
+          "items": [
+            {
+              "text": "Organisasi wajib memiliki administrasi yang tertib dan teratur."
+            },
+            {
+              "text": "Administrasi meliputi surat-menyurat, daftar anggota, berita acara, laporan kegiatan, dokumen keuangan, serta dokumen inventaris."
+            },
+            {
+              "text": "Seluruh dokumen organisasi disimpan oleh sekretaris."
+            },
+            {
+              "text": "Dokumen penting organisasi harus dijaga agar tidak hilang, rusak, atau disalahgunakan."
+            }
+          ]
+        },
+        {
+          "number": "Pasal 24",
+          "title": "Pengelolaan Keuangan",
+          "style": "ayat",
+          "items": [
+            {
+              "text": "Seluruh penerimaan dan pengeluaran dana wajib dicatat oleh bendahara."
+            },
+            {
+              "text": "Setiap penggunaan dana harus memiliki tujuan yang jelas."
+            },
+            {
+              "text": "Pengeluaran dana organisasi harus diketahui dan disetujui sesuai kewenangan pengurus."
+            },
+            {
+              "text": "Penggunaan dana dalam jumlah atau kepentingan strategis harus memperoleh persetujuan melalui musyawarah."
+            },
+            {
+              "text": "Bendahara wajib menyampaikan laporan keuangan secara berkala."
+            },
+            {
+              "text": "Anggota dan masyarakat berhak memperoleh informasi mengenai pengelolaan keuangan sesuai mekanisme organisasi."
+            }
+          ]
+        },
+        {
+          "number": "Pasal 25",
+          "title": "Rekening Organisasi",
+          "style": "ayat",
+          "items": [
+            {
+              "text": "RKM dapat memiliki rekening bank atas nama organisasi."
+            },
+            {
+              "text": "Pembukaan rekening dilakukan berdasarkan keputusan organisasi dan memenuhi ketentuan perbankan."
+            },
+            {
+              "text": "Pengelolaan rekening dilakukan oleh pihak yang diberi kewenangan melalui keputusan organisasi."
+            },
+            {
+              "text": "Setiap transaksi melalui rekening organisasi wajib dicatat dan dapat dipertanggungjawabkan."
+            },
+            {
+              "text": "Pergantian pengurus yang berwenang mengelola rekening wajib diikuti dengan penyesuaian administrasi perbankan sesuai ketentuan bank."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "art-bab-iv",
+      "part": "ART",
+      "babNumber": "BAB IV",
+      "title": "Pengelolaan Taman Pemakaman Umum",
+      "pasals": [
+        {
+          "number": "Pasal 26",
+          "title": "",
+          "style": "ayat",
+          "items": [
+            {
+              "text": "Pengelolaan TPU dilaksanakan untuk kepentingan masyarakat sesuai tujuan organisasi."
+            },
+            {
+              "text": "Pengurus bertanggung jawab mengoordinasikan pemeliharaan dan ketertiban area pemakaman."
+            },
+            {
+              "text": "Pengelolaan TPU meliputi kebersihan, pemeliharaan, penataan, dan kebutuhan fasilitas pemakaman."
+            },
+            {
+              "text": "Setiap penggunaan dan pengelolaan fasilitas TPU harus memperhatikan kepentingan umum."
+            },
+            {
+              "text": "Penguburan jenazah anggota RKM yang berasal dari luar wilayah Kampung Sukatani RW 03 dapat dilaksanakan di TPU sepanjang tersedia tempat, mendapat persetujuan pengelola sesuai prosedur, serta tidak bertentangan dengan syariat Islam dan ketentuan hukum yang berlaku. [belum dikonfirmasi: ketentuan serupa juga ada di Pasal 27 ayat (5); dipertahankan, tidak digabung]"
+            },
+            {
+              "text": "Penguburan jenazah yang bukan anggota RKM atau [belum dikonfirmasi: maksud kata 'atau' perlu dikonfirmasi: apakah juga mencakup anggota RKM dari luar wilayah yang sudah diatur pada ayat (5); teks asli dipertahankan] berasal dari luar wilayah dapat dipertimbangkan berdasarkan keadaan, ketersediaan lahan, ketentuan organisasi, dan keputusan pengurus melalui musyawarah. Pelaksanaannya tidak boleh mengurangi hak anggota atau mengganggu ketertiban TPU."
+            },
+            {
+              "text": "Pengambilan keputusan mengenai perubahan, pemanfaatan, atau pengembangan fasilitas TPU harus melalui musyawarah dan memperhatikan ketentuan hukum yang berlaku."
+            },
+            {
+              "text": "Pengurus wajib menjaga agar pengelolaan TPU tidak menimbulkan perselisihan dan merugikan masyarakat."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "art-bab-v",
+      "part": "ART",
+      "babNumber": "BAB V",
+      "title": "Pelayanan Kematian",
+      "pasals": [
+        {
+          "number": "Pasal 27",
+          "title": "",
+          "style": "ayat",
+          "items": [
+            {
+              "text": "Pelayanan kematian diberikan kepada seluruh anggota RKM, baik yang berdomisili di Kampung Sukatani RW 03 maupun yang berasal dari luar wilayah, sesuai hak dan ketentuan organisasi."
+            },
+            {
+              "text": "Pengurus wajib memberikan pelayanan secara adil dan tidak diskriminatif."
+            },
+            {
+              "text": "Pelaksanaan pengurusan jenazah dilakukan berdasarkan tuntunan syariat Islam."
+            },
+            {
+              "text": "Pengurus mengoordinasikan kebutuhan pelayanan sejak adanya laporan kematian sampai dengan proses pemakaman."
+            },
+            {
+              "text": "Jenazah anggota yang berasal dari luar wilayah dapat dimakamkan di TPU RKM sepanjang memenuhi ketentuan penggunaan TPU, tersedia tempat, dan pelaksanaannya tidak bertentangan dengan syariat Islam serta peraturan yang berlaku. [belum dikonfirmasi: ketentuan serupa juga ada di Pasal 26 ayat (5); dipertahankan, tidak digabung]"
+            },
+            {
+              "text": "Pelayanan bagi orang yang bukan anggota dapat diberikan berdasarkan pertimbangan kemanusiaan, kemampuan organisasi, ketersediaan fasilitas, dan keputusan pengurus sesuai mekanisme organisasi."
+            },
+            {
+              "text": "Setiap pelayanan dilaksanakan dengan mengutamakan kepentingan dan kemudahan keluarga yang berduka."
+            },
+            {
+              "text": "Ketentuan teknis pelayanan dapat disempurnakan berdasarkan hasil musyawarah."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "art-bab-vi",
+      "part": "ART",
+      "babNumber": "BAB VI",
+      "title": "Inventaris Organisasi",
+      "pasals": [
+        {
+          "number": "Pasal 28",
+          "title": "",
+          "style": "ayat",
+          "items": [
+            {
+              "text": "Seluruh perlengkapan dan inventaris RKM wajib dicatat dalam administrasi organisasi."
+            },
+            {
+              "text": "Pengurus yang bertanggung jawab atas inventaris wajib menjaga dan memeliharanya."
+            },
+            {
+              "text": "Penggunaan inventaris harus sesuai dengan kepentingan organisasi."
+            },
+            {
+              "text": "Kerusakan atau kehilangan inventaris wajib dilaporkan kepada ketua."
+            },
+            {
+              "text": "Pengalihan, penjualan, atau penghapusan inventaris harus memperoleh persetujuan melalui mekanisme musyawarah."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "art-bab-vii",
+      "part": "ART",
+      "babNumber": "BAB VII",
+      "title": "Larangan dan Sanksi Organisasi",
+      "pasals": [
+        {
+          "number": "Pasal 29",
+          "title": "Larangan",
+          "style": "huruf",
+          "intro": "Setiap pengurus dilarang:",
+          "items": [
+            {
+              "text": "Menyalahgunakan jabatan dan kewenangan."
+            },
+            {
+              "text": "Menggunakan dana organisasi untuk kepentingan pribadi."
+            },
+            {
+              "text": "Melakukan tindakan yang bertentangan dengan syariat Islam dan tujuan organisasi."
+            },
+            {
+              "text": "Membuat laporan keuangan atau administrasi yang tidak benar."
+            },
+            {
+              "text": "Mengambil keputusan strategis secara sepihak tanpa kewenangan."
+            },
+            {
+              "text": "Menguasai atau mengalihkan aset organisasi tanpa persetujuan yang sah."
+            },
+            {
+              "text": "Melakukan tindakan yang merugikan organisasi dan masyarakat."
+            }
+          ]
+        },
+        {
+          "number": "Pasal 30",
+          "title": "Sanksi Organisasi",
+          "style": "ayat",
+          "items": [
+            {
+              "text": "Pengurus yang melakukan pelanggaran terhadap AD/ART dapat dikenakan teguran lisan."
+            },
+            {
+              "text": "Apabila pelanggaran berlanjut, dapat diberikan teguran tertulis."
+            },
+            {
+              "text": "Terhadap pelanggaran berat dapat dilakukan pemberhentian melalui mekanisme Pasal 22."
+            },
+            {
+              "text": "Penetapan sanksi wajib mempertimbangkan jenis pelanggaran, bukti, klarifikasi, dan tingkat tanggung jawab pihak yang bersangkutan."
+            },
+            {
+              "text": "Pemberian sanksi harus mengutamakan keadilan dan tidak boleh dilakukan secara sewenang-wenang."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "art-bab-viii",
+      "part": "ART",
+      "babNumber": "BAB VIII",
+      "title": "Penyelesaian Perselisihan",
+      "pasals": [
+        {
+          "number": "Pasal 31",
+          "title": "",
+          "style": "ayat",
+          "items": [
+            {
+              "text": "Setiap perselisihan internal organisasi wajib diselesaikan terlebih dahulu melalui tabayyun dan musyawarah."
+            },
+            {
+              "text": "Setiap pihak diberikan kesempatan yang sama untuk menyampaikan pendapat dan bukti."
+            },
+            {
+              "text": "Penyelesaian perselisihan mengutamakan persaudaraan, keadilan, dan kemaslahatan bersama."
+            },
+            {
+              "text": "Tidak diperkenankan mengambil keputusan sepihak dengan mengatasnamakan organisasi tanpa kewenangan yang sah."
+            },
+            {
+              "text": "Setiap pihak wajib menyampaikan keterangan secara jujur dan, apabila mengajukan tuduhan atau usulan yang menjadi dasar keputusan, menyertakan bukti atau dasar yang dapat diperiksa."
+            },
+            {
+              "text": "Usulan atau tuntutan yang tidak disertai bukti atau dasar yang memadai tidak dapat dijadikan landasan keputusan. Usulan yang bertentangan dengan syariat Islam atau nyata-nyata mendatangkan mafsadat, kerusakan, maupun kerugian bagi organisasi dan masyarakat dinyatakan tertolak."
+            },
+            {
+              "text": "Apabila musyawarah internal tidak menghasilkan penyelesaian, persoalan dapat dimintakan pertimbangan kepada tokoh agama, tokoh masyarakat, atau pihak lain yang disepakati bersama."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "art-bab-ix",
+      "part": "ART",
+      "babNumber": "BAB IX",
+      "title": "Perubahan Anggaran Rumah Tangga",
+      "pasals": [
+        {
+          "number": "Pasal 32",
+          "title": "",
+          "style": "ayat",
+          "items": [
+            {
+              "text": "Perubahan Anggaran Rumah Tangga hanya dapat dilakukan melalui musyawarah organisasi yang sah. [belum dikonfirmasi: peserta dan kuorum musyawarah untuk perubahan Anggaran Rumah Tangga belum diatur]"
+            },
+            {
+              "text": "Usulan perubahan harus disertai alasan yang jelas serta bukti atau dasar pertimbangan yang dapat dipertanggungjawabkan."
+            },
+            {
+              "text": "Usulan yang tidak disertai bukti atau dasar yang memadai, atau yang bertentangan dengan syariat Islam maupun mendatangkan mafsadat dan kerusakan, ditolak dan tidak dapat ditetapkan."
+            },
+            {
+              "text": "Perubahan ditetapkan berdasarkan kesepakatan musyawarah."
+            },
+            {
+              "text": "Setiap perubahan wajib dicatat dalam berita acara dan menjadi bagian dari dokumen resmi organisasi."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "art-bab-x",
+      "part": "ART",
+      "babNumber": "BAB X",
+      "title": "Ketentuan Penutup",
+      "pasals": [
+        {
+          "number": "Pasal 33",
+          "title": "",
+          "style": "ayat",
+          "items": [
+            {
+              "text": "Anggaran Dasar dan Anggaran Rumah Tangga ini merupakan satu kesatuan yang tidak terpisahkan."
+            },
+            {
+              "text": "Seluruh pengurus dan anggota wajib menaati serta melaksanakan ketentuan yang tercantum di dalamnya."
+            },
+            {
+              "text": "Hal-hal yang belum diatur akan diselesaikan melalui musyawarah sepanjang tidak bertentangan dengan AD/ART, syariat Islam, dan ketentuan hukum yang berlaku."
+            },
+            {
+              "text": "AD/ART ini berlaku sejak tanggal ditetapkan melalui musyawarah organisasi."
+            }
+          ]
+        }
+      ]
+    }
   ],
-  signatories: [
+  "susunan": {
+    "note": "Disamakan dengan bagan struktur organisasi terbaru (koreksi Ketua RKM, 3 November 2026).",
+    "groups": [
+      {
+        "title": "A. MAJELIS SYURA",
+        "members": [
+          "Badar Rustandi",
+          "Ugan Sugandi",
+          "M. Bibin",
+          "Ustadz Sholeh",
+          "Ustadz Jarnudzi"
+        ]
+      },
+      {
+        "title": "B. KETUA",
+        "members": [
+          "Burhan Mubarok S.Kom"
+        ]
+      },
+      {
+        "title": "C. SEKRETARIS",
+        "members": [
+          "Angga Maulana"
+        ]
+      },
+      {
+        "title": "D. BENDAHARA",
+        "members": [
+          "Kholid Muhsin"
+        ]
+      },
+      {
+        "title": "E. SEKSI PEMAKAMAN",
+        "members": [
+          "M. Udu",
+          "Ustadz Solehudin",
+          "Ustadz Bibin",
+          "Ustadz Basri",
+          "Ustadz Enjar"
+        ]
+      },
+      {
+        "title": "F. SEKSI PENGURUSAN JENAZAH PEREMPUAN",
+        "members": [
+          "Engkom Komariyah",
+          "Sumarsih",
+          "Fajrin",
+          "Odah",
+          "Itoh",
+          "Uyun"
+        ]
+      },
+      {
+        "title": "G. SEKSI PERLENGKAPAN",
+        "members": [
+          "Koordinator: Relawan Masyarakat",
+          "Anggota: Warga masyarakat yang bersedia menjadi relawan."
+        ]
+      },
+      {
+        "title": "H. SEKSI PENGGALANGAN DANA",
+        "members": [
+          "RT 01: Dian",
+          "RT 02: Ip",
+          "RT 03: Nana",
+          "RT 04: Armat",
+          "RT 05: Angga Maulana",
+          "RT 06: Misbah"
+        ]
+      }
+    ],
+    "ketentuan": "Susunan kepengurusan dapat dilengkapi atau disempurnakan sesuai kebutuhan organisasi berdasarkan hasil musyawarah dan ketentuan AD/ART."
+  },
+  "pengesahan": {
+    "paragraphs": [
+      "Anggaran Dasar dan Anggaran Rumah Tangga Rukun Kematian Masyarakat (RKM) dan Pengelolaan Taman Pemakaman Umum (TPU) Kampung Sukatani RW 03 ini ditetapkan sebagai pedoman penyelenggaraan organisasi, pelaksanaan tugas kepengurusan, pengelolaan keuangan, pelayanan kematian, serta pengelolaan Taman Pemakaman Umum.",
+      "Dokumen ini disusun dengan mengacu pada Berita Acara Pendirian dan Pembentukan Pengurus RKM Nomor: 001/RKM/VIII/2023 tanggal 4 Agustus 2023.",
+      "Dengan ditetapkannya AD/ART ini, seluruh pengurus berkewajiban melaksanakan amanah dan tanggung jawab organisasi sesuai dengan ketentuan yang berlaku."
+    ],
+    "place": "Kampung Sukatani, Desa Wangunsari, Kecamatan Cisolok, Kabupaten Sukabumi",
+    "date": "4 Agustus 2023 [belum dikonfirmasi: sampul menulis 'TAHUN 2026'; tanggal penetapan menunggu jawaban Pak Badar]",
+    "signatureNote": "[belum dikonfirmasi: apakah Lembar Pengesahan perlu 'Mengetahui' Ketua RW 03 (Marni S) dan Kepala Desa Wangunsari (Joni Purnama) seperti pada Berita Acara No. 001/RKM/VIII/2023]"
+  },
+  "signatories": [
     {
-      role: "Ketua DKM",
-      name: "Bpk. Burhan Mubarok, S.Kom",
-      status: "Penanggung Jawab Utama",
+      "role": "PENDIRI RKM",
+      "name": "Badar Rustandi",
+      "status": "Tanda tangan (menyusul)"
     },
     {
-      role: "Sekretaris DKM",
-      name: "Bpk. Jejen Jaelani, S.Pd",
-      status: "Administrasi & Kesekretariatan",
+      "role": "KETUA RKM",
+      "name": "Burhan Mubarok S.Kom",
+      "status": "Tanda tangan (menyusul)"
     },
     {
-      role: "Bidang Imarah",
-      name: "Bpk. Badar Rustandi",
-      status: "Dakwah & Kemakmuran",
+      "role": "SEKRETARIS",
+      "name": "Angga Maulana",
+      "status": "Tanda tangan (menyusul)"
     },
     {
-      role: "Koordinator RKM",
-      name: "Bpk. Dede Dzulkipli",
-      status: "Pelayanan Sosial & Jenazah",
-    },
+      "role": "BENDAHARA",
+      "name": "Kholid Muhsin",
+      "status": "Tanda tangan (menyusul)"
+    }
   ],
+  "penutup": [
+    "Demikian Anggaran Dasar dan Anggaran Rumah Tangga Rukun Kematian Masyarakat (RKM) dan Pengelolaan Taman Pemakaman Umum (TPU) Kampung Sukatani RW 03 ini disusun sebagai pedoman dalam menjalankan organisasi dan melaksanakan seluruh kegiatan pelayanan kepada masyarakat.",
+    "Setiap pengurus hendaknya senantiasa menjaga amanah, menjunjung tinggi nilai-nilai ajaran Islam, melaksanakan tugas dengan penuh tanggung jawab, serta mengutamakan kepentingan dan kemaslahatan masyarakat.",
+    "Keberadaan RKM diharapkan dapat terus memberikan manfaat bagi masyarakat, menjaga persatuan, memperkuat kepedulian sosial, serta menjadi sarana pengabdian dan amal kebaikan.",
+    "Semoga Allah SWT senantiasa memberikan petunjuk, kekuatan, dan keberkahan kepada seluruh pihak yang mengabdikan diri dalam penyelenggaraan organisasi ini."
+  ]
 };
-

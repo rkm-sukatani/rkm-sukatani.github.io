@@ -2,7 +2,6 @@ import React, { useState, useMemo } from "react";
 import {
   Scale,
   BookOpen,
-  ShieldCheck,
   Search,
   Printer,
   Share2,
@@ -14,8 +13,63 @@ import {
   Check,
   Building2,
   Gavel,
+  AlertTriangle,
+  Users,
 } from "lucide-react";
-import { adArtData, AdArtBab } from "@/data/adArt";
+import { adArtData, AdArtBab, AdArtPasal, hasUnconfirmed, UNCONFIRMED_PATTERN } from "@/data/adArt";
+
+/** Menampilkan teks dengan penanda "[belum dikonfirmasi: ...]" / "(menyusul)" sebagai badge kuning yang mencolok. */
+function Marked({ text }: { text: string }) {
+  const parts = text.split(UNCONFIRMED_PATTERN);
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (!part) return null;
+        if (part === "(menyusul)") {
+          return (
+            <mark key={i} className="mx-0.5 px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-900 border border-amber-300 text-[11px] font-bold not-italic">
+              (menyusul)
+            </mark>
+          );
+        }
+        const m = part.match(/^\[belum dikonfirmasi(?::\s*([^\]]*))?\]$/);
+        if (m) {
+          return (
+            <mark
+              key={i}
+              className="inline mx-0.5 px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-950 border border-amber-400 text-[11px] leading-relaxed font-medium not-italic box-decoration-clone"
+            >
+              <span className="inline-flex items-center gap-1 mr-1 px-1.5 rounded bg-amber-500 text-white font-extrabold uppercase tracking-wide text-[10px] align-middle">
+                ⚠ Belum dikonfirmasi
+              </span>
+              {m[1]}
+            </mark>
+          );
+        }
+        return <React.Fragment key={i}>{part}</React.Fragment>;
+      })}
+    </>
+  );
+}
+
+function pasalText(p: AdArtPasal): string {
+  return [p.intro ?? "", ...p.items.flatMap((it) => [it.text, ...(it.subItems ?? [])])].join(" ");
+}
+
+function itemLabel(style: AdArtPasal["style"], idx: number, label?: string): string | null {
+  if (label) return label;
+  if (style === "plain") return null;
+  if (style === "huruf") return `${String.fromCharCode(97 + idx)}.`;
+  return `(${idx + 1})`;
+}
+
+const totalPasal = (part: "AD" | "ART") =>
+  adArtData.babs.filter((b) => b.part === part).reduce((n, b) => n + b.pasals.length, 0);
+const markerCount = (() => {
+  // establishedDate mengulang tanggal di Lembar Pengesahan, jadi tidak dihitung dua kali.
+  const all = JSON.stringify({ ...adArtData, establishedDate: "" });
+  return (all.match(/\[belum dikonfirmasi/g) || []).length;
+})();
 
 export interface AdArtPageProps {
   onBackToHome: () => void;
@@ -35,17 +89,19 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
         if (activeTab === "AD" && bab.part !== "AD") return false;
         if (activeTab === "ART" && bab.part !== "ART") return false;
         if (activeTab === "HIGHLIGHT") {
-          return bab.pasals.some((p) => p.highlight);
+          return bab.pasals.some((p) => hasUnconfirmed(pasalText(p)));
         }
         return true;
       })
       .map((bab) => {
         const q = searchQuery.trim().toLowerCase();
         const pasals = bab.pasals.filter((pasal) => {
-          if (activeTab === "HIGHLIGHT" && !pasal.highlight) return false;
+          if (activeTab === "HIGHLIGHT" && !hasUnconfirmed(pasalText(pasal))) return false;
           if (!q) return true;
           const matchBab =
-            bab.title.toLowerCase().includes(q) || bab.babNumber.toLowerCase().includes(q);
+            bab.title.toLowerCase().includes(q) ||
+            bab.babNumber.toLowerCase().includes(q) ||
+            (pasal.intro ?? "").toLowerCase().includes(q);
           const matchPasal =
             pasal.number.toLowerCase().includes(q) ||
             pasal.title.toLowerCase().includes(q) ||
@@ -154,23 +210,23 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-4xl mx-auto mt-8 text-left print:hidden">
             <div className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3.5">
               <div className="text-[11px] text-emerald-200 font-medium">Anggaran Dasar (AD)</div>
-              <div className="text-lg sm:text-xl font-black text-white mt-0.5">7 Bab • 14 Pasal</div>
+              <div className="text-lg sm:text-xl font-black text-white mt-0.5">{adBabs.length} Bab • {totalPasal("AD")} Pasal</div>
               <div className="text-[10px] text-emerald-300/80 mt-0.5">Aturan Dasar Organisasi</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3.5">
               <div className="text-[11px] text-emerald-200 font-medium">Anggaran Rumah Tangga</div>
-              <div className="text-lg sm:text-xl font-black text-white mt-0.5">6 Bab • 17 Pasal</div>
+              <div className="text-lg sm:text-xl font-black text-white mt-0.5">{artBabs.length} Bab • {totalPasal("ART")} Pasal</div>
               <div className="text-[10px] text-emerald-300/80 mt-0.5">Tata Tertib &amp; Aturan Pelaksana</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3.5">
-              <div className="text-[11px] text-amber-200 font-medium">Doktrin Nilai Dasar</div>
-              <div className="text-lg sm:text-xl font-black text-amber-300 mt-0.5">3 Pilar Utama</div>
-              <div className="text-[10px] text-amber-200/80 mt-0.5">Murni • Mandiri • Berkelanjutan</div>
+              <div className="text-[11px] text-amber-200 font-medium">Perlu Konfirmasi</div>
+              <div className="text-lg sm:text-xl font-black text-amber-300 mt-0.5">{markerCount} Penanda</div>
+              <div className="text-[10px] text-amber-200/80 mt-0.5">Ditandai &ldquo;belum dikonfirmasi&rdquo;</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3.5">
               <div className="text-[11px] text-emerald-200 font-medium">Status Dokumen</div>
-              <div className="text-lg sm:text-xl font-black text-emerald-300 mt-0.5">Aktif &amp; Mengikat</div>
-              <div className="text-[10px] text-emerald-200/80 mt-0.5">{adArtData.establishedDate}</div>
+              <div className="text-lg sm:text-xl font-black text-amber-300 mt-0.5">Draf Terkoreksi</div>
+              <div className="text-[10px] text-emerald-200/80 mt-0.5">Menunggu konfirmasi Pak Badar</div>
             </div>
           </div>
         </div>
@@ -178,6 +234,18 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
 
       {/* Main Content Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        {adArtData.draftNotice && (
+          <div role="note" className="mb-8 rounded-2xl border-2 border-amber-400 bg-amber-50 p-4 sm:p-5 flex items-start gap-3 text-left">
+            <AlertTriangle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
+            <div>
+              <div className="text-sm sm:text-base font-extrabold text-amber-950">{adArtData.draftNotice.title}</div>
+              <p className="text-xs sm:text-sm text-amber-900 mt-1 leading-relaxed">{adArtData.draftNotice.text}</p>
+              <p className="text-xs text-amber-900 mt-2">
+                <b>Tahun dokumen:</b> <Marked text={adArtData.documentYear} />
+              </p>
+            </div>
+          </div>
+        )}
         <div className="grid lg:grid-cols-12 gap-8 items-start">
           
           {/* Left Sidebar: Daftar Isi & Navigasi Cepat (Hidden on Print) */}
@@ -203,7 +271,7 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
               <div className="grid grid-cols-2 gap-1.5 pt-1">
                 {[
                   { id: "ALL", label: "Semua Pasal" },
-                  { id: "HIGHLIGHT", label: "★ Pasal Inti" },
+                  { id: "HIGHLIGHT", label: "⚠ Belum Dikonfirmasi" },
                   { id: "AD", label: "Anggaran Dasar" },
                   { id: "ART", label: "Rumah Tangga" },
                 ].map((tab) => (
@@ -289,6 +357,14 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
               <div className="border-t border-slate-100 pt-3">
                 <button
                   type="button"
+                  onClick={() => scrollToBab("susunan")}
+                  className="w-full text-left text-xs font-bold text-slate-700 hover:text-emerald-700 flex items-center justify-between py-1 cursor-pointer"
+                >
+                  <span>👥 SUSUNAN KEPENGURUSAN</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  type="button"
                   onClick={() => scrollToBab("pengesahan")}
                   className="w-full text-left text-xs font-bold text-slate-700 hover:text-emerald-700 flex items-center justify-between py-1 cursor-pointer"
                 >
@@ -321,12 +397,14 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                 <div className="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
                   <p>{adArtData.mukadimah.opening}</p>
 
-                  <blockquote className="bg-emerald-50/80 border-l-4 border-emerald-600 p-4 sm:p-5 rounded-r-2xl text-emerald-950 italic font-medium">
-                    &ldquo;{adArtData.mukadimah.quranQuote.text}&rdquo;
-                    <footer className="mt-2 font-bold not-italic text-emerald-800 text-xs">
-                      — {adArtData.mukadimah.quranQuote.source}
-                    </footer>
-                  </blockquote>
+                  {adArtData.mukadimah.quranQuote && (
+                    <blockquote className="bg-emerald-50/80 border-l-4 border-emerald-600 p-4 sm:p-5 rounded-r-2xl text-emerald-950 italic font-medium">
+                      &ldquo;{adArtData.mukadimah.quranQuote.text}&rdquo;
+                      <footer className="mt-2 font-bold not-italic text-emerald-800 text-xs">
+                        — {adArtData.mukadimah.quranQuote.source}
+                      </footer>
+                    </blockquote>
+                  )}
 
                   {adArtData.mukadimah.body.map((paragraph, i) => (
                     <p key={i}>{paragraph}</p>
@@ -426,7 +504,7 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                               {bab.title}
                             </h3>
                           </div>
-                          <p className="text-xs text-slate-500 mt-1">{bab.summary}</p>
+                          {bab.summary && <p className="text-xs text-slate-500 mt-1">{bab.summary}</p>}
                         </div>
                       </div>
 
@@ -446,9 +524,11 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                                 <span className="font-mono font-extrabold text-xs sm:text-sm text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-lg border border-emerald-200">
                                   {pasal.number}
                                 </span>
-                                <h4 className="text-sm sm:text-base font-bold text-slate-900">
-                                  {pasal.title}
-                                </h4>
+                                {pasal.title && (
+                                  <h4 className="text-sm sm:text-base font-bold text-slate-900">
+                                    {pasal.title}
+                                  </h4>
+                                )}
                               </div>
                               {pasal.badge && (
                                 <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
@@ -458,30 +538,42 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                               )}
                             </div>
 
+                            {pasal.intro && (
+                              <p className="text-xs sm:text-sm text-slate-800 font-medium mb-2.5">
+                                <Marked text={pasal.intro} />
+                              </p>
+                            )}
                             <ol className="space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
-                              {pasal.items.map((item, itemIdx) => (
-                                <li key={itemIdx} className="flex items-start gap-2.5">
-                                  <span className="font-mono text-xs font-bold text-slate-400 mt-0.5 shrink-0">
-                                    ({itemIdx + 1})
-                                  </span>
-                                  <div className="flex-1 space-y-2">
-                                    <p className="text-slate-800 font-medium">{item.text}</p>
-                                    {item.subItems && item.subItems.length > 0 && (
-                                      <ul className="space-y-1.5 pl-1 pt-1">
-                                        {item.subItems.map((sub, subIdx) => (
-                                          <li
-                                            key={subIdx}
-                                            className="flex items-start gap-2 text-xs text-slate-600 bg-white/80 p-2 rounded-xl border border-slate-100"
-                                          >
-                                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                                            <span>{sub}</span>
-                                          </li>
-                                        ))}
-                                      </ul>
+                              {pasal.items.map((item, itemIdx) => {
+                                const label = itemLabel(pasal.style, itemIdx, item.label);
+                                return (
+                                  <li key={itemIdx} className="flex items-start gap-2.5">
+                                    {label && (
+                                      <span className="font-mono text-xs font-bold text-slate-400 mt-0.5 shrink-0 min-w-[1.75rem]">
+                                        {label}
+                                      </span>
                                     )}
-                                  </div>
-                                </li>
-                              ))}
+                                    <div className="flex-1 space-y-2">
+                                      <p className={`text-slate-800 ${pasal.style === "bagian" ? "font-extrabold" : "font-medium"}`}>
+                                        <Marked text={item.text} />
+                                      </p>
+                                      {item.subItems && item.subItems.length > 0 && (
+                                        <ol className="space-y-1.5 pl-1 pt-1">
+                                          {item.subItems.map((sub, subIdx) => (
+                                            <li
+                                              key={subIdx}
+                                              className="flex items-start gap-2 text-xs text-slate-700 bg-white/80 p-2 rounded-xl border border-slate-100"
+                                            >
+                                              <span className="font-mono font-bold text-emerald-700 shrink-0">{subIdx + 1}.</span>
+                                              <span><Marked text={sub} /></span>
+                                            </li>
+                                          ))}
+                                        </ol>
+                                      )}
+                                    </div>
+                                  </li>
+                                );
+                              })}
                             </ol>
                           </div>
                         ))}
@@ -492,7 +584,35 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
               })
             )}
 
-            {/* 3. LEMBAR PENGESAHAN */}
+            {/* 3. SUSUNAN KEPENGURUSAN */}
+            {adArtData.susunan && (
+              <div id="susunan" className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs scroll-mt-36">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                  Bagian Ketiga
+                </span>
+                <h3 className="text-xl font-extrabold text-slate-900 mt-2 flex items-center gap-2">
+                  <Users className="w-5 h-5 text-emerald-700" /> Susunan Kepengurusan
+                </h3>
+                <p className="text-xs text-slate-500 mt-1">{adArtData.susunan.note}</p>
+                <div className="grid sm:grid-cols-2 gap-3 mt-5">
+                  {adArtData.susunan.groups.map((g) => (
+                    <div key={g.title} className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                      <div className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-800">{g.title}</div>
+                      <ul className="mt-2 space-y-1 text-sm text-slate-800">
+                        {g.members.map((m) => (
+                          <li key={m}>• <Marked text={m} /></li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-slate-600 mt-4">
+                  <b>Ketentuan Susunan Kepengurusan:</b> {adArtData.susunan.ketentuan}
+                </p>
+              </div>
+            )}
+
+            {/* 4. LEMBAR PENGESAHAN */}
             <div
               id="pengesahan"
               className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs scroll-mt-36"
@@ -500,21 +620,30 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
                 <div>
                   <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-                    Pengesahan Organisasi
+                    Bagian Keempat
                   </span>
                   <h3 className="text-xl font-extrabold text-slate-900 mt-2">
-                    Lembar Penetapan &amp; Pengurus DKM Nurul Falah
+                    Lembar Pengesahan AD/ART RKM
                   </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Ditetapkan di Kp. Sukatani, Desa Wangunsari, Kec. Cisolok, Kab. Sukabumi pada{" "}
-                    <b>{adArtData.establishedDate}</b> ({adArtData.hijriDate}).
-                  </p>
                 </div>
-                <div className="flex items-center gap-2 text-xs font-semibold text-emerald-800 bg-emerald-50 px-3.5 py-2 rounded-xl border border-emerald-200 shrink-0">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  <span>Berlaku &amp; Mengikat</span>
+                <div className="flex items-center gap-2 text-xs font-semibold text-amber-900 bg-amber-50 px-3.5 py-2 rounded-xl border border-amber-300 shrink-0">
+                  <AlertTriangle className="w-4 h-4 text-amber-600" />
+                  <span>Draf &mdash; belum disahkan ulang</span>
                 </div>
               </div>
+
+              {adArtData.pengesahan && (
+                <div className="space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed mt-5">
+                  {adArtData.pengesahan.paragraphs.map((t, i) => (
+                    <p key={i}><Marked text={t} /></p>
+                  ))}
+                  <p>
+                    Ditetapkan di: <b>{adArtData.pengesahan.place}</b>
+                    <br />
+                    Pada tanggal: <b><Marked text={adArtData.pengesahan.date} /></b>
+                  </p>
+                </div>
+              )}
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
                 {adArtData.signatories.map((sig, i) => (
@@ -529,16 +658,31 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                       <div className="text-sm font-extrabold text-slate-900 mt-1">
                         {sig.name}
                       </div>
-                      <div className="text-[11px] text-slate-500 mt-0.5">{sig.status}</div>
                     </div>
-                    <div className="mt-6 pt-3 border-t border-dashed border-slate-300 text-[10px] text-slate-400 font-mono flex items-center justify-between">
-                      <span>Tanda Tangan Sah</span>
-                      <span className="text-emerald-700 font-bold">✓ DKM</span>
+                    <div className="mt-6 pt-3 border-t border-dashed border-slate-300 text-[11px] text-slate-500">
+                      <Marked text={sig.status} />
                     </div>
                   </div>
                 ))}
               </div>
+              {adArtData.pengesahan?.signatureNote && (
+                <p className="text-xs text-slate-700 mt-4">
+                  <Marked text={adArtData.pengesahan.signatureNote} />
+                </p>
+              )}
             </div>
+
+            {/* 5. PENUTUP */}
+            {adArtData.penutup && (
+              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs">
+                <h3 className="text-lg font-extrabold uppercase tracking-wider text-slate-900 text-center">Penutup</h3>
+                <div className="space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed mt-4">
+                  {adArtData.penutup.map((t, i) => (
+                    <p key={i}>{t}</p>
+                  ))}
+                </div>
+              </div>
+            )}
 
           </div>
         </div>
