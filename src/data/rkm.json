@@ -1,5 +1,5 @@
 {
-  "_sumber": "Fakta AD/ART & keuangan DKM disalin dari repo nurul-falah.github.io (src/data/masjid.json & src/data/adArt.ts); kutipan AD/ART dipertahankan verbatim. Isian bertanda '(menyusul)' belum tersedia di sumber dan tidak boleh dikarang.",
+  "_sumber": "Kutipan AD/ART di situs ini bersumber dari AD/ART RKM (src/data/adArt.ts; draf terkoreksi, menunggu konfirmasi Pak Badar). Setiap kutipan pasal disalin verbatim dari naskah tersebut. Isian bertanda '(menyusul)' belum tersedia di sumber dan tidak boleh dikarang.",
   "_sumberRkm": "Identitas, pendirian, wilayah, alamat, pengurus, dan iuran RKM bersumber dari 'Berita Acara No. 001/RKM/VIII/2023' (Berita Acara Pendirian dan Pembentukan Pengurus RKM, 4 Agustus 2023) dan 'Konfirmasi Ketua RKM, 3 Nov 2026'. Setiap bagian mencantumkan sumbernya di field 'source'.",
   "name": "RKM Sukatani",
   "fullName": "Rukun Kematian Masyarakat (RKM) Kampung Sukatani RW 03",
@@ -7,10 +7,9 @@
   "parentOrganization": "Dewan Kemakmuran Masjid (DKM) Masjid Nurul Falah Sukatani",
   "parentSiteUrl": "https://nurul-falah.github.io",
   "nameNote": {
-    "text": "Dokumen pendirian RKM sendiri (Berita Acara No. 001/RKM/VIII/2023) menamainya Rukun Kematian Masyarakat (RKM). Kutipan AD/ART bersama DKM & RKM di situs ini dipertahankan sesuai teks aslinya.",
-    "source": "Berita Acara No. 001/RKM/VIII/2023"
+    "text": "Dokumen pendirian RKM (Berita Acara No. 001/RKM/VIII/2023) menamainya Rukun Kematian Masyarakat (RKM). AD/ART RKM Pasal 1 menyebut nama lengkapnya Rukun Kematian Masyarakat (RKM) dan Pengelolaan Taman Pemakaman Umum (TPU).",
+    "source": "Berita Acara No. 001/RKM/VIII/2023; AD Pasal 1"
   },
-  "identity": "Organisasi ini bernama Dewan Kemakmuran Masjid (DKM) Masjid Nurul Falah Sukatani, yang terintegrasi secara kelembagaan dengan Rukun Kematian Muslim (RKM) Nurul Falah Sukatani, selanjutnya dalam AD/ART ini disebut DKM Nurul Falah.",
   "address": {
     "place": "Majelis Nurul Falah",
     "kampung": "Kp. Sukatani RT 05 RW 03",
@@ -50,9 +49,6 @@
     "source": "Berita Acara No. 001/RKM/VIII/2023"
   },
   "adArtEstablished": "Draf: 4 Agustus 2023 menurut Lembar Pengesahan AD/ART RKM (belum dikonfirmasi; sampul menulis Tahun 2026)",
-  "mission": "Ijtima'iyah & Muamalah (Sosial, RKM & Baitul Mal): Mengelola layanan fardhu kifayah pengurusan jenazah (RKM), penyaluran zakat/infaq (UPZ), serta pinjaman kebajikan warga tanpa riba (Qardhul Hasan melalui Baitul Mal).",
-  "bidang": "Bidang Sosial & RKM (Pelayanan Jenazah / Fardhu Kifayah)",
-  "serviceDuty": "Rukun Kematian Muslim (RKM): Mengelola perlengkapan pemulasaraan jenazah (keranda, kain kafan, pemandian, liang lahat) dan mengoordinasikan fardhu kifayah saat ada warga yang wafat, dengan pelaporan yang terintegrasi di bawah DKM.",
   "equipment": [
     {
       "name": "Keranda",
@@ -72,41 +68,80 @@
   ],
   "rules": [
     {
-      "title": "Hak Jamaah atas Layanan RKM",
-      "text": "Mendapatkan pelayanan sosial keagamaan, termasuk layanan RKM (pengurusan jenazah) dan akses program Baitul Mal sesuai ketentuan yang berlaku.",
-      "source": "ART Pasal 1 — Hak dan Kewajiban Jamaah"
+      "title": "Hak Anggota atas Pelayanan & Informasi",
+      "text": "Setiap anggota berhak memperoleh pelayanan sesuai ketentuan organisasi. Setiap anggota berhak memperoleh informasi mengenai kegiatan dan pengelolaan keuangan organisasi.",
+      "source": "AD Pasal 10 ayat (3) dan (4) — Keanggotaan",
+      "ref": {
+        "pasal": 10,
+        "items": [
+          3,
+          4
+        ]
+      }
     },
     {
-      "title": "Pengumuman Kematian",
-      "text": "Penggunaan pengeras suara luar (outdoor) diatur secara tertib dan santun (untuk adzan, iqomah, pengumuman penting/kematian RKM, dan syiar yang terukur) serta hanya boleh dioperasikan oleh petugas yang berwenang.",
-      "source": "ART Pasal 7 — Tata Tertib Pengeras Suara"
+      "title": "Pelayanan Kematian bagi Anggota",
+      "text": "Pelayanan kematian diberikan kepada seluruh anggota RKM, baik yang berdomisili di Kampung Sukatani RW 03 maupun yang berasal dari luar wilayah, sesuai hak dan ketentuan organisasi. Pengurus mengoordinasikan kebutuhan pelayanan sejak adanya laporan kematian sampai dengan proses pemakaman.",
+      "source": "ART Pasal 27 ayat (1) dan (4) — Pelayanan Kematian",
+      "ref": {
+        "pasal": 27,
+        "items": [
+          1,
+          4
+        ]
+      }
+    },
+    {
+      "title": "Pengurusan Jenazah sesuai Syariat",
+      "text": "Pengurus wajib memberikan pelayanan secara adil dan tidak diskriminatif. Pelaksanaan pengurusan jenazah dilakukan berdasarkan tuntunan syariat Islam.",
+      "source": "ART Pasal 27 ayat (2) dan (3) — Pelayanan Kematian",
+      "ref": {
+        "pasal": 27,
+        "items": [
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "title": "Pengelolaan TPU",
+      "text": "Pengelolaan TPU dilaksanakan untuk kepentingan masyarakat sesuai tujuan organisasi. Pengelolaan TPU meliputi kebersihan, pemeliharaan, penataan, dan kebutuhan fasilitas pemakaman.",
+      "source": "ART Pasal 26 ayat (1) dan (3) — Pengelolaan Taman Pemakaman Umum",
+      "ref": {
+        "pasal": 26,
+        "items": [
+          1,
+          3
+        ]
+      }
     },
     {
       "title": "Perlindungan Inventaris RKM",
-      "text": "Seluruh inventaris masjid dan RKM (keranda, meja portabel UPZ, peralatan audio, lemari, perkakas bangunan) adalah harta wakaf/umat yang wajib dicatat, dirawat, dan dilarang dibawa pulang atau digunakan untuk kepentingan pribadi tanpa izin resmi pengurus.",
-      "source": "ART Pasal 7 — Perlindungan Inventaris Masjid & RKM"
+      "text": "Seluruh perlengkapan dan inventaris RKM wajib dicatat dalam administrasi organisasi. Penggunaan inventaris harus sesuai dengan kepentingan organisasi. Pengalihan, penjualan, atau penghapusan inventaris harus memperoleh persetujuan melalui mekanisme musyawarah.",
+      "source": "ART Pasal 28 ayat (1), (3) dan (5) — Inventaris Organisasi",
+      "ref": {
+        "pasal": 28,
+        "items": [
+          1,
+          3,
+          5
+        ]
+      }
     },
     {
-      "title": "Musyawarah Darurat Kematian",
-      "text": "Undangan musyawarah wajib disampaikan minimal 3 (tiga) hari sebelum pelaksanaan (kecuali keadaan darurat bencana/kematian) dengan mencantumkan daftar agenda dan alokasi waktu yang jelas.",
-      "source": "ART — Undangan & Agenda Tertulis"
-    },
-    {
-      "title": "Kewajiban Melanjutkan Program",
-      "text": "Siapa pun yang menjabat sebagai Pengurus DKM maupun RKM wajib melanjutkan Program Kerja Jangka Panjang (Visi Strategis 3–10 Tahun) yang telah ditetapkan.",
-      "source": "ART Pasal 14 — Kewajiban Keberlanjutan Lintas Kepengurusan"
-    },
-    {
-      "title": "Pertanggungjawaban Individual",
-      "text": "Kekhilafan seorang pengurus merupakan tanggung jawab pribadi individu yang bersangkutan dan tidak dapat dijadikan alasan untuk merombak atau menjatuhkan kepengurusan DKM/RKM secara keseluruhan.",
-      "source": "ART — Pertanggungjawaban Bersifat Individual"
+      "title": "Sanksi yang Adil",
+      "text": "Penetapan sanksi wajib mempertimbangkan jenis pelanggaran, bukti, klarifikasi, dan tingkat tanggung jawab pihak yang bersangkutan. Pemberian sanksi harus mengutamakan keadilan dan tidak boleh dilakukan secara sewenang-wenang.",
+      "source": "ART Pasal 30 ayat (4) dan (5) — Sanksi Organisasi",
+      "ref": {
+        "pasal": 30,
+        "items": [
+          4,
+          5
+        ]
+      }
     }
   ],
   "finance": {
-    "sources": "Swadaya Jamaah Sukatani: Infaq kotak amal Jum'at/pengajian (penggabungan kas bapak-bapak dan ibu-ibu), iuran sukarela warga, iuran RKM, serta gotong royong tenaga dan material.",
-    "separatePost": "Menyusun laporan keuangan berkala (bulanan/tahunan) yang memisahkan dengan jelas antara Pos Dana Pembangunan/Renovasi Masjid, Pos Dana Operasional/Infaq Umum Masjid, dan Pos Dana Sosial / RKM / Baitul Mal / UPZ.",
-    "physicalCash": "Pengurus DKM maupun RKM wajib bersedia menunjukkan uang fisik kas dan/atau bukti mutasi rekening kapan pun diminta oleh warga, dengan sikap terbuka dan tanpa merasa tersinggung, karena mengetahui keamanan keuangan adalah hak bagi setiap jamaah.",
-    "assetStatus": "Seluruh lahan, bangunan, material, inventaris, maupun dana yang telah diserahkan kepada DKM/RKM Nurul Falah sebagai wakaf atau infaq otomatis berstatus milik Allah SWT untuk kemaslahatan umat.",
     "iuranAmount": "Rp 4.000",
     "iuranLabel": "Iuran anggota (per anggota per bulan)",
     "iuranPendatang": "Rp 600.000",
@@ -116,7 +151,46 @@
     "rekeningRkm": "(menyusul)",
     "iuranNote": "Rp 4.000 per anggota per bulan, flat tanpa syarat.",
     "iuranPendatangNote": "Dibayar oleh non-anggota yang dimakamkan di TPU Sukatani.",
-    "laporanRkm": "(menyusul)"
+    "laporanRkm": "(menyusul)",
+    "adArtCards": [
+      {
+        "title": "Sumber Keuangan",
+        "source": "AD Pasal 14 — Sumber Keuangan",
+        "intro": "Sumber keuangan organisasi dapat berasal dari:",
+        "items": [
+          "Iuran masyarakat berdasarkan kesepakatan, yaitu iuran anggota sebesar Rp 4.000 per anggota per bulan dan iuran pendatang (non-anggota) sebesar Rp 600.000, dengan santunan kematian sebesar Rp 600.000 untuk setiap anggota yang meninggal.",
+          "Sumbangan sukarela yang tidak mengikat.",
+          "Bantuan dari masyarakat dan pihak lain yang sah.",
+          "Hasil kegiatan organisasi yang sah.",
+          "Sumber penerimaan lainnya yang tidak bertentangan dengan hukum dan syariat Islam."
+        ]
+      },
+      {
+        "title": "Pencatatan & Larangan Penggunaan Pribadi",
+        "source": "AD Pasal 15 ayat (2), (3) dan (4) — Pengelolaan Keuangan dan Kekayaan",
+        "items": [
+          "Dana dan kekayaan organisasi tidak boleh digunakan untuk kepentingan pribadi.",
+          "Pengelolaan keuangan wajib dilaksanakan secara tertib, transparan, dan dapat dipertanggungjawabkan.",
+          "Setiap penerimaan dan pengeluaran wajib dicatat dalam administrasi organisasi."
+        ]
+      },
+      {
+        "title": "Hak Anggota atas Informasi Keuangan",
+        "source": "ART Pasal 24 ayat (5) dan (6) — Pengelolaan Keuangan",
+        "items": [
+          "Bendahara wajib menyampaikan laporan keuangan secara berkala.",
+          "Anggota dan masyarakat berhak memperoleh informasi mengenai pengelolaan keuangan sesuai mekanisme organisasi."
+        ]
+      },
+      {
+        "title": "Kekayaan Organisasi",
+        "source": "AD Pasal 15 ayat (1) dan (6) — Pengelolaan Keuangan dan Kekayaan",
+        "items": [
+          "Seluruh dana dan kekayaan yang diperoleh atas nama RKM merupakan kekayaan organisasi.",
+          "Kekayaan organisasi meliputi uang, perlengkapan, inventaris, dan aset lain yang diperoleh secara sah."
+        ]
+      }
+    ]
   },
   "coordinator": {
     "role": "Koordinator Seksi Perlengkapan",
@@ -136,62 +210,6 @@
   "officialName": {
     "name": "Rukun Kematian Masyarakat (RKM)",
     "source": "Berita Acara No. 001/RKM/VIII/2023; Konfirmasi Ketua RKM, 3 Nov 2026"
-  },
-  "pengurus": {
-    "majelisSyura": [
-      "Bapak Badar Rustandi (Pendiri)",
-      "Bapak Ugan Sugandi",
-      "M. Basri",
-      "Ustadz Sholeh",
-      "Ustadz Jarnudzi"
-    ],
-    "ketua": "Burhan Mubarok S.Kom",
-    "bendahara": "Bapak Kholid Muhsin",
-    "sekretaris": "Angga Maulana",
-    "seksi": [
-      {
-        "name": "Seksi Pemakaman",
-        "members": [
-          "Ustadz Solehudin",
-          "Ustadz Enjar",
-          "Ustadz Basri",
-          "Ustadz Bibin"
-        ]
-      },
-      {
-        "name": "Seksi Pengurusan Jenazah & Keluarga Wafat",
-        "members": [
-          "Ibu Engkom Komariyah",
-          "Ibu Sumarsih",
-          "Ny. Fajrin",
-          "Ibu Odah",
-          "Ibu Iin",
-          "Ibu Uyun"
-        ]
-      },
-      {
-        "name": "Seksi Perlengkapan",
-        "members": [
-          "Koordinator: Bpk. Dede Dzulkipli",
-          "Anggota: (menyusul)"
-        ]
-      },
-      {
-        "name": "Perwakilan RT (Penggalangan Dana & Kontak Pertama Keluarga)",
-        "members": [
-          "RT 01: Bpk. Dian",
-          "RT 02: Bpk. Iip",
-          "RT 03: Bpk. Sadam",
-          "RT 04: Bpk. Armat",
-          "RT 05: Bpk. Angga (Angga Maulana, juga Sekretaris)",
-          "RT 06: Bpk. Dede Misbah"
-        ],
-        "source": "Konfirmasi Burhan, 3 Nov 2026",
-        "note": "Perwakilan RT bertugas sebagai penggalangan dana sekaligus kontak pertama keluarga saat ada warga meninggal."
-      }
-    ],
-    "note": "Susunan pengurus dapat ditambah sesuai keperluan.",
-    "source": "Berita Acara No. 001/RKM/VIII/2023; Konfirmasi Ketua RKM, 3 Nov 2026 (ejaan 'Mubarok', M. Udu tidak lagi di Seksi Pemakaman, koordinator Seksi Perlengkapan); Konfirmasi Burhan, 3 Nov 2026 (Perwakilan RT)"
   },
   "equipmentInfo": {
     "summary": "RKM memiliki keranda, kain kafan, dan alat pemandian.",
@@ -302,5 +320,38 @@
     "kopSurat": "RUKUN KEMATIAN MASYARAKAT (RKM) DAN PENGELOLAAN TAMAN PEMAKAMAN UMUM (TPU)",
     "agenda": "wadah sosial kemasyarakatan yang bergerak dalam bidang pelayanan, bantuan, dan penyelenggaraan kegiatan sosial yang berkaitan dengan musibah kematian serta pengelolaan Taman Pemakaman Umum (TPU)",
     "source": "Berita Acara No. 001/RKM/VIII/2023"
+  },
+  "adArtQuotes": {
+    "nama": {
+      "text": "Organisasi ini bernama Rukun Kematian Masyarakat (RKM) dan Pengelolaan Taman Pemakaman Umum (TPU), selanjutnya disebut RKM.",
+      "source": "AD Pasal 1 — Nama Organisasi"
+    },
+    "maksud": {
+      "text": "RKM dibentuk sebagai wadah pelayanan sosial dan keagamaan masyarakat dalam membantu penyelenggaraan kewajiban terhadap warga yang meninggal dunia serta mengelola Taman Pemakaman Umum (TPU).",
+      "source": "AD Pasal 7 — Maksud"
+    },
+    "struktur": {
+      "intro": "Struktur organisasi RKM terdiri atas:",
+      "items": [
+        "Pendiri.",
+        "Majelis Syura.",
+        "Ketua.",
+        "Sekretaris.",
+        "Bendahara.",
+        "Seksi Pemakaman.",
+        "Seksi Pengurusan Jenazah Perempuan.",
+        "Seksi Perlengkapan.",
+        "Seksi Penggalangan Dana."
+      ],
+      "source": "AD Pasal 11 — Struktur Organisasi"
+    },
+    "layanan": {
+      "intro": "Ruang lingkup kegiatan RKM meliputi:",
+      "items": [
+        "Pelayanan dan bantuan pengurusan jenazah.",
+        "Pengadaan dan pemeliharaan perlengkapan kematian."
+      ],
+      "source": "AD Pasal 9 huruf a dan d — Ruang Lingkup Kegiatan"
+    }
   }
 }

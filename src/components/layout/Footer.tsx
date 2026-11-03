@@ -33,7 +33,8 @@ export function Footer({ onNavigate }: FooterProps) {
               <span>{rkm.name}</span>
             </div>
             <p className="text-slate-400 leading-relaxed max-w-md">
-              {rkm.fullName}, terintegrasi secara kelembagaan dengan {rkm.parentOrganization}.
+              {rkm.fullName}. {rkm.adArtQuotes.maksud.text}{" "}
+              <span className="text-slate-500">({rkm.adArtQuotes.maksud.source})</span>
             </p>
             <div className="text-slate-400">
               <b>Alamat:</b> {rkm.address.fullAddress}.<br />

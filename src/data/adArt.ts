@@ -125,7 +125,7 @@ export const adArtData: AdArtDocument = {
           "style": "ayat",
           "items": [
             {
-              "text": "Wilayah pelayanan utama RKM meliputi masyarakat Kampung Sukatani RW 03, yang mencakup RT 01, RT 02, RT 03, RT 04, RT 05, dan RT 06. [belum dikonfirmasi: apakah Kp. Citespong termasuk wilayah pelayanan (Konfirmasi Ketua RKM, 3 Nov 2026 menyebut Kp. Sukatani & Kp. Citespong); teks asli dipertahankan]"
+              "text": "Wilayah pelayanan utama RKM meliputi masyarakat Kampung Sukatani RW 03, yang mencakup RT 01, RT 02, RT 03, RT 04, RT 05, dan RT 06."
             },
             {
               "text": "Keanggotaan RKM tidak terbatas pada warga Kampung Sukatani RW 03. Masyarakat dari luar wilayah tersebut dapat diterima menjadi anggota sepanjang menyatakan kesediaan untuk menaati AD/ART dan ketentuan organisasi. [belum dikonfirmasi: ketentuan serupa juga ada di Pasal 10 ayat (2); dipertahankan, tidak digabung]"
@@ -436,7 +436,7 @@ export const adArtData: AdArtDocument = {
           "intro": "Sumber keuangan organisasi dapat berasal dari:",
           "items": [
             {
-              "text": "Iuran masyarakat berdasarkan kesepakatan. [belum dikonfirmasi: nominal iuran Rp 4.000 per anggota per bulan, iuran pendatang (non-anggota) Rp 600.000, dan santunan kematian Rp 600.000 per anggota (konfirmasi Burhan, 3 Nov 2026) belum tercantum di naskah; menunggu keputusan apakah dimasukkan ke AD/ART]"
+              "text": "Iuran masyarakat berdasarkan kesepakatan, yaitu iuran anggota sebesar Rp 4.000 per anggota per bulan dan iuran pendatang (non-anggota) sebesar Rp 600.000, dengan santunan kematian sebesar Rp 600.000 untuk setiap anggota yang meninggal."
             },
             {
               "text": "Sumbangan sukarela yang tidak mengikat."

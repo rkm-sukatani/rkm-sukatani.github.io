@@ -87,19 +87,21 @@ export function TentangSection() {
             </div>
           </div>
           <div className="flex items-center gap-2 text-emerald-800 font-bold pt-2">
-            <Info className="w-5 h-5" /> Kedudukan dalam AD/ART DKM &amp; RKM
+            <Info className="w-5 h-5" /> Kedudukan dalam AD/ART RKM
           </div>
           <blockquote className="border-l-4 border-amber-400 pl-4 text-sm text-slate-700 leading-relaxed italic">
-            “{rkm.identity}”
-            <div className="not-italic text-xs text-slate-500 mt-1">— AD/ART, Bab I</div>
+            “{rkm.adArtQuotes.nama.text}”
+            <div className="not-italic text-xs text-slate-500 mt-1">— {rkm.adArtQuotes.nama.source}</div>
           </blockquote>
           <p className="text-xs text-slate-500 leading-relaxed">Catatan: {rkm.nameNote.text}</p>
           <div className="text-sm text-slate-700 leading-relaxed">
-            <b>Misi bidang sosial:</b> {rkm.mission}
+            <b>Maksud ({rkm.adArtQuotes.maksud.source}):</b> “{rkm.adArtQuotes.maksud.text}”
           </div>
           <div className="text-sm text-slate-700 leading-relaxed">
-            <b>Struktur:</b> RKM berada dalam <i>{rkm.bidang}</i>, salah satu bidang pelaksana DKM Nurul Falah (AD Pasal 9).
+            <b>Struktur ({rkm.adArtQuotes.struktur.source}):</b> {rkm.adArtQuotes.struktur.intro}{" "}
+            {rkm.adArtQuotes.struktur.items.map((it) => it.replace(/\.$/, "")).join(", ")}.
           </div>
+          <p className="text-[11px] text-amber-800">AD/ART RKM masih berupa draf yang menunggu konfirmasi Pak Badar Rustandi (Pendiri RKM).</p>
         </div>
         <div className="bg-[#064e3b] text-emerald-50 rounded-2xl p-6 sm:p-8 space-y-3 shadow-sm">
           <div className="font-bold text-amber-300 flex items-center gap-2">
@@ -153,7 +155,7 @@ export function LayananSection() {
           id="layanan"
           badge="Pelayanan Jenazah"
           title="Layanan Pemulasaraan Jenazah"
-          subtitle="RKM mengelola perlengkapan pemulasaraan jenazah dan mengoordinasikan fardhu kifayah saat ada warga yang wafat (ART Pasal 8)."
+          subtitle={`${rkm.adArtQuotes.layanan.intro} ${rkm.adArtQuotes.layanan.items.map((it) => it.replace(/\.$/, "").toLowerCase()).join("; ")} (${rkm.adArtQuotes.layanan.source}).`}
         />
         <div className="grid sm:grid-cols-3 gap-5 text-left">
           {rkm.equipment.map((eq) => {
@@ -229,7 +231,7 @@ export function KeuanganSection() {
         id="keuangan"
         badge="Transparansi Kas"
         title="Keuangan & Iuran RKM"
-        subtitle="Iuran RKM termasuk sumber dana swadaya jamaah, dan dilaporkan dalam Pos Dana Sosial / RKM yang terpisah dari pos pembangunan dan operasional masjid."
+        subtitle="Iuran masyarakat termasuk sumber keuangan RKM (AD Pasal 14 huruf a). Setiap penerimaan dan pengeluaran wajib dicatat dalam administrasi organisasi (AD Pasal 15 ayat (4))."
       />
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 text-left mb-6">
         {[
@@ -249,26 +251,22 @@ export function KeuanganSection() {
         ))}
       </div>
       <div className="grid md:grid-cols-2 gap-5 text-left text-sm text-slate-700">
-        <div className="p-5 rounded-2xl bg-white border border-slate-200">
-          <div className="font-bold text-slate-900 mb-1">Sumber Dana (AD Pasal 12)</div>
-          {f.sources}
-        </div>
-        <div className="p-5 rounded-2xl bg-white border border-slate-200">
-          <div className="font-bold text-slate-900 mb-1">Pemisahan Pos Dana (ART Pasal 5)</div>
-          {f.separatePost}
-        </div>
-        <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200">
-          <div className="font-bold text-slate-900 mb-1">Hak Warga Melihat Uang Fisik (AD Pasal 13)</div>
-          {f.physicalCash}
-        </div>
-        <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200">
-          <div className="font-bold text-slate-900 mb-1">Status Aset Wakaf &amp; Infaq (AD Pasal 13)</div>
-          {f.assetStatus}
-        </div>
+        {f.adArtCards.map((c, i) => (
+          <div key={c.title} className={`p-5 rounded-2xl border ${i < 2 ? "bg-white border-slate-200" : "bg-emerald-50 border-emerald-200"}`}>
+            <div className="font-bold text-slate-900 mb-1">{c.title}</div>
+            <div className="text-[11px] text-emerald-700 font-semibold mb-2">{c.source}</div>
+            {"intro" in c && c.intro && <p className="mb-1">{c.intro}</p>}
+            <ul className="list-disc pl-5 space-y-0.5">
+              {c.items.map((it) => (
+                <li key={it}>{it}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
       <p className="text-xs text-slate-500 mt-4">
         Iuran anggota: {f.iuranNote} {rkm.membership.basis} Iuran pendatang: {f.iuranPendatangNote}{" "}
-        Santunan kematian: {rkm.santunan.amount} per anggota yang meninggal. Sumber: {f.iuranSource}.{" "} Rekening khusus RKM: <Placeholder>{f.rekeningRkm}</Placeholder> (rencana pembukaan rekening bank atas nama RKM
+        Santunan kematian: {rkm.santunan.amount} per anggota yang meninggal. Sumber: {f.iuranSource}; AD Pasal 14 huruf a.{" "} Rekening khusus RKM: <Placeholder>{f.rekeningRkm}</Placeholder> (rencana pembukaan rekening bank atas nama RKM
         telah disetujui dalam {rkm.founding.document}). Laporan pemasukan/pengeluaran RKM: <Placeholder>{f.laporanRkm}</Placeholder>.
       </p>
     </section>
@@ -425,9 +423,9 @@ export function AturanSection({ onOpenAdArt }: { onOpenAdArt: () => void }) {
     <section id="aturan" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
       <SectionHeader
         id="aturan"
-        badge="AD/ART DKM & RKM"
-        title="Ketentuan AD/ART yang Mengatur RKM"
-        subtitle="Kutipan pasal-pasal AD/ART DKM & RKM Masjid Nurul Falah Sukatani yang menyebut RKM secara langsung."
+        badge="AD/ART RKM (Draf)"
+        title="Ketentuan AD/ART RKM tentang Pelayanan"
+        subtitle="Kutipan pasal-pasal AD/ART RKM tentang pelayanan kematian, TPU, inventaris, dan sanksi. Naskah masih draf yang menunggu konfirmasi Pak Badar Rustandi."
       />
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 text-left">
         {rkm.rules.map((r) => (
