@@ -24,7 +24,7 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
           <div className="lg:col-span-7 space-y-6 text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-800/80 border border-emerald-600/40 text-amber-300 text-xs font-semibold uppercase tracking-wider">
               <span className="w-2 h-2 rounded-full bg-amber-400"></span>
-              Rukun Kematian Muslim · Kp. Sukatani &amp; Kp. Tespong
+              Rukun Kematian Muslim · Kp. Sukatani
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
@@ -33,7 +33,7 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
 
             <p className="text-emerald-100 text-base sm:text-lg max-w-2xl leading-relaxed">
               Mengelola perlengkapan pemulasaraan jenazah (keranda, kain kafan, pemandian, liang lahat) dan mengoordinasikan
-              fardhu kifayah saat ada warga yang wafat, dengan pelaporan yang terintegrasi di bawah DKM Masjid Nurul Falah. Wilayah layanan RKM: {rkm.coverage.rt}, Kp. Sukatani dan Kp. Tespong.
+              fardhu kifayah saat ada warga yang wafat, dengan pelaporan yang terintegrasi di bawah DKM Masjid Nurul Falah.
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -59,8 +59,8 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
                 <div className="text-xs text-emerald-200">Jenis Perlengkapan Pemulasaraan</div>
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-bold text-white">{rkm.coverage.rt}</div>
-                <div className="text-xs text-emerald-200">Wilayah layanan: 2 kampung ({rkm.coverage.kampung.join(" & ")})</div>
+                <div className="text-2xl sm:text-3xl font-bold text-white">Pos Terpisah</div>
+                <div className="text-xs text-emerald-200">Dana Sosial / RKM di Laporan DKM</div>
               </div>
               <div>
                 <div className="text-lg sm:text-xl font-bold text-amber-200 italic">{rkm.finance.iuranAmount}</div>

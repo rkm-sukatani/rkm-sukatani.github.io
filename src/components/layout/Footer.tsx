@@ -36,7 +36,7 @@ export function Footer({ onNavigate }: FooterProps) {
               {rkm.fullName}, terintegrasi secara kelembagaan dengan {rkm.parentOrganization}.
             </p>
             <div className="text-slate-400">
-              <b>Alamat:</b> {rkm.address.fullAddress} <i>(belum dikonfirmasi)</i>. <b>Wilayah layanan:</b> {rkm.coverage.rt}, Kp. Sukatani &amp; Kp. Tespong.
+              <b>Alamat:</b> {rkm.address.fullAddress}.
             </div>
           </div>
 

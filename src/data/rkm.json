@@ -1,6 +1,5 @@
 {
   "_sumber": "Seluruh fakta di file ini disalin dari repo nurul-falah.github.io (src/data/masjid.json & src/data/adArt.ts). Isian bertanda '(menyusul)' belum tersedia di sumber dan tidak boleh dikarang.",
-  "_sumberTambahan": "Isian coverage, landWakaf, leadership, dan address.status bersumber dari: Keterangan Pak Badar Rustandi via WhatsApp, 3 Nov 2026 (diteruskan dari chat WhatsApp Bpk. Burhan Mubarok).",
   "name": "RKM TPU SUKATANI",
   "fullName": "Rukun Kematian Muslim (RKM) Nurul Falah Sukatani",
   "shortName": "RKM TPU SUKATANI",
@@ -14,69 +13,17 @@
     "kabupaten": "Sukabumi",
     "provinsi": "Jawa Barat",
     "kodepos": "43366",
-    "fullAddress": "Kp. Sukatani, RT 05 RW 03, Desa Wangunsari, Cisolok, Sukabumi",
-    "status": "Alamat RT 05 RW 03 diambil dari AD/ART DKM; untuk RKM belum dikonfirmasi."
-  },
-  "coverage": {
-    "rt": "RT 01–06",
-    "kampung": [
-      "Sukatani",
-      "Tespong"
-    ],
-    "summary": "RKM melayani RT 01–06 di dua kampung, yaitu Kp. Sukatani dan Kp. Tespong.",
-    "dkmComparison": "Cakupan DKM: RT 03–06, satu kampung. Cakupan RKM lebih luas daripada DKM.",
-    "quote": "RKM mah jangkauana 01-06 dua kampung (Sukatani jeung Tespong)",
-    "source": "Keterangan Pak Badar Rustandi via WhatsApp, 3 Nov 2026"
-  },
-  "landWakaf": {
-    "title": "Lahan Wakaf \"3 Bani\"",
-    "roles": [
-      {
-        "bani": "Bani Apeng",
-        "role": "Mewakafkan lahan"
-      },
-      {
-        "bani": "Bani Upat",
-        "role": "Memanfaatkan"
-      },
-      {
-        "bani": "Bani Surya",
-        "role": "Mengamankan"
-      }
-    ],
-    "note": "AD/ART tidak menyebut lahan TPU secara khusus; status sebagai lahan TPU (menyusul).",
-    "source": "Keterangan Pak Badar Rustandi via WhatsApp, 3 Nov 2026"
-  },
-  "leadership": {
-    "ketuaRkm": "(menyusul)",
-    "note": "Kepengurusan RKM sedang dalam penataan ulang.",
-    "source": "Keterangan Pak Badar Rustandi via WhatsApp, 3 Nov 2026"
+    "fullAddress": "Kp. Sukatani, RT 05 RW 03, Desa Wangunsari, Cisolok, Sukabumi"
   },
   "adArtEstablished": "1 November 2026 M / 21 Jumadil Awal 1448 H",
   "mission": "Ijtima'iyah & Muamalah (Sosial, RKM & Baitul Mal): Mengelola layanan fardhu kifayah pengurusan jenazah (RKM), penyaluran zakat/infaq (UPZ), serta pinjaman kebajikan warga tanpa riba (Qardhul Hasan melalui Baitul Mal).",
   "bidang": "Bidang Sosial & RKM (Pelayanan Jenazah / Fardhu Kifayah)",
   "serviceDuty": "Rukun Kematian Muslim (RKM): Mengelola perlengkapan pemulasaraan jenazah (keranda, kain kafan, pemandian, liang lahat) dan mengoordinasikan fardhu kifayah saat ada warga yang wafat, dengan pelaporan yang terintegrasi di bawah DKM.",
   "equipment": [
-    {
-      "name": "Keranda",
-      "desc": "Perlengkapan pemulasaraan jenazah yang dikelola RKM. Tercatat sebagai inventaris RKM (harta wakaf/umat).",
-      "icon": "Package"
-    },
-    {
-      "name": "Kain Kafan",
-      "desc": "Perlengkapan pemulasaraan jenazah yang dikelola RKM.",
-      "icon": "Shirt"
-    },
-    {
-      "name": "Pemandian",
-      "desc": "Perlengkapan pemandian jenazah yang dikelola RKM.",
-      "icon": "Droplets"
-    },
-    {
-      "name": "Liang Lahat",
-      "desc": "Perlengkapan liang lahat yang dikelola RKM.",
-      "icon": "Shovel"
-    }
+    { "name": "Keranda", "desc": "Perlengkapan pemulasaraan jenazah yang dikelola RKM. Tercatat sebagai inventaris RKM (harta wakaf/umat).", "icon": "Package" },
+    { "name": "Kain Kafan", "desc": "Perlengkapan pemulasaraan jenazah yang dikelola RKM.", "icon": "Shirt" },
+    { "name": "Pemandian", "desc": "Perlengkapan pemandian jenazah yang dikelola RKM.", "icon": "Droplets" },
+    { "name": "Liang Lahat", "desc": "Perlengkapan liang lahat yang dikelola RKM.", "icon": "Shovel" }
   ],
   "rules": [
     {
@@ -128,23 +75,10 @@
     "whatsapp": "6285640380652"
   },
   "dkmContacts": [
-    {
-      "role": "Ketua DKM",
-      "name": "Bpk. Burhan Mubarok, S.Kom",
-      "phone": "0857-8010-6011",
-      "whatsapp": "6285780106011"
-    },
-    {
-      "role": "Sekretaris DKM",
-      "name": "Bpk. Jejen Jaelani, S.Pd",
-      "phone": "0857-9391-7131",
-      "whatsapp": "6285793917131"
-    }
+    { "role": "Ketua DKM", "name": "Bpk. Burhan Mubarok, S.Kom", "phone": "0857-8010-6011", "whatsapp": "6285780106011" },
+    { "role": "Sekretaris DKM", "name": "Bpk. Jejen Jaelani, S.Pd", "phone": "0857-9391-7131", "whatsapp": "6285793917131" }
   ],
   "milestones": [
-    {
-      "task": "Penggabungan Pengurus dan Pelaporan Organisasi DKM & RKM",
-      "status": "Selesai"
-    }
+    { "task": "Penggabungan Pengurus dan Pelaporan Organisasi DKM & RKM", "status": "Selesai" }
   ]
 }
