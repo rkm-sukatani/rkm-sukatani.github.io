@@ -145,7 +145,13 @@
     "iuranSource": "Konfirmasi Burhan, 3 Nov 2026",
     "saldoKasRkm": "(menyusul)",
     "lastUpdate": "(menyusul)",
-    "rekeningRkm": "(menyusul)",
+    "rekening": {
+      "bankName": "Bank Syariah Indonesia (BSI)",
+      "accountNumber": "7203516578",
+      "accountHolder": "MASJID NURUL FALAH SUKATANI",
+      "note": "Rekening ini adalah rekening bersama DKM Masjid Nurul Falah, dipakai untuk pembayaran RKM untuk sementara sampai RKM memiliki rekening sendiri (pembukaan rekening bank atas nama RKM telah disetujui dalam Berita Acara No. 001/RKM/VIII/2023).",
+      "source": "Keputusan Ketua RKM, 4 Nov 2026; data rekening dari situs DKM Masjid Nurul Falah (src/data/masjid.json, bankAccounts)"
+    },
     "iuranNote": "Rp 4.000 per anggota per bulan, flat tanpa syarat.",
     "iuranPendatangNote": "Dibayar oleh non-anggota yang dimakamkan di TPU Sukatani.",
     "laporanRkm": "(menyusul)",

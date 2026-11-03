@@ -264,10 +264,22 @@ export function KeuanganSection() {
           </div>
         ))}
       </div>
+      <div id="rekening" className="mt-5 p-5 rounded-2xl border-2 border-amber-300 bg-amber-50 text-left text-sm text-slate-700">
+        <div className="font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <Landmark className="w-4 h-4 text-amber-700" /> Rekening Pembayaran RKM
+        </div>
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <span className="font-semibold">{f.rekening.bankName}</span>
+          <span className="font-mono text-lg font-extrabold text-emerald-900 tracking-wide">{f.rekening.accountNumber}</span>
+          <span>a.n. <b>{f.rekening.accountHolder}</b></span>
+        </div>
+        <p className="mt-2 text-xs leading-relaxed text-amber-900">{f.rekening.note}</p>
+        <div className="text-[11px] text-slate-500 mt-2">Sumber: {f.rekening.source}</div>
+      </div>
       <p className="text-xs text-slate-500 mt-4">
         Iuran anggota: {f.iuranNote} {rkm.membership.basis} Iuran pendatang: {f.iuranPendatangNote}{" "}
         Santunan kematian: {rkm.santunan.amount} per anggota yang meninggal, diserahkan kepada keluarga melalui perwakilan RT. Sumber: {f.iuranSource}; AD Pasal 14 ayat (1) huruf a dan ayat (2).{" "}
-        Rekening khusus RKM: <Placeholder>{f.rekeningRkm}</Placeholder>. Laporan pemasukan/pengeluaran RKM: <Placeholder>{f.laporanRkm}</Placeholder>.
+        Rekening pembayaran RKM: {f.rekening.bankName} {f.rekening.accountNumber} a.n. {f.rekening.accountHolder} (rekening bersama DKM Masjid Nurul Falah, sementara). Laporan pemasukan/pengeluaran RKM: <Placeholder>{f.laporanRkm}</Placeholder>.
       </p>
     </section>
   );
