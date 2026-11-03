@@ -6,11 +6,11 @@ PORT ?= 3000
 PM ?= $(shell command -v bun 2>/dev/null || echo npm)
 
 help:
-	@echo "RKM TPU SUKATANI (rkm-tpu-sukatani) Commands:"
+	@echo "RKM TPU SUKATANI (rkm-sukatani) Commands:"
 	@echo "  make dev      - Start local Vite development server (:$(PORT))"
 	@echo "  make build    - Build production bundle (tsc && vite build)"
 	@echo "  make preview  - Preview production build (:$(PORT))"
-	@echo "  make deploy   - Commit and push changes (remote belum diatur)"
+	@echo "  make deploy   - Commit and push to rkm-sukatani/rkm-sukatani.github.io (remote belum diatur)"
 
 node_modules:
 	@echo "📦 Installing dependencies with $(PM)..."
