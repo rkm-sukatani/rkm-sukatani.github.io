@@ -15,6 +15,8 @@ import {
   CheckCircle2,
   ExternalLink,
   Landmark,
+  MapPin,
+  FileText,
 } from "lucide-react";
 import rkm from "@/data/rkm.json";
 
@@ -43,17 +45,44 @@ export function TentangSection() {
         id="tentang"
         badge="Profil Lembaga"
         title={`Tentang ${rkm.name}`}
-        subtitle="Rukun Kematian Muslim (RKM) adalah bidang pelayanan jenazah / fardhu kifayah yang terintegrasi secara kelembagaan dengan DKM Masjid Nurul Falah Sukatani."
+        subtitle={`Rukun Kematian Masyarakat (RKM) Kampung Sukatani RW 03 didirikan pada ${rkm.founding.date} di ${rkm.founding.place}, dengan wilayah layanan ${rkm.coverage.summary}. RKM terintegrasi secara kelembagaan dengan DKM Masjid Nurul Falah Sukatani.`}
       />
       <div className="grid lg:grid-cols-3 gap-6 text-left">
         <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-4">
           <div className="flex items-center gap-2 text-emerald-800 font-bold">
-            <Info className="w-5 h-5" /> Identitas &amp; Kedudukan
+            <FileText className="w-5 h-5" /> Pendirian RKM
+          </div>
+          <div className="text-sm text-slate-700 leading-relaxed">
+            RKM didirikan pada <b>{rkm.founding.date}</b> di {rkm.founding.place}, dalam {rkm.founding.event.charAt(0).toLowerCase() + rkm.founding.event.slice(1)}{" "}
+            di lingkungan {rkm.coverage.rw}, yang dipimpin oleh <b>{rkm.founding.founder}</b> selaku {rkm.founding.founderRole}.
+          </div>
+          <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-sm text-slate-700">
+            <div className="font-bold text-emerald-900 mb-2">Hasil musyawarah pendirian</div>
+            <ul className="space-y-1.5">
+              {rkm.foundingCommitments.items.map((t) => (
+                <li key={t} className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="text-[11px] text-slate-500 mt-2">Sumber: {rkm.founding.source}</div>
+          </div>
+          <div className="rounded-xl bg-white border border-emerald-300 p-4 text-sm text-slate-700 flex items-start gap-3">
+            <MapPin className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
+            <div>
+              <div className="font-bold text-slate-900">Wilayah layanan: {rkm.coverage.rt}, {rkm.coverage.rw}</div>
+              <div className="text-xs text-slate-600">{rkm.coverage.kampung.join(" & ")}</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 text-emerald-800 font-bold pt-2">
+            <Info className="w-5 h-5" /> Kedudukan dalam AD/ART DKM &amp; RKM
           </div>
           <blockquote className="border-l-4 border-amber-400 pl-4 text-sm text-slate-700 leading-relaxed italic">
             “{rkm.identity}”
             <div className="not-italic text-xs text-slate-500 mt-1">— AD/ART, Bab I</div>
           </blockquote>
+          <p className="text-xs text-slate-500 leading-relaxed">Catatan: {rkm.nameNote.text}</p>
           <div className="text-sm text-slate-700 leading-relaxed">
             <b>Misi bidang sosial:</b> {rkm.mission}
           </div>
@@ -67,20 +96,32 @@ export function TentangSection() {
           </div>
           <dl className="text-sm space-y-2">
             <div>
-              <dt className="text-emerald-300 text-xs">Nama resmi (AD/ART)</dt>
+              <dt className="text-emerald-300 text-xs">Nama resmi (Berita Acara)</dt>
               <dd className="font-semibold">{rkm.fullName}</dd>
             </div>
             <div>
               <dt className="text-emerald-300 text-xs">Alamat</dt>
-              <dd>{rkm.address.fullAddress}, {rkm.address.provinsi} {rkm.address.kodepos}</dd>
+              <dd>{rkm.address.fullAddress}</dd>
+            </div>
+            <div>
+              <dt className="text-emerald-300 text-xs">Wilayah layanan</dt>
+              <dd>{rkm.coverage.summary}</dd>
             </div>
             <div>
               <dt className="text-emerald-300 text-xs">AD/ART ditetapkan</dt>
               <dd>{rkm.adArtEstablished}</dd>
             </div>
             <div>
-              <dt className="text-emerald-300 text-xs">Tahun berdiri RKM</dt>
-              <dd><span className="italic text-amber-200">(menyusul)</span></dd>
+              <dt className="text-emerald-300 text-xs">Didirikan</dt>
+              <dd>{rkm.founding.date}, {rkm.founding.place}</dd>
+            </div>
+            <div>
+              <dt className="text-emerald-300 text-xs">Pendiri</dt>
+              <dd>{rkm.founding.founder} ({rkm.founding.founderRole})</dd>
+            </div>
+            <div>
+              <dt className="text-emerald-300 text-xs">Dasar pendirian</dt>
+              <dd>{rkm.founding.document}</dd>
             </div>
             <div>
               <dt className="text-emerald-300 text-xs">Jumlah anggota</dt>
@@ -145,9 +186,10 @@ export function KeuanganSection() {
         title="Keuangan & Iuran RKM"
         subtitle="Iuran RKM termasuk sumber dana swadaya jamaah, dan dilaporkan dalam Pos Dana Sosial / RKM yang terpisah dari pos pembangunan dan operasional masjid."
       />
-      <div className="grid md:grid-cols-3 gap-5 text-left mb-6">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 text-left mb-6">
         {[
-          { label: "Besaran Iuran RKM", value: f.iuranAmount },
+          { label: "Iuran Anggota", value: f.iuranAmount },
+          { label: "Iuran Pendatang", value: f.iuranPendatang },
           { label: "Saldo Kas Pos Sosial / RKM", value: f.saldoKasRkm },
           { label: "Pembaruan Terakhir", value: f.lastUpdate },
         ].map((s) => (
@@ -156,7 +198,7 @@ export function KeuanganSection() {
               <Wallet className="w-4 h-4 text-emerald-600" /> {s.label}
             </div>
             <div className="text-xl font-bold mt-2">
-              <Placeholder>{s.value}</Placeholder>
+              {s.value.startsWith("(") ? <Placeholder>{s.value}</Placeholder> : <span className="text-slate-900">{s.value}</span>}
             </div>
           </div>
         ))}
@@ -180,47 +222,91 @@ export function KeuanganSection() {
         </div>
       </div>
       <p className="text-xs text-slate-500 mt-4">
-        Rekening khusus RKM: <Placeholder />. Laporan pemasukan/pengeluaran RKM: <Placeholder />.
+        Sumber iuran: {f.iuranSource}. Rekening khusus RKM: <Placeholder>{f.rekeningRkm}</Placeholder> (rencana pembukaan rekening bank atas nama RKM
+        telah disetujui dalam {rkm.founding.document}). Laporan pemasukan/pengeluaran RKM: <Placeholder />.
       </p>
     </section>
   );
 }
 
+function PersonList({ names }: { names: string[] }) {
+  return (
+    <ul className="space-y-1 text-slate-700">
+      {names.map((n) => (
+        <li key={n} className="flex items-start gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></span>
+          {n.includes("(menyusul)") ? (
+            <span>
+              {n.replace("(menyusul)", "")}
+              <Placeholder />
+            </span>
+          ) : (
+            <span>{n}</span>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function PengurusSection() {
   const c = rkm.coordinator;
+  const p = rkm.pengurus;
   return (
     <section id="pengurus" className="py-16 bg-white border-y border-slate-200 scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <SectionHeader id="pengurus" badge="Kepengurusan" title="Pengurus & Kontak RKM" />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left text-xs">
-          <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 shadow-2xs">
-            <div className="font-bold text-slate-800 mb-0.5 flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> {c.role}</div>
-            <div className="text-slate-600 font-medium">{c.name}</div>
-            <div className="text-slate-500">{c.status}</div>
-            <a
-              href={`https://wa.me/${c.whatsapp}?text=${encodeURIComponent(`Assalamu'alaikum ${c.name} (${c.role})`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#047857] font-mono mt-3 flex items-center gap-1.5 font-semibold hover:underline"
-            >
-              <Phone className="w-3.5 h-3.5" /> {c.phone}
-            </a>
+        <SectionHeader
+          id="pengurus"
+          badge="Kepengurusan"
+          title="Susunan Pengurus RKM"
+          subtitle={`Ditetapkan dalam musyawarah pendirian, ${rkm.founding.date} (${rkm.founding.document}).`}
+        />
+        <div className="grid md:grid-cols-4 gap-4 text-left text-sm mb-4">
+          <div className="md:col-span-1 p-4 rounded-xl bg-[#064e3b] text-emerald-50">
+            <div className="font-bold text-amber-300 mb-2 flex items-center gap-1.5"><Users className="w-4 h-4" /> Majelis Syura</div>
+            <ul className="space-y-1">
+              {p.majelisSyura.map((n) => (
+                <li key={n}>{n}</li>
+              ))}
+            </ul>
           </div>
-          {["Sekretaris RKM", "Bendahara RKM", "Petugas Pemulasaraan"].map((role) => (
-            <div key={role} className="p-4 rounded-xl bg-slate-50 border border-dashed border-slate-300">
-              <div className="font-bold text-slate-800 mb-0.5">{role}</div>
-              <div><Placeholder /></div>
+          {[
+            { role: "Ketua", name: p.ketua },
+            { role: "Bendahara", name: p.bendahara },
+            { role: "Sekretaris", name: p.sekretaris },
+          ].map((o) => (
+            <div key={o.role} className="p-4 rounded-xl bg-emerald-50 border border-emerald-300">
+              <div className="text-xs font-bold uppercase tracking-wider text-emerald-700">{o.role}</div>
+              <div className="font-bold text-slate-900 mt-1">{o.name}</div>
             </div>
           ))}
         </div>
-        <div className="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-left text-slate-600">
-          <b>Koordinasi DKM:</b> RKM melapor secara terintegrasi di bawah DKM.{" "}
-          {rkm.dkmContacts.map((d, i) => (
-            <span key={d.role}>
-              {i > 0 && " · "}
-              {d.role}: {d.name} ({d.phone})
-            </span>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left text-xs">
+          {p.seksi.map((sk) => (
+            <div key={sk.name} className="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <div className="font-bold text-slate-900 mb-2 text-sm">{sk.name}</div>
+              <PersonList names={sk.members} />
+              {sk.name === "Seksi Perlengkapan" && (
+                <a
+                  href={`https://wa.me/${c.whatsapp}?text=${encodeURIComponent(`Assalamu'alaikum ${c.name} (${c.role})`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#047857] font-mono mt-3 flex items-center gap-1.5 font-semibold hover:underline"
+                >
+                  <Phone className="w-3.5 h-3.5" /> {c.phone} ({c.name})
+                </a>
+              )}
+            </div>
           ))}
+        </div>
+        <div className="mt-4 text-xs text-left text-slate-500">
+          Catatan: {p.note} Sumber: {rkm.founding.document}; konfirmasi Ketua RKM, 3 Nov 2026.
+        </div>
+        <div className="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-left text-slate-600">
+          <b>Koordinasi dengan DKM:</b> RKM terintegrasi secara kelembagaan dengan {rkm.parentOrganization}.{" "}
+          <a href={rkm.parentSiteUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-700 font-semibold hover:underline">
+            Portal Masjid Nurul Falah (DKM)
+          </a>
         </div>
       </div>
     </section>

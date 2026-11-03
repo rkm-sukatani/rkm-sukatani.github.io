@@ -47,7 +47,7 @@ export function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {
             />
             <div>
               <div className="font-bold text-base sm:text-lg leading-tight text-[#064e3b]">{rkm.name}</div>
-              <div className="text-[11px] sm:text-xs text-slate-500 font-medium tracking-wide">Rukun Kematian Muslim · Desa Wangunsari</div>
+              <div className="text-[11px] sm:text-xs text-slate-500 font-medium tracking-wide">Rukun Kematian Masyarakat · Desa Wangunsari</div>
             </div>
           </a>
 

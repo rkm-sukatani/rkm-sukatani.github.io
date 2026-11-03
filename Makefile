@@ -6,7 +6,7 @@ PORT ?= 3000
 PM ?= $(shell command -v bun 2>/dev/null || echo npm)
 
 help:
-	@echo "RKM TPU SUKATANI (rkm-sukatani) Commands:"
+	@echo "RKM Sukatani (rkm-sukatani) Commands:"
 	@echo "  make dev      - Start local Vite development server (:$(PORT))"
 	@echo "  make build    - Build production bundle (tsc && vite build)"
 	@echo "  make preview  - Preview production build (:$(PORT))"
@@ -29,6 +29,6 @@ preview: node_modules
 
 deploy:
 	git add .
-	(git diff --staged --quiet || git commit -m "feat: update RKM TPU SUKATANI portal $(shell date +%Y-%m-%d)")
+	(git diff --staged --quiet || git commit -m "feat: update RKM Sukatani portal $(shell date +%Y-%m-%d)")
 	git push origin main
 	@echo "✅ Pushed to main."
