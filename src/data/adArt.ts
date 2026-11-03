@@ -434,21 +434,23 @@ export const adArtData: AdArtDocument = {
         {
           "number": "Pasal 14",
           "title": "Sumber Keuangan",
-          "style": "ayat",
+          "style": "huruf",
+          "intro": "Sumber keuangan organisasi dapat berasal dari:",
           "items": [
             {
-              "text": "Sumber keuangan organisasi dapat berasal dari:",
-              "subItems": [
-                "Iuran masyarakat berdasarkan kesepakatan, yaitu iuran anggota sebesar Rp 4.000 per anggota per bulan dan iuran pendatang (non-anggota) sebesar Rp 600.000.",
-                "Sumbangan sukarela yang tidak mengikat.",
-                "Bantuan dari masyarakat dan pihak lain yang sah.",
-                "Hasil kegiatan organisasi yang sah.",
-                "Sumber penerimaan lainnya yang tidak bertentangan dengan hukum dan syariat Islam."
-              ],
-              "subItemStyle": "huruf"
+              "text": "Iuran masyarakat berdasarkan kesepakatan."
             },
             {
-              "text": "RKM memberikan santunan kematian sebesar Rp 600.000 kepada keluarga setiap anggota yang meninggal dunia, yang diserahkan melalui perwakilan RKM di RT masing-masing."
+              "text": "Sumbangan sukarela yang tidak mengikat."
+            },
+            {
+              "text": "Bantuan dari masyarakat dan pihak lain yang sah."
+            },
+            {
+              "text": "Hasil kegiatan organisasi yang sah."
+            },
+            {
+              "text": "Sumber penerimaan lainnya yang tidak bertentangan dengan hukum dan syariat Islam."
             }
           ]
         },
@@ -810,6 +812,12 @@ export const adArtData: AdArtDocument = {
             },
             {
               "text": "Anggota dan masyarakat berhak memperoleh informasi mengenai pengelolaan keuangan sesuai mekanisme organisasi."
+            },
+            {
+              "text": "Iuran anggota ditetapkan sebesar Rp 4.000 per anggota per bulan, dan iuran pendatang (non-anggota) ditetapkan sebesar Rp 600.000."
+            },
+            {
+              "text": "RKM memberikan santunan kematian sebesar Rp 600.000 kepada keluarga setiap anggota yang meninggal dunia, yang diserahkan melalui perwakilan RKM di RT masing-masing."
             }
           ]
         },
@@ -1153,7 +1161,7 @@ export const adArtData: AdArtDocument = {
       {
         "title": "G. SEKSI PERLENGKAPAN",
         "members": [
-          "Koordinator: Relawan Masyarakat",
+          "Koordinator: Bpk. Dede Dzulkipli",
           "Anggota: Warga masyarakat yang bersedia menjadi relawan."
         ]
       },

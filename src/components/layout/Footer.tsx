@@ -1,5 +1,5 @@
 import React from "react";
-import { MessageCircle, ExternalLink } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import rkm from "@/data/rkm.json";
 
 export interface FooterProps {
@@ -64,10 +64,7 @@ export function Footer({ onNavigate }: FooterProps) {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 hover:text-white transition"
               >
-                <MessageCircle className="w-4 h-4 text-emerald-400" /> WhatsApp {rkm.contact.label} ({rkm.contact.name})
-              </a>
-              <a href={rkm.neighborSite.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition">
-                <ExternalLink className="w-4 h-4 text-emerald-400" /> {rkm.neighborSite.label}
+                <MessageCircle className="w-4 h-4 text-emerald-400" /> WhatsApp {rkm.contact.role} ({rkm.contact.name})
               </a>
             </div>
           </div>

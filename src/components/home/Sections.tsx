@@ -231,7 +231,7 @@ export function KeuanganSection() {
         id="keuangan"
         badge="Transparansi Kas"
         title="Keuangan & Iuran RKM"
-        subtitle="Iuran masyarakat termasuk sumber keuangan RKM (AD Pasal 14 ayat (1) huruf a), sedangkan santunan kematian diberikan RKM kepada keluarga anggota yang meninggal (AD Pasal 14 ayat (2)). Setiap penerimaan dan pengeluaran wajib dicatat dalam administrasi organisasi (AD Pasal 15 ayat (4))."
+        subtitle="Iuran masyarakat termasuk sumber keuangan RKM (AD Pasal 14 huruf a). Besaran iuran diatur dalam ART Pasal 24 ayat (7), dan santunan kematian bagi keluarga anggota yang meninggal diatur dalam ART Pasal 24 ayat (8). Setiap penerimaan dan pengeluaran wajib dicatat dalam administrasi organisasi (AD Pasal 15 ayat (4))."
       />
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 text-left mb-6">
         {[
@@ -278,7 +278,7 @@ export function KeuanganSection() {
       </div>
       <p className="text-xs text-slate-500 mt-4">
         Iuran anggota: {f.iuranNote} {rkm.membership.basis} Iuran pendatang: {f.iuranPendatangNote}{" "}
-        Santunan kematian: {rkm.santunan.amount} per anggota yang meninggal, diserahkan kepada keluarga melalui perwakilan RT. Sumber: {f.iuranSource}; AD Pasal 14 ayat (1) huruf a dan ayat (2).{" "}
+        Santunan kematian: {rkm.santunan.amount} per anggota yang meninggal, diserahkan kepada keluarga melalui perwakilan RT. Sumber: {f.iuranSource}; ART Pasal 24 ayat (7) dan (8).{" "}
         Rekening pembayaran RKM: {f.rekening.bankName} {f.rekening.accountNumber} a.n. {f.rekening.accountHolder} (rekening bersama DKM Masjid Nurul Falah, sementara). Laporan pemasukan/pengeluaran RKM: <Placeholder>{f.laporanRkm}</Placeholder>.
       </p>
     </section>
@@ -439,7 +439,7 @@ export function StrukturOrganisasiSection() {
           </div>
           <div className="p-5 rounded-2xl bg-white border border-slate-200">
             <div className="font-bold text-slate-900 mb-1 flex items-center gap-2">
-              <Phone className="w-4 h-4 text-emerald-700" /> {rkm.contact.label}
+              <Phone className="w-4 h-4 text-emerald-700" /> Kontak RKM · {rkm.contact.role}
             </div>
             <p className="leading-relaxed">
               {rkm.contact.name} ·{" "}
@@ -464,7 +464,7 @@ export function AturanSection({ onOpenAdArt }: { onOpenAdArt: () => void }) {
         id="aturan"
         badge="AD/ART RKM (Draf)"
         title="Ketentuan AD/ART RKM tentang Pelayanan"
-        subtitle="Kutipan pasal-pasal AD/ART RKM tentang pelayanan kematian, TPU, inventaris, dan sanksi. Naskah masih draf yang menunggu konfirmasi Pak Badar Rustandi."
+        subtitle="Kutipan pasal-pasal AD/ART RKM tentang pelayanan kematian, TPU, inventaris, dan sanksi, ditambah satu ketentuan pengurus RKM yang sumbernya dicantumkan. Naskah AD/ART masih draf yang menunggu konfirmasi Pak Badar Rustandi."
       />
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 text-left">
         {rkm.rules.map((r) => (
@@ -473,7 +473,7 @@ export function AturanSection({ onOpenAdArt }: { onOpenAdArt: () => void }) {
               <Scale className="w-4 h-4 text-emerald-600 shrink-0" /> {r.title}
             </div>
             <p className="text-xs text-slate-600 leading-relaxed flex-1">{r.text}</p>
-            <div className="text-[11px] text-emerald-700 font-semibold mt-3">{r.source}</div>
+            <div className={`text-[11px] font-semibold mt-3 ${"uncited" in r ? "text-slate-500" : "text-emerald-700"}`}>{r.source}</div>
           </div>
         ))}
       </div>

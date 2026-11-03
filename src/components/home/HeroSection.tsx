@@ -24,7 +24,7 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
           <div className="lg:col-span-7 space-y-6 text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-800/80 border border-emerald-600/40 text-amber-300 text-xs font-semibold uppercase tracking-wider">
               <span className="w-2 h-2 rounded-full bg-amber-400"></span>
-              Rukun Kematian Masyarakat · {rkm.coverage.kampung.join(" & ")} {rkm.coverage.rw}
+              Rukun Kematian Masyarakat · {rkm.coverage.kampung.join(" & ")}
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
@@ -82,12 +82,12 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
                 </span>
               </div>
 
-              <h3 className="text-xl font-bold mb-1">{rkm.contact.label}</h3>
+              <h3 className="text-xl font-bold mb-1">{rkm.contact.role}</h3>
               <p className="text-slate-200 text-sm mb-4">{rkm.contact.name}</p>
 
               <div className="space-y-2 bg-emerald-950/40 p-3.5 rounded-xl border border-emerald-500/20 text-xs text-emerald-100 mb-5">
                 <div className="flex items-center justify-between">
-                  <span>{rkm.contact.label}:</span>
+                  <span>Kontak:</span>
                   <span className="font-bold text-amber-300 font-mono flex items-center gap-1">
                     <Phone className="w-3.5 h-3.5" /> {rkm.contact.phone}
                   </span>

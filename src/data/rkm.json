@@ -23,10 +23,11 @@
     "rt": "RT 01–06",
     "rw": "RW 03",
     "kampung": [
-      "Kp. Sukatani"
+      "Kp. Sukatani",
+      "Kp. Citespong"
     ],
-    "summary": "RT 01–06, RW 03, Kp. Sukatani",
-    "source": "Berita Acara No. 001/RKM/VIII/2023; AD Pasal 3 ayat (1) — Wilayah Kerja"
+    "summary": "RT 01–06, RW 03, Kp. Sukatani & Kp. Citespong",
+    "source": "Berita Acara No. 001/RKM/VIII/2023 (RT 01–06 RW 03); Konfirmasi Ketua RKM, 3 Nov 2026 (Kp. Sukatani & Kp. Citespong)"
   },
   "founding": {
     "date": "Jumat, 4 Agustus 2023",
@@ -136,6 +137,12 @@
           5
         ]
       }
+    },
+    {
+      "title": "Kewajiban Melanjutkan Program",
+      "text": "Siapa pun yang menjabat sebagai Pengurus RKM wajib melanjutkan program kerja jangka panjang yang telah ditetapkan.",
+      "source": "Ketentuan pengurus RKM (keputusan Ketua, 4 Nov 2026)",
+      "uncited": true
     }
   ],
   "finance": {
@@ -158,10 +165,10 @@
     "adArtCards": [
       {
         "title": "Sumber Keuangan",
-        "source": "AD Pasal 14 ayat (1) — Sumber Keuangan",
+        "source": "AD Pasal 14 — Sumber Keuangan",
         "intro": "Sumber keuangan organisasi dapat berasal dari:",
         "items": [
-          "Iuran masyarakat berdasarkan kesepakatan, yaitu iuran anggota sebesar Rp 4.000 per anggota per bulan dan iuran pendatang (non-anggota) sebesar Rp 600.000.",
+          "Iuran masyarakat berdasarkan kesepakatan.",
           "Sumbangan sukarela yang tidak mengikat.",
           "Bantuan dari masyarakat dan pihak lain yang sah.",
           "Hasil kegiatan organisasi yang sah.",
@@ -169,8 +176,15 @@
         ]
       },
       {
+        "title": "Besaran Iuran",
+        "source": "ART Pasal 24 ayat (7) — Pengelolaan Keuangan",
+        "items": [
+          "Iuran anggota ditetapkan sebesar Rp 4.000 per anggota per bulan, dan iuran pendatang (non-anggota) ditetapkan sebesar Rp 600.000."
+        ]
+      },
+      {
         "title": "Santunan Kematian",
-        "source": "AD Pasal 14 ayat (2) — Sumber Keuangan",
+        "source": "ART Pasal 24 ayat (8) — Pengelolaan Keuangan",
         "items": [
           "RKM memberikan santunan kematian sebesar Rp 600.000 kepada keluarga setiap anggota yang meninggal dunia, yang diserahkan melalui perwakilan RKM di RT masing-masing."
         ]
@@ -226,7 +240,7 @@
   "santunan": {
     "amount": "Rp 600.000",
     "text": "Santunan kematian Rp 600.000 untuk setiap anggota yang meninggal, flat tanpa syarat, diserahkan kepada keluarga melalui perwakilan RT.",
-    "source": "Konfirmasi Burhan, 3 Nov 2026; AD Pasal 14 ayat (2)"
+    "source": "Konfirmasi Burhan, 3 Nov 2026; ART Pasal 24 ayat (8)"
   },
   "burial": {
     "place": "TPU Sukatani",
@@ -242,7 +256,7 @@
     "title": "Alur Layanan Saat Ada Warga Meninggal",
     "steps": [
       "Keluarga terlebih dahulu menghubungi perwakilan RKM di RT masing-masing (Seksi Penggalangan Dana, sesuai bagan struktur organisasi).",
-      "Perwakilan RT langsung menghubungi Seksi Pemakaman, Seksi Pengurusan Jenazah Perempuan, dan Seksi Perlengkapan.",
+      "Perwakilan RT langsung menghubungi Seksi Pemakaman, Seksi Pengurusan Jenazah Perempuan, dan Koordinator Seksi Perlengkapan (Bpk. Dede Dzulkipli).",
       "Seksi Pengurusan Jenazah Perempuan mengurus pemandian dan pengafanan, Seksi Pemakaman menyiapkan liang lahat, dan Seksi Perlengkapan menyiapkan keranda serta perlengkapan.",
       "Bagi anggota, santunan Rp 600.000 diserahkan kepada keluarga melalui perwakilan RT."
     ],
@@ -298,7 +312,7 @@
       {
         "title": "Seksi Perlengkapan",
         "members": [
-          "Koordinator: Relawan Masyarakat",
+          "Koordinator: Bpk. Dede Dzulkipli",
           "Anggota: Warga masyarakat yang bersedia menjadi relawan."
         ]
       },
@@ -315,7 +329,7 @@
       }
     ],
     "ketentuan": "Susunan kepengurusan dapat dilengkapi atau disempurnakan sesuai dengan kebutuhan organisasi berdasarkan hasil musyawarah dan ketentuan Anggaran Dasar dan Anggaran Rumah Tangga (AD/ART).",
-    "source": "Berita Acara No. 001/RKM/VIII/2023, 4 Agustus 2023"
+    "source": "Berita Acara No. 001/RKM/VIII/2023, 4 Agustus 2023; Koordinator Seksi Perlengkapan: keputusan Ketua RKM, 4 Nov 2026"
   },
   "peranTpu": {
     "kopSurat": "RUKUN KEMATIAN MASYARAKAT (RKM) DAN PENGELOLAAN TAMAN PEMAKAMAN UMUM (TPU)",
@@ -355,15 +369,11 @@
       "source": "AD Pasal 9 huruf a dan d — Ruang Lingkup Kegiatan"
     }
   },
-  "neighborSite": {
-    "label": "Situs DKM Masjid Nurul Falah",
-    "url": "https://nurul-falah.github.io"
-  },
   "contact": {
-    "label": "Kontak RKM",
+    "role": "Koordinator Seksi Perlengkapan",
     "name": "Bpk. Dede Dzulkipli",
     "phone": "0856-4038-0652",
     "whatsapp": "6285640380652",
-    "source": "Konfirmasi Ketua RKM, 3 Nov 2026"
+    "source": "Konfirmasi Ketua RKM, 3–4 Nov 2026; Struktur Organisasi (Seksi Perlengkapan)"
   }
 }
