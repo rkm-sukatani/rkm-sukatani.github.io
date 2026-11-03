@@ -24,7 +24,7 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
           <div className="lg:col-span-7 space-y-6 text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-800/80 border border-emerald-600/40 text-amber-300 text-xs font-semibold uppercase tracking-wider">
               <span className="w-2 h-2 rounded-full bg-amber-400"></span>
-              Rukun Kematian Masyarakat · Kp. Sukatani &amp; Kp. Citespong
+              Rukun Kematian Masyarakat · {rkm.coverage.kampung.join(" & ")} {rkm.coverage.rw}
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
@@ -33,7 +33,7 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
 
             <p className="text-emerald-100 text-base sm:text-lg max-w-2xl leading-relaxed">
               Mengelola perlengkapan pemulasaraan jenazah (keranda, kain kafan, alat pemandian), menyiapkan liang lahat, dan mengoordinasikan
-              fardhu kifayah saat ada warga yang wafat, serta mengelola Taman Pemakaman Umum (TPU) Sukatani, dengan pelaporan yang terintegrasi di bawah DKM Masjid Nurul Falah. Layanan {rkm.serviceHours.text}. Wilayah layanan: {rkm.coverage.summary}.
+              fardhu kifayah saat ada warga yang wafat, serta mengelola Taman Pemakaman Umum (TPU) Sukatani. Layanan {rkm.serviceHours.text}. Wilayah layanan: {rkm.coverage.summary}.
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -82,16 +82,14 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
                 </span>
               </div>
 
-              <h3 className="text-xl font-bold mb-1">{rkm.coordinator.role}</h3>
-              <p className="text-slate-200 text-sm mb-4">
-                {rkm.coordinator.name} · {rkm.coordinator.status}
-              </p>
+              <h3 className="text-xl font-bold mb-1">{rkm.contact.label}</h3>
+              <p className="text-slate-200 text-sm mb-4">{rkm.contact.name}</p>
 
               <div className="space-y-2 bg-emerald-950/40 p-3.5 rounded-xl border border-emerald-500/20 text-xs text-emerald-100 mb-5">
                 <div className="flex items-center justify-between">
-                  <span>Kontak Pelayanan Jenazah:</span>
+                  <span>{rkm.contact.label}:</span>
                   <span className="font-bold text-amber-300 font-mono flex items-center gap-1">
-                    <Phone className="w-3.5 h-3.5" /> {rkm.coordinator.phone}
+                    <Phone className="w-3.5 h-3.5" /> {rkm.contact.phone}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -99,7 +97,7 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
                   <span className="font-bold text-amber-300">{rkm.serviceHours.text}</span>
                 </div>
                 <div className="pt-1.5 border-t border-emerald-500/20 text-emerald-200">
-                  Saat ada warga meninggal, keluarga menghubungi perwakilan RKM di RT masing-masing.
+                  Saat ada warga meninggal, keluarga terlebih dahulu menghubungi perwakilan RKM di RT masing-masing (Seksi Penggalangan Dana).
                 </div>
               </div>
 

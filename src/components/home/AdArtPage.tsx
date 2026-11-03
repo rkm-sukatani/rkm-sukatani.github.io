@@ -564,7 +564,9 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                                               key={subIdx}
                                               className="flex items-start gap-2 text-xs text-slate-700 bg-white/80 p-2 rounded-xl border border-slate-100"
                                             >
-                                              <span className="font-mono font-bold text-emerald-700 shrink-0">{subIdx + 1}.</span>
+                                              <span className="font-mono font-bold text-emerald-700 shrink-0">
+                                                {item.subItemStyle === "huruf" ? String.fromCharCode(97 + subIdx) : subIdx + 1}.
+                                              </span>
                                               <span><Marked text={sub} /></span>
                                             </li>
                                           ))}

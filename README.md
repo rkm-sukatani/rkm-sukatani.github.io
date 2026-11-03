@@ -2,14 +2,14 @@
 
 > **Portal RKM Sukatani — Rukun Kematian Masyarakat (RKM) Kampung Sukatani RW 03**
 > *Majelis Nurul Falah, Kp. Sukatani RT 05 RW 03, Desa Wangunsari, Kec. Cisolok, Kab. Sukabumi, Jawa Barat.*
-> *Wilayah layanan: RT 01–06, RW 03, Kp. Sukatani & Kp. Citespong. Didirikan Jumat, 4 Agustus 2023 (Berita Acara No. 001/RKM/VIII/2023).*
+> *Wilayah layanan: RT 01–06, RW 03, Kp. Sukatani (AD Pasal 3 ayat (1)). Didirikan Jumat, 4 Agustus 2023 (Berita Acara No. 001/RKM/VIII/2023).*
 
-RKM terintegrasi secara kelembagaan dengan DKM Masjid Nurul Falah Sukatani
-(lihat AD/ART DKM & RKM). Portal masjid (DKM): https://nurul-falah.github.io
+RKM dan Pengelolaan TPU Sukatani adalah organisasi tersendiri berdasarkan Berita Acara
+No. 001/RKM/VIII/2023 dan AD/ART RKM (draf, `src/data/adArt.ts`). Situs tetangga:
+Situs DKM Masjid Nurul Falah, https://nurul-falah.github.io (hanya tautan, tanpa hubungan kelembagaan).
 
-Situs ini direplikasi dari tema & struktur `nurul-falah.github.io`. Seluruh fakta
-diambil dari repo tersebut (`src/data/masjid.json`, `src/data/adArt.ts`) dan
-dikumpulkan di `src/data/rkm.json`. Identitas, pendirian, wilayah, struktur organisasi, dan iuran RKM
+Tema & struktur situs ini direplikasi dari `nurul-falah.github.io`. Data situs dikumpulkan di
+`src/data/rkm.json`; kutipan pasal diambil verbatim dari AD/ART RKM. Identitas, pendirian, wilayah, struktur organisasi, dan iuran RKM
 bersumber dari Berita Acara No. 001/RKM/VIII/2023 dan konfirmasi Ketua RKM (3 Nov 2026). Isian yang belum ada sumbernya ditandai
 **(menyusul)** dan tidak boleh dikarang.
 

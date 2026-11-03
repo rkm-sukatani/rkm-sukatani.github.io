@@ -7,8 +7,8 @@ export interface NavbarProps {
   onNavigate?: (path: string) => void;
 }
 
-export const KABAR_DUKA_URL = `https://wa.me/${rkm.coordinator.whatsapp}?text=${encodeURIComponent(
-  `Assalamu'alaikum ${rkm.coordinator.name} (${rkm.coordinator.role}), saya ingin menyampaikan kabar duka.`
+export const KABAR_DUKA_URL = `https://wa.me/${rkm.contact.whatsapp}?text=${encodeURIComponent(
+  `Assalamu'alaikum ${rkm.contact.name} (${rkm.contact.label}), saya ingin menyampaikan kabar duka.`
 )}`;
 
 export function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {

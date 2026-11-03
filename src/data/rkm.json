@@ -4,8 +4,6 @@
   "name": "RKM Sukatani",
   "fullName": "Rukun Kematian Masyarakat (RKM) Kampung Sukatani RW 03",
   "shortName": "RKM Sukatani",
-  "parentOrganization": "Dewan Kemakmuran Masjid (DKM) Masjid Nurul Falah Sukatani",
-  "parentSiteUrl": "https://nurul-falah.github.io",
   "nameNote": {
     "text": "Dokumen pendirian RKM (Berita Acara No. 001/RKM/VIII/2023) menamainya Rukun Kematian Masyarakat (RKM). AD/ART RKM Pasal 1 menyebut nama lengkapnya Rukun Kematian Masyarakat (RKM) dan Pengelolaan Taman Pemakaman Umum (TPU).",
     "source": "Berita Acara No. 001/RKM/VIII/2023; AD Pasal 1"
@@ -25,11 +23,10 @@
     "rt": "RT 01–06",
     "rw": "RW 03",
     "kampung": [
-      "Kp. Sukatani",
-      "Kp. Citespong"
+      "Kp. Sukatani"
     ],
-    "summary": "RT 01–06, RW 03, Kp. Sukatani & Kp. Citespong",
-    "source": "Berita Acara No. 001/RKM/VIII/2023 (RT 01–06 RW 03); Konfirmasi Ketua RKM, 3 Nov 2026 (Kp. Sukatani & Kp. Citespong)"
+    "summary": "RT 01–06, RW 03, Kp. Sukatani",
+    "source": "Berita Acara No. 001/RKM/VIII/2023; AD Pasal 3 ayat (1) — Wilayah Kerja"
   },
   "founding": {
     "date": "Jumat, 4 Agustus 2023",
@@ -155,14 +152,21 @@
     "adArtCards": [
       {
         "title": "Sumber Keuangan",
-        "source": "AD Pasal 14 — Sumber Keuangan",
+        "source": "AD Pasal 14 ayat (1) — Sumber Keuangan",
         "intro": "Sumber keuangan organisasi dapat berasal dari:",
         "items": [
-          "Iuran masyarakat berdasarkan kesepakatan, yaitu iuran anggota sebesar Rp 4.000 per anggota per bulan dan iuran pendatang (non-anggota) sebesar Rp 600.000, dengan santunan kematian sebesar Rp 600.000 untuk setiap anggota yang meninggal.",
+          "Iuran masyarakat berdasarkan kesepakatan, yaitu iuran anggota sebesar Rp 4.000 per anggota per bulan dan iuran pendatang (non-anggota) sebesar Rp 600.000.",
           "Sumbangan sukarela yang tidak mengikat.",
           "Bantuan dari masyarakat dan pihak lain yang sah.",
           "Hasil kegiatan organisasi yang sah.",
           "Sumber penerimaan lainnya yang tidak bertentangan dengan hukum dan syariat Islam."
+        ]
+      },
+      {
+        "title": "Santunan Kematian",
+        "source": "AD Pasal 14 ayat (2) — Sumber Keuangan",
+        "items": [
+          "RKM memberikan santunan kematian sebesar Rp 600.000 kepada keluarga setiap anggota yang meninggal dunia, yang diserahkan melalui perwakilan RKM di RT masing-masing."
         ]
       },
       {
@@ -192,18 +196,9 @@
       }
     ]
   },
-  "coordinator": {
-    "role": "Koordinator Seksi Perlengkapan",
-    "contactRole": "Seksi Perlengkapan RKM",
-    "name": "Bpk. Dede Dzulkipli",
-    "status": "Seksi Perlengkapan",
-    "phone": "0856-4038-0652",
-    "whatsapp": "6285640380652",
-    "source": "Konfirmasi Ketua RKM, 3 Nov 2026"
-  },
   "milestones": [
     {
-      "task": "Penggabungan Pengurus dan Pelaporan Organisasi DKM & RKM",
+      "task": "Pendirian RKM dan pembentukan pengurus (4 Agustus 2023, Berita Acara No. 001/RKM/VIII/2023)",
       "status": "Selesai"
     }
   ],
@@ -225,7 +220,7 @@
   "santunan": {
     "amount": "Rp 600.000",
     "text": "Santunan kematian Rp 600.000 untuk setiap anggota yang meninggal, flat tanpa syarat, diserahkan kepada keluarga melalui perwakilan RT.",
-    "source": "Konfirmasi Burhan, 3 Nov 2026"
+    "source": "Konfirmasi Burhan, 3 Nov 2026; AD Pasal 14 ayat (2)"
   },
   "burial": {
     "place": "TPU Sukatani",
@@ -240,12 +235,12 @@
   "sop": {
     "title": "Alur Layanan Saat Ada Warga Meninggal",
     "steps": [
-      "Keluarga menghubungi perwakilan RKM di RT masing-masing.",
-      "Perwakilan RT langsung menghubungi Seksi Pemakaman, Seksi Pengurusan Jenazah, dan Koordinator Seksi Perlengkapan (Bpk. Dede Dzulkipli).",
-      "Seksi Pengurusan Jenazah mengurus pemandian dan pengafanan, Seksi Pemakaman menyiapkan liang lahat, dan Seksi Perlengkapan menyiapkan keranda serta perlengkapan.",
+      "Keluarga terlebih dahulu menghubungi perwakilan RKM di RT masing-masing (Seksi Penggalangan Dana, sesuai bagan struktur organisasi).",
+      "Perwakilan RT langsung menghubungi Seksi Pemakaman, Seksi Pengurusan Jenazah Perempuan, dan Seksi Perlengkapan.",
+      "Seksi Pengurusan Jenazah Perempuan mengurus pemandian dan pengafanan, Seksi Pemakaman menyiapkan liang lahat, dan Seksi Perlengkapan menyiapkan keranda serta perlengkapan.",
       "Bagi anggota, santunan Rp 600.000 diserahkan kepada keluarga melalui perwakilan RT."
     ],
-    "source": "Konfirmasi Burhan, 3 Nov 2026"
+    "source": "Konfirmasi Burhan, 3 Nov 2026; perwakilan RT: Berita Acara No. 001/RKM/VIII/2023"
   },
   "programKerjaLain": "(menyusul)",
   "strukturOrganisasi": {
@@ -353,5 +348,16 @@
       ],
       "source": "AD Pasal 9 huruf a dan d — Ruang Lingkup Kegiatan"
     }
+  },
+  "neighborSite": {
+    "label": "Situs DKM Masjid Nurul Falah",
+    "url": "https://nurul-falah.github.io"
+  },
+  "contact": {
+    "label": "Kontak RKM",
+    "name": "Bpk. Dede Dzulkipli",
+    "phone": "0856-4038-0652",
+    "whatsapp": "6285640380652",
+    "source": "Konfirmasi Ketua RKM, 3 Nov 2026"
   }
 }

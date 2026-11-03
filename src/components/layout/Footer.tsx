@@ -59,15 +59,15 @@ export function Footer({ onNavigate }: FooterProps) {
             <h4 className="text-white font-bold mb-3 uppercase tracking-wider text-xs">Kanal Informasi</h4>
             <div className="space-y-2">
               <a
-                href={`https://wa.me/${rkm.coordinator.whatsapp}`}
+                href={`https://wa.me/${rkm.contact.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 hover:text-white transition"
               >
-                <MessageCircle className="w-4 h-4 text-emerald-400" /> WhatsApp {rkm.coordinator.role}
+                <MessageCircle className="w-4 h-4 text-emerald-400" /> WhatsApp {rkm.contact.label} ({rkm.contact.name})
               </a>
-              <a href={rkm.parentSiteUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition">
-                <ExternalLink className="w-4 h-4 text-emerald-400" /> Portal Masjid Nurul Falah (DKM)
+              <a href={rkm.neighborSite.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition">
+                <ExternalLink className="w-4 h-4 text-emerald-400" /> {rkm.neighborSite.label}
               </a>
             </div>
           </div>

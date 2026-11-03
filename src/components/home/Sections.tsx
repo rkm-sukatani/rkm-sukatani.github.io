@@ -12,7 +12,7 @@ import {
   ArrowRight,
   ClipboardList,
   CheckCircle2,
-  ExternalLink,
+  Phone,
   Landmark,
   MapPin,
   FileText,
@@ -46,7 +46,7 @@ export function TentangSection() {
         id="tentang"
         badge="Profil Lembaga"
         title={`Tentang ${rkm.name}`}
-        subtitle={`Rukun Kematian Masyarakat (RKM) Kampung Sukatani RW 03 didirikan pada ${rkm.founding.date} di ${rkm.founding.place}, dengan wilayah layanan ${rkm.coverage.summary}, untuk pelayanan musibah kematian serta pengelolaan Taman Pemakaman Umum (TPU) Sukatani. RKM terintegrasi secara kelembagaan dengan DKM Masjid Nurul Falah Sukatani.`}
+        subtitle={`Rukun Kematian Masyarakat (RKM) Kampung Sukatani RW 03 didirikan pada ${rkm.founding.date} di ${rkm.founding.place}, dengan wilayah layanan ${rkm.coverage.summary}, sebagai ${rkm.peranTpu.agenda} (${rkm.founding.document}).`}
       />
       <div className="grid lg:grid-cols-3 gap-6 text-left">
         <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-4">
@@ -231,13 +231,13 @@ export function KeuanganSection() {
         id="keuangan"
         badge="Transparansi Kas"
         title="Keuangan & Iuran RKM"
-        subtitle="Iuran masyarakat termasuk sumber keuangan RKM (AD Pasal 14 huruf a). Setiap penerimaan dan pengeluaran wajib dicatat dalam administrasi organisasi (AD Pasal 15 ayat (4))."
+        subtitle="Iuran masyarakat termasuk sumber keuangan RKM (AD Pasal 14 ayat (1) huruf a), sedangkan santunan kematian diberikan RKM kepada keluarga anggota yang meninggal (AD Pasal 14 ayat (2)). Setiap penerimaan dan pengeluaran wajib dicatat dalam administrasi organisasi (AD Pasal 15 ayat (4))."
       />
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 text-left mb-6">
         {[
           { label: "Iuran Anggota / Bulan", value: f.iuranAmount },
           { label: "Iuran Pendatang", value: f.iuranPendatang },
-          { label: "Saldo Kas Pos Sosial / RKM", value: f.saldoKasRkm },
+          { label: "Saldo Kas RKM", value: f.saldoKasRkm },
           { label: "Pembaruan Terakhir", value: f.lastUpdate },
         ].map((s) => (
           <div key={s.label} className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm">
@@ -266,8 +266,8 @@ export function KeuanganSection() {
       </div>
       <p className="text-xs text-slate-500 mt-4">
         Iuran anggota: {f.iuranNote} {rkm.membership.basis} Iuran pendatang: {f.iuranPendatangNote}{" "}
-        Santunan kematian: {rkm.santunan.amount} per anggota yang meninggal. Sumber: {f.iuranSource}; AD Pasal 14 huruf a.{" "} Rekening khusus RKM: <Placeholder>{f.rekeningRkm}</Placeholder> (rencana pembukaan rekening bank atas nama RKM
-        telah disetujui dalam {rkm.founding.document}). Laporan pemasukan/pengeluaran RKM: <Placeholder>{f.laporanRkm}</Placeholder>.
+        Santunan kematian: {rkm.santunan.amount} per anggota yang meninggal, diserahkan kepada keluarga melalui perwakilan RT. Sumber: {f.iuranSource}; AD Pasal 14 ayat (1) huruf a dan ayat (2).{" "}
+        Rekening khusus RKM: <Placeholder>{f.rekeningRkm}</Placeholder>. Laporan pemasukan/pengeluaran RKM: <Placeholder>{f.laporanRkm}</Placeholder>.
       </p>
     </section>
   );
@@ -346,6 +346,7 @@ function VLine({ className = "" }: { className?: string }) {
 export function StrukturOrganisasiSection() {
   const so = rkm.strukturOrganisasi;
   const seksiCount = so.seksi.length;
+  const rtSeksi = so.seksi.find((s) => s.title === "Seksi Penggalangan Dana");
   return (
     <section id="struktur-organisasi" className="py-16 bg-white border-y border-slate-200 scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -407,11 +408,37 @@ export function StrukturOrganisasiSection() {
           </p>
           <p>Sumber: {so.source}</p>
         </div>
-        <div className="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-left text-slate-600">
-          <b>Koordinasi dengan DKM:</b> RKM terintegrasi secara kelembagaan dengan {rkm.parentOrganization}.{" "}
-          <a href={rkm.parentSiteUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-700 font-semibold hover:underline">
-            Portal Masjid Nurul Falah (DKM)
-          </a>
+        <div id="kontak" className="mt-6 grid md:grid-cols-2 gap-4 text-left text-sm text-slate-700 scroll-mt-24">
+          <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200">
+            <div className="font-bold text-slate-900 mb-1 flex items-center gap-2">
+              <Users className="w-4 h-4 text-emerald-700" /> Saat Ada Warga Meninggal
+            </div>
+            <p className="leading-relaxed mb-2">
+              Keluarga terlebih dahulu menghubungi perwakilan RKM di RT masing-masing ({rtSeksi?.title}):
+            </p>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+              {rtSeksi?.members.map((m) => (
+                <li key={m} className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" /> {m}
+                </li>
+              ))}
+            </ul>
+            <div className="text-[11px] text-slate-500 mt-2">Sumber: {rkm.sop.source}</div>
+          </div>
+          <div className="p-5 rounded-2xl bg-white border border-slate-200">
+            <div className="font-bold text-slate-900 mb-1 flex items-center gap-2">
+              <Phone className="w-4 h-4 text-emerald-700" /> {rkm.contact.label}
+            </div>
+            <p className="leading-relaxed">
+              {rkm.contact.name} ·{" "}
+              <a href={`https://wa.me/${rkm.contact.whatsapp}`} target="_blank" rel="noopener noreferrer" className="font-mono font-semibold text-emerald-700 hover:underline">
+                {rkm.contact.phone}
+              </a>{" "}
+              (WhatsApp)
+            </p>
+            <p className="text-xs text-slate-500 mt-1">Layanan {rkm.serviceHours.text}.</p>
+            <div className="text-[11px] text-slate-500 mt-2">Sumber: {rkm.contact.source}</div>
+          </div>
         </div>
       </div>
     </section>
@@ -476,14 +503,6 @@ export function CatatanSection() {
             <p className="text-sm text-slate-600">
               Data anggota, kartu anggota, dan catatan warga yang wafat: <Placeholder />
             </p>
-            <a
-              href={rkm.parentSiteUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm text-emerald-700 font-semibold mt-4 hover:underline"
-            >
-              <ExternalLink className="w-4 h-4" /> Kunjungi Portal Masjid Nurul Falah (DKM)
-            </a>
           </div>
         </div>
       </div>
