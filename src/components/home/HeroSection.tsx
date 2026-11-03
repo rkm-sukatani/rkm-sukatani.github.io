@@ -33,7 +33,7 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
 
             <p className="text-emerald-100 text-base sm:text-lg max-w-2xl leading-relaxed">
               Mengelola perlengkapan pemulasaraan jenazah (keranda, kain kafan, alat pemandian), menyiapkan liang lahat, dan mengoordinasikan
-              fardhu kifayah saat ada warga yang wafat, dengan pelaporan yang terintegrasi di bawah DKM Masjid Nurul Falah. Layanan {rkm.serviceHours.text}. Wilayah layanan: {rkm.coverage.summary}.
+              fardhu kifayah saat ada warga yang wafat, serta mengelola Taman Pemakaman Umum (TPU) Sukatani, dengan pelaporan yang terintegrasi di bawah DKM Masjid Nurul Falah. Layanan {rkm.serviceHours.text}. Wilayah layanan: {rkm.coverage.summary}.
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">

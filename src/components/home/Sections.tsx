@@ -46,7 +46,7 @@ export function TentangSection() {
         id="tentang"
         badge="Profil Lembaga"
         title={`Tentang ${rkm.name}`}
-        subtitle={`Rukun Kematian Masyarakat (RKM) Kampung Sukatani RW 03 didirikan pada ${rkm.founding.date} di ${rkm.founding.place}, dengan wilayah layanan ${rkm.coverage.summary}. RKM terintegrasi secara kelembagaan dengan DKM Masjid Nurul Falah Sukatani.`}
+        subtitle={`Rukun Kematian Masyarakat (RKM) Kampung Sukatani RW 03 didirikan pada ${rkm.founding.date} di ${rkm.founding.place}, dengan wilayah layanan ${rkm.coverage.summary}, untuk pelayanan musibah kematian serta pengelolaan Taman Pemakaman Umum (TPU) Sukatani. RKM terintegrasi secara kelembagaan dengan DKM Masjid Nurul Falah Sukatani.`}
       />
       <div className="grid lg:grid-cols-3 gap-6 text-left">
         <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-4">
@@ -56,6 +56,16 @@ export function TentangSection() {
           <div className="text-sm text-slate-700 leading-relaxed">
             RKM didirikan pada <b>{rkm.founding.date}</b> di {rkm.founding.place}, dalam {rkm.founding.event.charAt(0).toLowerCase() + rkm.founding.event.slice(1)}{" "}
             di lingkungan {rkm.coverage.rw}, yang dipimpin oleh <b>{rkm.founding.founder}</b> selaku {rkm.founding.founderRole}.
+          </div>
+          <div id="peran-tpu" className="rounded-xl border-2 border-amber-300 bg-amber-50 p-4 text-sm text-slate-700">
+            <div className="font-bold text-slate-900 mb-1 flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-amber-700" /> Pelayanan Kematian &amp; Pengelolaan TPU
+            </div>
+            <div className="text-[11px] font-bold uppercase tracking-wider text-amber-800 mb-2">{rkm.peranTpu.kopSurat}</div>
+            <p className="leading-relaxed">
+              RKM didirikan sebagai {rkm.peranTpu.agenda}. Pemakaman warga dilaksanakan di <b>{rkm.burial.place}</b>.
+            </p>
+            <div className="text-[11px] text-slate-500 mt-2">Sumber: {rkm.peranTpu.source}; {rkm.burial.place}: {rkm.burial.source}.</div>
           </div>
           <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-sm text-slate-700">
             <div className="font-bold text-emerald-900 mb-2">Hasil musyawarah pendirian</div>
