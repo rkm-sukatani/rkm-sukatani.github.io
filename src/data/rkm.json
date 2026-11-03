@@ -1,0 +1,84 @@
+{
+  "_sumber": "Seluruh fakta di file ini disalin dari repo nurul-falah.github.io (src/data/masjid.json & src/data/adArt.ts). Isian bertanda '(menyusul)' belum tersedia di sumber dan tidak boleh dikarang.",
+  "name": "RKM Nurul Falah Sukatani",
+  "fullName": "Rukun Kematian Muslim (RKM) Nurul Falah Sukatani",
+  "shortName": "RKM Sukatani",
+  "parentOrganization": "Dewan Kemakmuran Masjid (DKM) Masjid Nurul Falah Sukatani",
+  "parentSiteUrl": "https://nurul-falah.github.io",
+  "identity": "Organisasi ini bernama Dewan Kemakmuran Masjid (DKM) Masjid Nurul Falah Sukatani, yang terintegrasi secara kelembagaan dengan Rukun Kematian Muslim (RKM) Nurul Falah Sukatani, selanjutnya dalam AD/ART ini disebut DKM Nurul Falah.",
+  "address": {
+    "kampung": "Kp. Sukatani, RT 05 RW 03",
+    "kelurahan": "Desa Wangunsari",
+    "kecamatan": "Cisolok",
+    "kabupaten": "Sukabumi",
+    "provinsi": "Jawa Barat",
+    "kodepos": "43366",
+    "fullAddress": "Kp. Sukatani, RT 05 RW 03, Desa Wangunsari, Cisolok, Sukabumi"
+  },
+  "adArtEstablished": "1 November 2026 M / 21 Jumadil Awal 1448 H",
+  "mission": "Ijtima'iyah & Muamalah (Sosial, RKM & Baitul Mal): Mengelola layanan fardhu kifayah pengurusan jenazah (RKM), penyaluran zakat/infaq (UPZ), serta pinjaman kebajikan warga tanpa riba (Qardhul Hasan melalui Baitul Mal).",
+  "bidang": "Bidang Sosial & RKM (Pelayanan Jenazah / Fardhu Kifayah)",
+  "serviceDuty": "Rukun Kematian Muslim (RKM): Mengelola perlengkapan pemulasaraan jenazah (keranda, kain kafan, pemandian, liang lahat) dan mengoordinasikan fardhu kifayah saat ada warga yang wafat, dengan pelaporan yang terintegrasi di bawah DKM.",
+  "equipment": [
+    { "name": "Keranda", "desc": "Perlengkapan pemulasaraan jenazah yang dikelola RKM. Tercatat sebagai inventaris RKM (harta wakaf/umat).", "icon": "Package" },
+    { "name": "Kain Kafan", "desc": "Perlengkapan pemulasaraan jenazah yang dikelola RKM.", "icon": "Shirt" },
+    { "name": "Pemandian", "desc": "Perlengkapan pemandian jenazah yang dikelola RKM.", "icon": "Droplets" },
+    { "name": "Liang Lahat", "desc": "Perlengkapan liang lahat yang dikelola RKM.", "icon": "Shovel" }
+  ],
+  "rules": [
+    {
+      "title": "Hak Jamaah atas Layanan RKM",
+      "text": "Mendapatkan pelayanan sosial keagamaan, termasuk layanan RKM (pengurusan jenazah) dan akses program Baitul Mal sesuai ketentuan yang berlaku.",
+      "source": "ART Pasal 1 — Hak dan Kewajiban Jamaah"
+    },
+    {
+      "title": "Pengumuman Kematian",
+      "text": "Penggunaan pengeras suara luar (outdoor) diatur secara tertib dan santun (untuk adzan, iqomah, pengumuman penting/kematian RKM, dan syiar yang terukur) serta hanya boleh dioperasikan oleh petugas yang berwenang.",
+      "source": "ART Pasal 7 — Tata Tertib Pengeras Suara"
+    },
+    {
+      "title": "Perlindungan Inventaris RKM",
+      "text": "Seluruh inventaris masjid dan RKM (keranda, meja portabel UPZ, peralatan audio, lemari, perkakas bangunan) adalah harta wakaf/umat yang wajib dicatat, dirawat, dan dilarang dibawa pulang atau digunakan untuk kepentingan pribadi tanpa izin resmi pengurus.",
+      "source": "ART Pasal 7 — Perlindungan Inventaris Masjid & RKM"
+    },
+    {
+      "title": "Musyawarah Darurat Kematian",
+      "text": "Undangan musyawarah wajib disampaikan minimal 3 (tiga) hari sebelum pelaksanaan (kecuali keadaan darurat bencana/kematian) dengan mencantumkan daftar agenda dan alokasi waktu yang jelas.",
+      "source": "ART — Undangan & Agenda Tertulis"
+    },
+    {
+      "title": "Kewajiban Melanjutkan Program",
+      "text": "Siapa pun yang menjabat sebagai Pengurus DKM maupun RKM wajib melanjutkan Program Kerja Jangka Panjang (Visi Strategis 3–10 Tahun) yang telah ditetapkan.",
+      "source": "ART Pasal 14 — Kewajiban Keberlanjutan Lintas Kepengurusan"
+    },
+    {
+      "title": "Pertanggungjawaban Individual",
+      "text": "Kekhilafan seorang pengurus merupakan tanggung jawab pribadi individu yang bersangkutan dan tidak dapat dijadikan alasan untuk merombak atau menjatuhkan kepengurusan DKM/RKM secara keseluruhan.",
+      "source": "ART — Pertanggungjawaban Bersifat Individual"
+    }
+  ],
+  "finance": {
+    "sources": "Swadaya Jamaah Sukatani: Infaq kotak amal Jum'at/pengajian (penggabungan kas bapak-bapak dan ibu-ibu), iuran sukarela warga, iuran RKM, serta gotong royong tenaga dan material.",
+    "separatePost": "Menyusun laporan keuangan berkala (bulanan/tahunan) yang memisahkan dengan jelas antara Pos Dana Pembangunan/Renovasi Masjid, Pos Dana Operasional/Infaq Umum Masjid, dan Pos Dana Sosial / RKM / Baitul Mal / UPZ.",
+    "physicalCash": "Pengurus DKM maupun RKM wajib bersedia menunjukkan uang fisik kas dan/atau bukti mutasi rekening kapan pun diminta oleh warga, dengan sikap terbuka dan tanpa merasa tersinggung, karena mengetahui keamanan keuangan adalah hak bagi setiap jamaah.",
+    "assetStatus": "Seluruh lahan, bangunan, material, inventaris, maupun dana yang telah diserahkan kepada DKM/RKM Nurul Falah sebagai wakaf atau infaq otomatis berstatus milik Allah SWT untuk kemaslahatan umat.",
+    "iuranAmount": "(menyusul)",
+    "saldoKasRkm": "(menyusul)",
+    "lastUpdate": "(menyusul)"
+  },
+  "coordinator": {
+    "role": "Koordinator RKM",
+    "contactRole": "Pelayanan Jenazah / RKM",
+    "name": "Bpk. Dede Dzulkipli",
+    "status": "Pelayanan Sosial & Jenazah",
+    "phone": "0856-4038-0652",
+    "whatsapp": "6285640380652"
+  },
+  "dkmContacts": [
+    { "role": "Ketua DKM", "name": "Bpk. Burhan Mubarok, S.Kom", "phone": "0857-8010-6011", "whatsapp": "6285780106011" },
+    { "role": "Sekretaris DKM", "name": "Bpk. Jejen Jaelani, S.Pd", "phone": "0857-9391-7131", "whatsapp": "6285793917131" }
+  ],
+  "milestones": [
+    { "task": "Penggabungan Pengurus dan Pelaporan Organisasi DKM & RKM", "status": "Selesai" }
+  ]
+}
