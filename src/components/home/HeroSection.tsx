@@ -32,8 +32,8 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
             </h1>
 
             <p className="text-emerald-100 text-base sm:text-lg max-w-2xl leading-relaxed">
-              Mengelola perlengkapan pemulasaraan jenazah (keranda, kain kafan, pemandian, liang lahat) dan mengoordinasikan
-              fardhu kifayah saat ada warga yang wafat, dengan pelaporan yang terintegrasi di bawah DKM Masjid Nurul Falah. Wilayah layanan: {rkm.coverage.summary}.
+              Mengelola perlengkapan pemulasaraan jenazah (keranda, kain kafan, alat pemandian), menyiapkan liang lahat, dan mengoordinasikan
+              fardhu kifayah saat ada warga yang wafat, dengan pelaporan yang terintegrasi di bawah DKM Masjid Nurul Falah. Layanan {rkm.serviceHours.text}. Wilayah layanan: {rkm.coverage.summary}.
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -56,7 +56,7 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
             <div className="grid grid-cols-3 gap-4 pt-6 border-t border-emerald-800/60 text-center sm:text-left">
               <div>
                 <div className="text-2xl sm:text-3xl font-bold text-white">{rkm.equipment.length}</div>
-                <div className="text-xs text-emerald-200">Jenis Perlengkapan Pemulasaraan</div>
+                <div className="text-xs text-emerald-200">Jenis Perlengkapan Milik RKM</div>
               </div>
               <div>
                 <div className="text-2xl sm:text-3xl font-bold text-white">{rkm.coverage.rt}</div>
@@ -64,7 +64,7 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
               </div>
               <div>
                 <div className="text-2xl sm:text-3xl font-bold text-white">{rkm.finance.iuranAmount}</div>
-                <div className="text-xs text-emerald-200">Iuran Anggota RKM</div>
+                <div className="text-xs text-emerald-200">Iuran Anggota / Bulan</div>
               </div>
             </div>
           </div>
@@ -96,7 +96,10 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Jam layanan:</span>
-                  <span className="italic text-amber-200">(menyusul)</span>
+                  <span className="font-bold text-amber-300">{rkm.serviceHours.text}</span>
+                </div>
+                <div className="pt-1.5 border-t border-emerald-500/20 text-emerald-200">
+                  Saat ada warga meninggal, keluarga menghubungi perwakilan RKM di RT masing-masing.
                 </div>
               </div>
 

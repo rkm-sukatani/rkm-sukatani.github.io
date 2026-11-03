@@ -17,6 +17,8 @@ import {
   Landmark,
   MapPin,
   FileText,
+  Clock,
+  HandCoins,
 } from "lucide-react";
 import rkm from "@/data/rkm.json";
 
@@ -124,8 +126,8 @@ export function TentangSection() {
               <dd>{rkm.founding.document}</dd>
             </div>
             <div>
-              <dt className="text-emerald-300 text-xs">Jumlah anggota</dt>
-              <dd><span className="italic text-amber-200">(menyusul)</span></dd>
+              <dt className="text-emerald-300 text-xs">Keanggotaan</dt>
+              <dd>{rkm.membership.basis} Jumlah anggota: <span className="italic text-amber-200">{rkm.membership.jumlahAnggota}</span></dd>
             </div>
           </dl>
         </div>
@@ -144,7 +146,7 @@ export function LayananSection() {
           title="Layanan Pemulasaraan Jenazah"
           subtitle="RKM mengelola perlengkapan pemulasaraan jenazah dan mengoordinasikan fardhu kifayah saat ada warga yang wafat (ART Pasal 8)."
         />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 text-left">
+        <div className="grid sm:grid-cols-3 gap-5 text-left">
           {rkm.equipment.map((eq) => {
             const Icon = ICONS[eq.icon] ?? Package;
             return (
@@ -155,20 +157,54 @@ export function LayananSection() {
                 <div className="font-bold text-slate-900">{eq.name}</div>
                 <p className="text-xs text-slate-600 mt-1 leading-relaxed">{eq.desc}</p>
                 <div className="text-[11px] text-slate-500 mt-3">
-                  Jumlah &amp; kondisi: <Placeholder />
+                  Jumlah: <Placeholder>{rkm.equipmentInfo.jumlah}</Placeholder>
                 </div>
               </div>
             );
           })}
         </div>
-        <div className="mt-8 grid md:grid-cols-2 gap-5 text-left">
-          <div className="p-5 rounded-2xl border border-amber-200 bg-amber-50 text-sm text-slate-700">
-            <div className="font-bold text-slate-900 mb-1">Alur pelaporan &amp; pelayanan saat ada warga wafat</div>
-            <Placeholder>(menyusul — SOP belum tercantum di sumber)</Placeholder>
+        <p className="text-xs text-slate-500 mt-3 text-left">
+          {rkm.equipmentInfo.summary} Sumber: {rkm.equipmentInfo.source}.
+        </p>
+        <div id="alur-layanan" className="mt-8 grid lg:grid-cols-5 gap-5 text-left">
+          <div className="lg:col-span-3 p-5 sm:p-6 rounded-2xl border border-emerald-300 bg-emerald-50 text-sm text-slate-700">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <div className="font-bold text-slate-900 text-base flex items-center gap-2">
+                <ClipboardList className="w-5 h-5 text-emerald-700" /> {rkm.sop.title}
+              </div>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#064e3b] text-amber-300 text-xs font-bold">
+                <Clock className="w-3.5 h-3.5" /> Layanan {rkm.serviceHours.text}
+              </span>
+            </div>
+            <ol className="space-y-3">
+              {rkm.sop.steps.map((step, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span className="w-7 h-7 rounded-full bg-[#064e3b] text-white font-bold text-xs flex items-center justify-center shrink-0">{i + 1}</span>
+                  <span className="pt-1 leading-relaxed">{step}</span>
+                </li>
+              ))}
+            </ol>
+            <div className="text-[11px] text-slate-500 mt-4">Sumber: {rkm.sop.source}</div>
           </div>
-          <div className="p-5 rounded-2xl border border-amber-200 bg-amber-50 text-sm text-slate-700">
-            <div className="font-bold text-slate-900 mb-1">Area pemakaman (TPU) &amp; ketentuan pemakaman</div>
-            <Placeholder>(menyusul)</Placeholder>
+          <div className="lg:col-span-2 space-y-5">
+            <div className="p-5 rounded-2xl border border-emerald-300 bg-white text-sm text-slate-700">
+              <div className="font-bold text-slate-900 mb-1 flex items-center gap-2">
+                <HandCoins className="w-4 h-4 text-emerald-700" /> Santunan Kematian
+              </div>
+              <div className="text-2xl font-extrabold text-emerald-900">{rkm.santunan.amount}</div>
+              <p className="mt-1 leading-relaxed">{rkm.santunan.text}</p>
+              <div className="text-[11px] text-slate-500 mt-2">Sumber: {rkm.santunan.source}</div>
+            </div>
+            <div className="p-5 rounded-2xl border border-emerald-300 bg-white text-sm text-slate-700">
+              <div className="font-bold text-slate-900 mb-2 flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-emerald-700" /> Pemakaman di {rkm.burial.place}
+              </div>
+              <ul className="space-y-1.5">
+                <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" /> <span><b>Anggota:</b> {rkm.burial.anggota}</span></li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" /> <span><b>Non-anggota:</b> {rkm.burial.nonAnggota}</span></li>
+              </ul>
+              <div className="text-[11px] text-slate-500 mt-2">Sumber: {rkm.burial.source}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -188,7 +224,7 @@ export function KeuanganSection() {
       />
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 text-left mb-6">
         {[
-          { label: "Iuran Anggota", value: f.iuranAmount },
+          { label: "Iuran Anggota / Bulan", value: f.iuranAmount },
           { label: "Iuran Pendatang", value: f.iuranPendatang },
           { label: "Saldo Kas Pos Sosial / RKM", value: f.saldoKasRkm },
           { label: "Pembaruan Terakhir", value: f.lastUpdate },
@@ -222,8 +258,9 @@ export function KeuanganSection() {
         </div>
       </div>
       <p className="text-xs text-slate-500 mt-4">
-        Sumber iuran: {f.iuranSource}. Rekening khusus RKM: <Placeholder>{f.rekeningRkm}</Placeholder> (rencana pembukaan rekening bank atas nama RKM
-        telah disetujui dalam {rkm.founding.document}). Laporan pemasukan/pengeluaran RKM: <Placeholder />.
+        Iuran anggota: {f.iuranNote} {rkm.membership.basis} Iuran pendatang: {f.iuranPendatangNote}{" "}
+        Santunan kematian: {rkm.santunan.amount} per anggota yang meninggal. Sumber: {f.iuranSource}.{" "} Rekening khusus RKM: <Placeholder>{f.rekeningRkm}</Placeholder> (rencana pembukaan rekening bank atas nama RKM
+        telah disetujui dalam {rkm.founding.document}). Laporan pemasukan/pengeluaran RKM: <Placeholder>{f.laporanRkm}</Placeholder>.
       </p>
     </section>
   );
@@ -286,6 +323,7 @@ export function PengurusSection() {
             <div key={sk.name} className="p-4 rounded-xl bg-slate-50 border border-slate-200">
               <div className="font-bold text-slate-900 mb-2 text-sm">{sk.name}</div>
               <PersonList names={sk.members} />
+              {"note" in sk && <p className="text-[11px] text-slate-500 mt-2 leading-relaxed">{sk.note}</p>}
               {sk.name === "Seksi Perlengkapan" && (
                 <a
                   href={`https://wa.me/${c.whatsapp}?text=${encodeURIComponent(`Assalamu'alaikum ${c.name} (${c.role})`)}`}
@@ -364,7 +402,7 @@ export function CatatanSection() {
                 </li>
               ))}
             </ul>
-            <div className="text-xs text-slate-500 mt-3">Program kerja RKM lainnya: <Placeholder /></div>
+            <div className="text-xs text-slate-500 mt-3">Program kerja RKM lainnya: <Placeholder>{rkm.programKerjaLain}</Placeholder></div>
           </div>
           <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200">
             <div className="font-bold text-slate-900 mb-2">Data Keanggotaan &amp; Catatan Warga Wafat</div>

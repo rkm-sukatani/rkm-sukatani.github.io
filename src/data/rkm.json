@@ -56,23 +56,18 @@
   "equipment": [
     {
       "name": "Keranda",
-      "desc": "Perlengkapan pemulasaraan jenazah yang dikelola RKM. Tercatat sebagai inventaris RKM (harta wakaf/umat).",
+      "desc": "Dimiliki RKM. Tercatat sebagai inventaris RKM (harta wakaf/umat).",
       "icon": "Package"
     },
     {
       "name": "Kain Kafan",
-      "desc": "Perlengkapan pemulasaraan jenazah yang dikelola RKM.",
+      "desc": "Dimiliki RKM.",
       "icon": "Shirt"
     },
     {
-      "name": "Pemandian",
-      "desc": "Perlengkapan pemandian jenazah yang dikelola RKM.",
+      "name": "Alat Pemandian",
+      "desc": "Dimiliki RKM.",
       "icon": "Droplets"
-    },
-    {
-      "name": "Liang Lahat",
-      "desc": "Perlengkapan liang lahat yang dikelola RKM.",
-      "icon": "Shovel"
     }
   ],
   "rules": [
@@ -113,12 +108,15 @@
     "physicalCash": "Pengurus DKM maupun RKM wajib bersedia menunjukkan uang fisik kas dan/atau bukti mutasi rekening kapan pun diminta oleh warga, dengan sikap terbuka dan tanpa merasa tersinggung, karena mengetahui keamanan keuangan adalah hak bagi setiap jamaah.",
     "assetStatus": "Seluruh lahan, bangunan, material, inventaris, maupun dana yang telah diserahkan kepada DKM/RKM Nurul Falah sebagai wakaf atau infaq otomatis berstatus milik Allah SWT untuk kemaslahatan umat.",
     "iuranAmount": "Rp 4.000",
-    "iuranLabel": "Iuran anggota",
+    "iuranLabel": "Iuran anggota (per anggota per bulan)",
     "iuranPendatang": "Rp 600.000",
-    "iuranSource": "Konfirmasi Ketua RKM, 3 Nov 2026",
+    "iuranSource": "Konfirmasi Burhan, 3 Nov 2026",
     "saldoKasRkm": "(menyusul)",
     "lastUpdate": "(menyusul)",
-    "rekeningRkm": "(menyusul)"
+    "rekeningRkm": "(menyusul)",
+    "iuranNote": "Rp 4.000 per anggota per bulan, flat tanpa syarat.",
+    "iuranPendatangNote": "Dibayar oleh non-anggota yang dimakamkan di TPU Sukatani.",
+    "laporanRkm": "(menyusul)"
   },
   "coordinator": {
     "role": "Koordinator Seksi Perlengkapan",
@@ -180,18 +178,57 @@
         ]
       },
       {
-        "name": "Seksi Penggalangan Dana",
+        "name": "Perwakilan RT (Penggalangan Dana & Kontak Pertama Keluarga)",
         "members": [
-          "RT 01: Bapak Dian",
-          "RT 02: Bapak Iip",
-          "RT 03: Bapak Nana",
-          "RT 04: Bapak Ahmad",
-          "RT 05: Bapak Angga Maulana",
-          "RT 06: Bapak Misbah"
-        ]
+          "RT 01: Bpk. Dian",
+          "RT 02: Bpk. Iip",
+          "RT 03: Bpk. Sadam",
+          "RT 04: Bpk. Armat",
+          "RT 05: Bpk. Angga (Angga Maulana, juga Sekretaris)",
+          "RT 06: Bpk. Dede Misbah"
+        ],
+        "source": "Konfirmasi Burhan, 3 Nov 2026",
+        "note": "Perwakilan RT bertugas sebagai penggalangan dana sekaligus kontak pertama keluarga saat ada warga meninggal."
       }
     ],
     "note": "Susunan pengurus dapat ditambah sesuai keperluan.",
-    "source": "Berita Acara No. 001/RKM/VIII/2023; Konfirmasi Ketua RKM, 3 Nov 2026 (ejaan 'Mubarok', M. Udu tidak lagi di Seksi Pemakaman, koordinator Seksi Perlengkapan)"
-  }
+    "source": "Berita Acara No. 001/RKM/VIII/2023; Konfirmasi Ketua RKM, 3 Nov 2026 (ejaan 'Mubarok', M. Udu tidak lagi di Seksi Pemakaman, koordinator Seksi Perlengkapan); Konfirmasi Burhan, 3 Nov 2026 (Perwakilan RT)"
+  },
+  "equipmentInfo": {
+    "summary": "RKM memiliki keranda, kain kafan, dan alat pemandian.",
+    "jumlah": "(menyusul)",
+    "source": "Konfirmasi Burhan, 3 Nov 2026"
+  },
+  "membership": {
+    "basis": "Keanggotaan dihitung per orang.",
+    "iuran": "Rp 4.000 per anggota per bulan, flat tanpa syarat.",
+    "jumlahAnggota": "(menyusul)",
+    "source": "Konfirmasi Burhan, 3 Nov 2026"
+  },
+  "santunan": {
+    "amount": "Rp 600.000",
+    "text": "Santunan kematian Rp 600.000 untuk setiap anggota yang meninggal, flat tanpa syarat, diserahkan kepada keluarga melalui perwakilan RT.",
+    "source": "Konfirmasi Burhan, 3 Nov 2026"
+  },
+  "burial": {
+    "place": "TPU Sukatani",
+    "anggota": "Gratis untuk anggota.",
+    "nonAnggota": "Non-anggota membayar iuran pendatang Rp 600.000.",
+    "source": "Konfirmasi Burhan, 3 Nov 2026"
+  },
+  "serviceHours": {
+    "text": "24 jam, setiap hari",
+    "source": "Konfirmasi Burhan, 3 Nov 2026"
+  },
+  "sop": {
+    "title": "Alur Layanan Saat Ada Warga Meninggal",
+    "steps": [
+      "Keluarga menghubungi perwakilan RKM di RT masing-masing.",
+      "Perwakilan RT langsung menghubungi Seksi Pemakaman, Seksi Pengurusan Jenazah, dan Koordinator Seksi Perlengkapan (Bpk. Dede Dzulkipli).",
+      "Seksi Pengurusan Jenazah mengurus pemandian dan pengafanan, Seksi Pemakaman menyiapkan liang lahat, dan Seksi Perlengkapan menyiapkan keranda serta perlengkapan.",
+      "Bagi anggota, santunan Rp 600.000 diserahkan kepada keluarga melalui perwakilan RT."
+    ],
+    "source": "Konfirmasi Burhan, 3 Nov 2026"
+  },
+  "programKerjaLain": "(menyusul)"
 }
