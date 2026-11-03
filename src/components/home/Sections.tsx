@@ -8,7 +8,6 @@ import {
   Scale,
   Wallet,
   Users,
-  Phone,
   BookOpen,
   ArrowRight,
   ClipboardList,
@@ -337,9 +336,8 @@ function VLine({ className = "" }: { className?: string }) {
 }
 
 export function StrukturOrganisasiSection() {
-  const c = rkm.coordinator;
-  const p = rkm.pengurus;
-  const seksiCount = p.seksi.length;
+  const so = rkm.strukturOrganisasi;
+  const seksiCount = so.seksi.length;
   return (
     <section id="struktur-organisasi" className="py-16 bg-white border-y border-slate-200 scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -352,17 +350,17 @@ export function StrukturOrganisasiSection() {
 
         <div role="group" aria-label="Bagan struktur organisasi RKM Sukatani" className="flex flex-col items-center">
           {/* Level 1: Majelis Syura */}
-          <OrgBox role="Majelis Syura" names={p.majelisSyura} variant="syura" className="max-w-xl" />
+          <OrgBox role={so.majelisSyura.title} names={so.majelisSyura.members} variant="syura" className="max-w-xl" />
           <VLine className="h-8" />
 
           {/* Level 2: Ketua */}
-          <OrgBox role="Ketua" names={[p.ketua]} variant="ketua" className="max-w-xs" />
+          <OrgBox role={so.ketua.title} names={[so.ketua.name]} variant="ketua" className="max-w-xs" />
 
           {/* Level 3: Sekretaris & Bendahara (cabang dari garis Ketua) */}
           <div className="w-full flex flex-col items-center lg:flex-row lg:items-stretch lg:justify-center">
             <VLine className="h-6 lg:hidden" />
             <div className="w-full max-w-xs lg:w-64 lg:py-6 flex items-center">
-              <OrgBox role="Sekretaris" names={[p.sekretaris]} />
+              <OrgBox role={so.sekretaris.title} names={[so.sekretaris.name]} />
             </div>
             <div aria-hidden="true" className="hidden lg:flex items-center w-16">
               <div className={`h-0.5 w-full ${LINE}`} />
@@ -372,15 +370,15 @@ export function StrukturOrganisasiSection() {
               <div className={`h-0.5 w-full ${LINE}`} />
             </div>
             <div className="w-full max-w-xs lg:w-64 lg:py-6 flex items-center">
-              <OrgBox role="Bendahara" names={[p.bendahara]} />
+              <OrgBox role={so.bendahara.title} names={[so.bendahara.name]} />
             </div>
           </div>
           <VLine className="h-6 lg:h-8" />
 
           {/* Level 4: Seksi-seksi */}
           <div className="w-full grid grid-cols-1 lg:grid-cols-4 lg:gap-4 text-xs">
-            {p.seksi.map((sk, i) => (
-              <div key={sk.name} className="relative flex flex-col items-center">
+            {so.seksi.map((sk, i) => (
+              <div key={sk.title} className="relative flex flex-col items-center">
                 {/* garis horizontal penghubung antarseksi (desktop) */}
                 <div
                   aria-hidden="true"
@@ -389,19 +387,7 @@ export function StrukturOrganisasiSection() {
                   }`}
                 />
                 <VLine className={`h-6 ${i === 0 ? "hidden lg:block" : ""}`} />
-                <OrgBox role={sk.name} names={sk.members} variant="seksi" className="max-w-md lg:max-w-none h-full">
-                  {"note" in sk && <p className="text-[11px] text-slate-500 mt-2 leading-relaxed">{sk.note}</p>}
-                  {sk.name === "Seksi Perlengkapan" && (
-                    <a
-                      href={`https://wa.me/${c.whatsapp}?text=${encodeURIComponent(`Assalamu'alaikum ${c.name} (${c.role})`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#047857] font-mono mt-3 flex items-center gap-1.5 font-semibold hover:underline"
-                    >
-                      <Phone className="w-3.5 h-3.5" /> {c.phone}
-                    </a>
-                  )}
-                </OrgBox>
+                <OrgBox role={sk.title} names={sk.members} variant="seksi" className="max-w-md lg:max-w-none h-full" />
               </div>
             ))}
           </div>
@@ -409,10 +395,9 @@ export function StrukturOrganisasiSection() {
 
         <div className="mt-6 text-xs text-left text-slate-500 space-y-1">
           <p>
-            Catatan: {p.note} Urutan bagan mengikuti susunan organisasi dalam {rkm.founding.document} (Majelis Syura, Ketua,
-            Bendahara, Sekretaris, serta seksi-seksi); garis penghubung pada bagan bersifat ilustratif.
+            <b className="text-slate-600">Ketentuan:</b> {so.ketentuan}
           </p>
-          <p>Sumber: {p.source}.</p>
+          <p>Sumber: {so.source}</p>
         </div>
         <div className="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-left text-slate-600">
           <b>Koordinasi dengan DKM:</b> RKM terintegrasi secara kelembagaan dengan {rkm.parentOrganization}.{" "}

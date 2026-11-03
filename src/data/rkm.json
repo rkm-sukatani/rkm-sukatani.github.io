@@ -230,5 +230,74 @@
     ],
     "source": "Konfirmasi Burhan, 3 Nov 2026"
   },
-  "programKerjaLain": "(menyusul)"
+  "programKerjaLain": "(menyusul)",
+  "strukturOrganisasi": {
+    "_catatan": "Disalin persis dari 'BERITA ACARA RKM.pdf' (II. SUSUNAN KEPENGURUSAN) sebagai struktur final; nama dan ejaan mengikuti dokumen tersebut.",
+    "majelisSyura": {
+      "title": "Majelis Syura",
+      "members": [
+        "Badar Rustandi",
+        "M. Een Jaelani",
+        "Ugan Sugandi",
+        "M. Bibin",
+        "Ustadz Sholah"
+      ]
+    },
+    "ketua": {
+      "title": "Ketua",
+      "name": "Burhan Mubarak, S.Kom."
+    },
+    "sekretaris": {
+      "title": "Sekretaris",
+      "name": "Angga Maulana"
+    },
+    "bendahara": {
+      "title": "Bendahara",
+      "name": "Holid Muhsin"
+    },
+    "seksi": [
+      {
+        "title": "Seksi Pemakaman",
+        "members": [
+          "M. Udu",
+          "Een Jaelani",
+          "Ustadz Solehudin",
+          "Ustadz Bibin",
+          "Ustadz Basri",
+          "Ustadz Enjar"
+        ]
+      },
+      {
+        "title": "Seksi Pengurusan Jenazah Perempuan",
+        "members": [
+          "Engkom Komariyah",
+          "Sumarsih",
+          "Fajrin",
+          "Odah",
+          "Itoh",
+          "Uyun"
+        ]
+      },
+      {
+        "title": "Seksi Perlengkapan",
+        "members": [
+          "Koordinator: Relawan Masyarakat",
+          "Anggota: Warga masyarakat yang bersedia menjadi relawan."
+        ]
+      },
+      {
+        "title": "Seksi Penggalangan Dana",
+        "members": [
+          "RT 01: Dian",
+          "RT 02: Ip",
+          "RT 03: Nana",
+          "RT 04: Ahmad",
+          "RT 05: Angga Maulana",
+          "RT 06: Misbah"
+        ]
+      }
+    ],
+    "ketentuan": "Susunan kepengurusan dapat dilengkapi atau disempurnakan sesuai dengan kebutuhan organisasi berdasarkan hasil musyawarah dan ketentuan Anggaran Dasar dan Anggaran Rumah Tangga (AD/ART).",
+    "source": "Berita Acara No. 001/RKM/VIII/2023, 4 Agustus 2023"
+  }
 }
