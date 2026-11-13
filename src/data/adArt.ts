@@ -735,13 +735,13 @@ export const adArtData: AdArtDocument = {
           "style": "ayat",
           "items": [
             {
-              "text": "Mengingat RKM merupakan organisasi sosial keagamaan yang menjalankan amanah pelayanan berdasarkan nilai-nilai ajaran Islam, masa bakti ketua dan pengurus tidak ditentukan oleh batas waktu atau periode jabatan tertentu."
+              "text": "Masa bakti ketua dan pengurus RKM adalah 10 (sepuluh) tahun untuk satu periode."
             },
             {
-              "text": "Ketua dan pengurus tetap menjalankan amanah kepengurusan secara berkelanjutan sepanjang masih mampu melaksanakan tugas dan tanggung jawabnya dengan baik serta menaati syariat Islam dan ketentuan organisasi."
+              "text": "Selama masa bakti, ketua dan pengurus menjalankan amanah kepengurusan secara berkelanjutan sepanjang masih mampu melaksanakan tugas dan tanggung jawabnya dengan baik serta menaati syariat Islam dan ketentuan organisasi."
             },
             {
-              "text": "Ketua atau pengurus dapat diberhentikan sebelum berakhirnya masa bakti [belum dikonfirmasi: ayat (1) menyatakan masa bakti tidak ditentukan oleh batas waktu, sehingga frasa 'sebelum berakhirnya masa bakti' perlu dijelaskan Pak Badar; teks asli dipertahankan] apabila terbukti melakukan perbuatan yang bertentangan dengan hukum dan syariat Islam, melanggar ketentuan AD/ART, menyalahgunakan wewenang, atau melakukan tindakan yang merugikan organisasi dan masyarakat."
+              "text": "Ketua atau pengurus dapat diberhentikan sebelum berakhirnya masa bakti apabila terbukti melakukan perbuatan yang bertentangan dengan hukum dan syariat Islam, melanggar ketentuan AD/ART, menyalahgunakan wewenang, atau melakukan tindakan yang merugikan organisasi dan masyarakat."
             },
             {
               "text": "Pemberhentian juga dapat dilakukan apabila ketua atau pengurus tidak lagi mampu menjalankan tugas dan tanggung jawabnya secara objektif, mengundurkan diri, meninggal dunia, atau mengalami keadaan lain yang menyebabkan tidak dapat melaksanakan amanah kepengurusan."
