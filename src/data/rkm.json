@@ -93,14 +93,16 @@
     },
     {
       "title": "Pengurusan Jenazah sesuai Syariat",
-      "text": "Pengurus wajib memberikan pelayanan secara adil dan tidak diskriminatif. Pelaksanaan pengurusan jenazah dilakukan berdasarkan tuntunan syariat Islam.",
-      "source": "ART Pasal 23 ayat (2) dan (3) — Pelayanan Kematian",
+      "text": "Pengurus wajib memberikan pelayanan secara adil dan tidak diskriminatif. Pelaksanaan pengurusan jenazah dilakukan berdasarkan tuntunan syariat Islam. Pengurusan jenazah sesuai syariat Islam pada hakikatnya merupakan kewajiban keluarga almarhum atau almarhumah masing-masing. Pengurus RKM hanya berwenang menyediakan perwakilan untuk membantu keluarga dalam pengurusan jenazah, yang dipercayakan kepada ustadz atau warga setempat yang berkenan.",
+      "source": "ART Pasal 23 ayat (2), (3), (9) dan (10) — Pelayanan Kematian",
       "ref": {
         "part": "ART",
         "pasal": 23,
         "items": [
           2,
-          3
+          3,
+          9,
+          10
         ]
       }
     },
@@ -257,7 +259,7 @@
     "place": "TPU Sukatani",
     "anggota": "Gratis untuk anggota.",
     "nonAnggota": "Non-anggota membayar iuran pendatang Rp 600.000.",
-    "source": "Konfirmasi Burhan, 3 Nov 2026; ART Pasal 23 ayat (10)"
+    "source": "Konfirmasi Burhan, 3 Nov 2026; ART Pasal 23 ayat (12)"
   },
   "serviceHours": {
     "text": "24 jam, setiap hari",
@@ -269,9 +271,10 @@
       "Keluarga terlebih dahulu menghubungi perwakilan RKM di RT masing-masing (Seksi Penggalangan Dana, sesuai bagan struktur organisasi).",
       "Perwakilan RT langsung menghubungi Seksi Pemakaman, Seksi Pengurusan Jenazah Perempuan (untuk jenazah perempuan), dan Koordinator Seksi Perlengkapan (Bpk. Dede Dzulkipli).",
       "Jenazah perempuan dimandikan dan dikafani oleh Seksi Pengurusan Jenazah Perempuan, sedangkan jenazah laki-laki dimandikan dan dikafani oleh petugas laki-laki. Seksi Pemakaman menyiapkan liang lahat, dan Seksi Perlengkapan menyiapkan keranda serta perlengkapan.",
+      "Pengurusan jenazah tetap menjadi kewajiban keluarga; RKM membantu dengan menyediakan perwakilan, yaitu ustadz atau warga setempat yang berkenan.",
       "Bagi anggota, santunan Rp 600.000 diserahkan kepada keluarga melalui perwakilan RT."
     ],
-    "source": "Konfirmasi Burhan, 3 & 4 Nov 2026; perwakilan RT: Berita Acara No. 001/RKM/VIII/2023; ART Pasal 23 ayat (9)"
+    "source": "Konfirmasi Burhan, 3, 4 & 13 Nov 2026; perwakilan RT: Berita Acara No. 001/RKM/VIII/2023; ART Pasal 23 ayat (9) dan (10); ART Pasal 23 ayat (11)"
   },
   "programKerjaLain": "(menyusul)",
   "strukturOrganisasi": {

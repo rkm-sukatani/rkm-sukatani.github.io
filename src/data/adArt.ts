@@ -1488,6 +1488,14 @@ export const adArtData: AdArtDocument = {
               "text": "Ketentuan teknis pelayanan dapat disempurnakan berdasarkan hasil musyawarah."
             },
             {
+              "text": "Pengurusan jenazah sesuai syariat Islam pada hakikatnya merupakan kewajiban keluarga almarhum atau almarhumah masing-masing.",
+              "source": "Keputusan Ketua RKM, 13 Nov 2026"
+            },
+            {
+              "text": "Pengurus RKM hanya berwenang menyediakan perwakilan untuk membantu keluarga dalam pengurusan jenazah, yang dipercayakan kepada ustadz atau warga setempat yang berkenan.",
+              "source": "Keputusan Ketua RKM, 13 Nov 2026"
+            },
+            {
               "text": "Jenazah perempuan dimandikan dan dikafani oleh Seksi Pengurusan Jenazah Perempuan, sedangkan jenazah laki-laki dimandikan dan dikafani oleh petugas laki-laki.",
               "source": "Keputusan Ketua RKM, 4 Nov 2026"
             },
