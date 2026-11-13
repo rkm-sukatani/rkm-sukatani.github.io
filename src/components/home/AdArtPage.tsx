@@ -105,7 +105,8 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
           const matchPasal =
             pasal.number.toLowerCase().includes(q) ||
             pasal.title.toLowerCase().includes(q) ||
-            (pasal.badge && pasal.badge.toLowerCase().includes(q));
+            (pasal.badge && pasal.badge.toLowerCase().includes(q)) ||
+            (pasal.source ?? "").toLowerCase().includes(q);
           const matchItems = pasal.items.some(
             (it) =>
               it.text.toLowerCase().includes(q) ||
@@ -225,8 +226,8 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
             </div>
             <div className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3.5">
               <div className="text-[11px] text-emerald-200 font-medium">Status Dokumen</div>
-              <div className="text-lg sm:text-xl font-black text-amber-300 mt-0.5">Draf Terkoreksi</div>
-              <div className="text-[10px] text-emerald-200/80 mt-0.5">Menunggu konfirmasi Pak Badar</div>
+              <div className="text-lg sm:text-xl font-black text-amber-300 mt-0.5">Draf Gabungan</div>
+              <div className="text-[10px] text-emerald-200/80 mt-0.5">Belum disahkan</div>
             </div>
           </div>
         </div>
@@ -537,6 +538,11 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                                 </span>
                               )}
                             </div>
+                            {pasal.source && (
+                              <p className={`-mt-1.5 mb-3 text-[11px] italic ${pasal.source.startsWith("Tambahan") ? "text-sky-700" : "text-slate-500"}`}>
+                                Sumber: {pasal.source}
+                              </p>
+                            )}
 
                             {pasal.intro && (
                               <p className="text-xs sm:text-sm text-slate-800 font-medium mb-2.5">
@@ -557,6 +563,9 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                                       <p className={`text-slate-800 ${pasal.style === "bagian" ? "font-extrabold" : "font-medium"}`}>
                                         <Marked text={item.text} />
                                       </p>
+                                      {item.source && (
+                                        <p className="text-[11px] italic text-sky-700 -mt-1">({item.source})</p>
+                                      )}
                                       {item.subItems && item.subItems.length > 0 && (
                                         <ol className="space-y-1.5 pl-1 pt-1">
                                           {item.subItems.map((sub, subIdx) => (

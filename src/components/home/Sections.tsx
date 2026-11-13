@@ -99,9 +99,9 @@ export function TentangSection() {
           </div>
           <div className="text-sm text-slate-700 leading-relaxed">
             <b>Struktur ({rkm.adArtQuotes.struktur.source}):</b> {rkm.adArtQuotes.struktur.intro}{" "}
-            {rkm.adArtQuotes.struktur.items.map((it) => it.replace(/\.$/, "")).join(", ")}.
+            {rkm.adArtQuotes.struktur.items.map((it) => it.replace(/\.$/, "")).join("; ")}.
           </div>
-          <p className="text-[11px] text-amber-800">AD/ART RKM masih berupa draf yang menunggu konfirmasi Pak Badar Rustandi (Pendiri RKM).</p>
+          <p className="text-[11px] text-amber-800">AD/ART RKM masih berupa draf gabungan (naskah dasar AD/ART lama ditambah poin usulan Pak Badar Rustandi, Pendiri RKM) yang belum disahkan.</p>
         </div>
         <div className="bg-[#064e3b] text-emerald-50 rounded-2xl p-6 sm:p-8 space-y-3 shadow-sm">
           <div className="font-bold text-amber-300 flex items-center gap-2">
@@ -231,7 +231,7 @@ export function KeuanganSection() {
         id="keuangan"
         badge="Transparansi Kas"
         title="Keuangan & Iuran RKM"
-        subtitle="Iuran masyarakat termasuk sumber keuangan RKM (AD Pasal 14 huruf a). Besaran iuran diatur dalam ART Pasal 24 ayat (7), dan santunan kematian bagi keluarga anggota yang meninggal diatur dalam ART Pasal 24 ayat (8). Setiap penerimaan dan pengeluaran wajib dicatat dalam administrasi organisasi (AD Pasal 15 ayat (4))."
+        subtitle={`Iuran anggota termasuk sumber dana RKM (${rkm._kutipanSections.iuran}). Besaran iuran diatur dalam ${rkm._kutipanSections.besaranIuran}, dan santunan kematian bagi keluarga anggota yang meninggal diatur dalam ${rkm._kutipanSections.santunan}. Setiap penerimaan dan pengeluaran wajib dicatat dalam administrasi organisasi (${rkm._kutipanSections.pencatatan}).`}
       />
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 text-left mb-6">
         {[
@@ -255,7 +255,7 @@ export function KeuanganSection() {
           <div key={c.title} className={`p-5 rounded-2xl border ${i < 2 ? "bg-white border-slate-200" : "bg-emerald-50 border-emerald-200"}`}>
             <div className="font-bold text-slate-900 mb-1">{c.title}</div>
             <div className="text-[11px] text-emerald-700 font-semibold mb-2">{c.source}</div>
-            {"intro" in c && c.intro && <p className="mb-1">{c.intro}</p>}
+            {"intro" in c && typeof c.intro === "string" && c.intro !== "" && <p className="mb-1">{c.intro}</p>}
             <ul className="list-disc pl-5 space-y-0.5">
               {c.items.map((it) => (
                 <li key={it}>{it}</li>
@@ -278,7 +278,7 @@ export function KeuanganSection() {
       </div>
       <p className="text-xs text-slate-500 mt-4">
         Iuran anggota: {f.iuranNote} {rkm.membership.basis} Iuran pendatang: {f.iuranPendatangNote}{" "}
-        Santunan kematian: {rkm.santunan.amount} per anggota yang meninggal, diserahkan kepada keluarga melalui perwakilan RT. Sumber: {f.iuranSource}; ART Pasal 24 ayat (7) dan (8).{" "}
+        Santunan kematian: {rkm.santunan.amount} per anggota yang meninggal, diserahkan kepada keluarga melalui perwakilan RT. Sumber: {f.iuranSource}; {rkm._kutipanSections.besaranIuran} dan {rkm._kutipanSections.santunan.replace(/^ART Pasal \d+ /, "")}.{" "}
         Rekening pembayaran RKM: {f.rekening.bankName} {f.rekening.accountNumber} a.n. {f.rekening.accountHolder} (rekening bersama DKM Masjid Nurul Falah, sementara). Laporan pemasukan/pengeluaran RKM: <Placeholder>{f.laporanRkm}</Placeholder>.
       </p>
     </section>
@@ -464,7 +464,7 @@ export function AturanSection({ onOpenAdArt }: { onOpenAdArt: () => void }) {
         id="aturan"
         badge="AD/ART RKM (Draf)"
         title="Ketentuan AD/ART RKM tentang Pelayanan"
-        subtitle="Kutipan pasal-pasal AD/ART RKM tentang pelayanan kematian, TPU, inventaris, dan sanksi, ditambah satu ketentuan pengurus RKM yang sumbernya dicantumkan. Naskah AD/ART masih draf yang menunggu konfirmasi Pak Badar Rustandi."
+        subtitle="Kutipan pasal-pasal AD/ART RKM tentang pelayanan kematian, TPU, inventaris, sanksi, dan keberlanjutan program. Naskah AD/ART masih draf gabungan yang belum disahkan."
       />
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 text-left">
         {rkm.rules.map((r) => (
