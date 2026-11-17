@@ -250,6 +250,30 @@ export function KeuanganSection() {
           </div>
         ))}
       </div>
+      <div id="laporan-kas" className="mb-6 p-5 rounded-2xl bg-white border border-slate-200 shadow-sm text-left text-sm text-slate-700">
+        <div className="font-bold text-slate-900 mb-1 flex items-center gap-2">
+          <FileText className="w-4 h-4 text-emerald-600" /> Laporan Kas RKM
+        </div>
+        <div className="text-[11px] text-emerald-700 font-semibold mb-3">
+          Periode pencatatan {f.laporan.periode} · per {f.laporan.asOf}
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {[
+            { label: "Saldo Awal", value: f.laporan.saldoAwal },
+            { label: "Total Pemasukan", value: f.laporan.pemasukan },
+            { label: "Total Pengeluaran", value: f.laporan.pengeluaran },
+            { label: "Saldo Akhir", value: f.laporan.saldoAkhir },
+          ].map((s) => (
+            <div key={s.label} className="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <div className="text-xs text-slate-500">{s.label}</div>
+              <div className="text-lg font-bold text-slate-900 mt-1">{s.value}</div>
+            </div>
+          ))}
+        </div>
+        <p className="text-xs text-slate-500 mt-3">
+          Saldo awal: {f.laporan.saldoAwalNote}. Saldo akhir = saldo awal + pemasukan − pengeluaran. Sumber: {f.laporan.source}.
+        </p>
+      </div>
       <div className="grid md:grid-cols-2 gap-5 text-left text-sm text-slate-700">
         {f.adArtCards.map((c, i) => (
           <div key={c.title} className={`p-5 rounded-2xl border ${i < 2 ? "bg-white border-slate-200" : "bg-emerald-50 border-emerald-200"}`}>
@@ -279,7 +303,7 @@ export function KeuanganSection() {
       <p className="text-xs text-slate-500 mt-4">
         Iuran anggota: {f.iuranNote} {rkm.membership.basis} Iuran pendatang: {f.iuranPendatangNote}{" "}
         Santunan kematian: {rkm.santunan.amount} per anggota yang meninggal, diserahkan kepada keluarga melalui perwakilan RT. Sumber: {f.iuranSource}; {rkm._kutipanSections.besaranIuran} dan {rkm._kutipanSections.santunan.replace(/^ART Pasal \d+ /, "")}.{" "}
-        Rekening pembayaran RKM: {f.rekening.bankName} {f.rekening.accountNumber} a.n. {f.rekening.accountHolder} (rekening bersama DKM Masjid Nurul Falah, sementara). Laporan pemasukan/pengeluaran RKM: <Placeholder>{f.laporanRkm}</Placeholder>.
+        Rekening pembayaran RKM: {f.rekening.bankName} {f.rekening.accountNumber} a.n. {f.rekening.accountHolder} (rekening bersama DKM Masjid Nurul Falah, sementara). Laporan pemasukan/pengeluaran RKM: {f.laporanRkm}.
       </p>
     </section>
   );
