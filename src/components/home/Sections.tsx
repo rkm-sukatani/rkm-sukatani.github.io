@@ -270,9 +270,6 @@ export function KeuanganSection() {
             </div>
           ))}
         </div>
-        <p className="text-xs text-slate-500 mt-3">
-          Saldo awal: {f.laporan.saldoAwalNote}. Saldo akhir = saldo awal + pemasukan − pengeluaran. Sumber: {f.laporan.source}.
-        </p>
       </div>
       <div className="grid md:grid-cols-2 gap-5 text-left text-sm text-slate-700">
         {f.adArtCards.map((c, i) => (
