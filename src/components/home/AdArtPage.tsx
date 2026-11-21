@@ -17,10 +17,14 @@ import {
   Users,
 } from "lucide-react";
 import { adArtData, AdArtBab, AdArtPasal, hasUnconfirmed, UNCONFIRMED_PATTERN } from "@/data/adArt";
+import { useI18n } from "@/i18n/LanguageContext";
 
 /** Menampilkan teks dengan penanda "[belum dikonfirmasi: ...]" / "(menyusul)" sebagai badge kuning yang mencolok. */
 function Marked({ text }: { text: string }) {
-  const parts = text.split(UNCONFIRMED_PATTERN);
+  const { txRaw, t } = useI18n();
+  const translated = txRaw(text);
+  UNCONFIRMED_PATTERN.lastIndex = 0;
+  const parts = translated.split(UNCONFIRMED_PATTERN);
   return (
     <>
       {parts.map((part, i) => {
@@ -28,7 +32,7 @@ function Marked({ text }: { text: string }) {
         if (part === "(menyusul)") {
           return (
             <mark key={i} className="mx-0.5 px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-900 border border-amber-300 text-[11px] font-bold not-italic">
-              (menyusul)
+              {t("common.forthcoming")}
             </mark>
           );
         }
@@ -39,8 +43,8 @@ function Marked({ text }: { text: string }) {
               key={i}
               className="inline mx-0.5 px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-950 border border-amber-400 text-[11px] leading-relaxed font-medium not-italic box-decoration-clone"
             >
-              <span className="inline-flex items-center gap-1 mr-1 px-1.5 rounded bg-amber-500 text-white font-extrabold uppercase tracking-wide text-[10px] align-middle">
-                ⚠ Belum dikonfirmasi
+              <span className="inline-flex items-center gap-1 me-1 px-1.5 rounded bg-amber-500 text-white font-extrabold uppercase tracking-wide text-[10px] align-middle">
+                ⚠ {t("common.unconfirmed")}
               </span>
               {m[1]}
             </mark>
@@ -75,10 +79,28 @@ export interface AdArtPageProps {
   onBackToHome: () => void;
 }
 
+function Translated({ text, showSource }: { text: string; showSource: boolean }) {
+  const { locale, t, txRaw } = useI18n();
+  const translated = txRaw(text);
+  return (
+    <>
+      <Marked text={text} />
+      {showSource && locale !== "id" && translated !== text && (
+        <p lang="id" dir="ltr" className="mt-1 text-[11px] leading-relaxed text-slate-500 border-s-2 border-slate-300 ps-2 text-start">
+          <span className="font-semibold">{t("adart.sourceHeading")}: </span>
+          {text}
+        </p>
+      )}
+    </>
+  );
+}
+
 export function AdArtPage({ onBackToHome }: AdArtPageProps) {
+  const { t, tx, txRaw, locale } = useI18n();
   const [activeTab, setActiveTab] = useState<"ALL" | "AD" | "ART" | "HIGHLIGHT">("ALL");
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedLink, setCopiedLink] = useState(false);
+  const [showSource, setShowSource] = useState(false);
 
   const adBabs = useMemo(() => adArtData.babs.filter((b) => b.part === "AD"), []);
   const artBabs = useMemo(() => adArtData.babs.filter((b) => b.part === "ART"), []);
@@ -95,22 +117,19 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
       })
       .map((bab) => {
         const q = searchQuery.trim().toLowerCase();
+        const hay = (...parts: Array<string | undefined>) =>
+          parts
+            .filter(Boolean)
+            .flatMap((part) => [part as string, txRaw(part as string)])
+            .join("\n")
+            .toLowerCase();
         const pasals = bab.pasals.filter((pasal) => {
           if (activeTab === "HIGHLIGHT" && !hasUnconfirmed(pasalText(pasal))) return false;
           if (!q) return true;
-          const matchBab =
-            bab.title.toLowerCase().includes(q) ||
-            bab.babNumber.toLowerCase().includes(q) ||
-            (pasal.intro ?? "").toLowerCase().includes(q);
-          const matchPasal =
-            pasal.number.toLowerCase().includes(q) ||
-            pasal.title.toLowerCase().includes(q) ||
-            (pasal.badge && pasal.badge.toLowerCase().includes(q)) ||
-            (pasal.source ?? "").toLowerCase().includes(q);
+          const matchBab = hay(bab.title, bab.babNumber, pasal.intro).includes(q);
+          const matchPasal = hay(pasal.number, pasal.title, pasal.badge, pasal.source).includes(q);
           const matchItems = pasal.items.some(
-            (it) =>
-              it.text.toLowerCase().includes(q) ||
-              (it.subItems && it.subItems.some((sub) => sub.toLowerCase().includes(q)))
+            (it) => hay(it.text, ...(it.subItems ?? [])).includes(q)
           );
           return matchBab || matchPasal || matchItems;
         });
@@ -121,7 +140,7 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
         };
       })
       .filter((bab) => bab.pasals.length > 0);
-  }, [activeTab, searchQuery]);
+  }, [activeTab, searchQuery, txRaw]);
 
   const handleCopyShareLink = () => {
     const shareUrl = `${window.location.origin}/ad-art`;
@@ -144,15 +163,15 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 pb-20">
       {/* Sub-Header Action Bar (Sticky below Navbar or top on print-hidden) */}
-      <div className="bg-white border-b border-slate-200 sticky top-20 z-30 shadow-2xs print:hidden">
+      <div className="bg-white border-b border-slate-200 sticky top-[var(--site-header-h,5rem)] z-30 shadow-2xs print:hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
           <button
             type="button"
             onClick={onBackToHome}
             className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 font-semibold text-xs sm:text-sm transition cursor-pointer border border-slate-200/80"
           >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Kembali ke Beranda Utama</span>
+            <ArrowLeft className="w-4 h-4 rtl:rotate-180" />
+            <span>{t("adart.back")}</span>
           </button>
 
           <div className="flex items-center gap-2">
@@ -164,12 +183,12 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
               {copiedLink ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-emerald-600" />
-                  <span className="text-emerald-700">Tautan Disalin!</span>
+                  <span className="text-emerald-700">{t("adart.copied")}</span>
                 </>
               ) : (
                 <>
                   <Share2 className="w-3.5 h-3.5 text-slate-500" />
-                  <span>Bagikan Link AD/ART</span>
+                  <span>{t("adart.share")}</span>
                 </>
               )}
             </button>
@@ -180,7 +199,7 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#059669] hover:bg-[#047857] text-white font-semibold text-xs shadow-sm transition cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5" />
-              <span>Cetak / PDF</span>
+              <span>{t("adart.print")}</span>
             </button>
           </div>
         </div>
@@ -191,43 +210,43 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
         <div className="max-w-7xl mx-auto relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-800/80 border border-emerald-600/50 text-amber-300 text-xs font-bold uppercase tracking-wider mb-4 print:hidden">
             <Scale className="w-3.5 h-3.5" />
-            <span>{adArtData.subtitle}</span>
+            <span>{tx(adArtData.subtitle)}</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight max-w-4xl mx-auto">
-            {adArtData.title}
+            {tx(adArtData.title)}
           </h1>
           <div className="text-emerald-200 font-semibold text-sm sm:text-base mt-1.5 print:text-slate-700">
-            ({adArtData.subtitle})
+            ({tx(adArtData.subtitle)})
           </div>
           <p className="text-amber-300 font-bold text-sm sm:text-lg mt-2.5 print:text-slate-800">
-            {adArtData.organization}
+            {tx(adArtData.organization)}
           </p>
           <p className="text-emerald-200/90 text-xs sm:text-sm mt-1.5 max-w-2xl mx-auto print:text-slate-600">
-            {adArtData.address}
+            {tx(adArtData.address)}
           </p>
 
           {/* Quick Stats Pills */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-4xl mx-auto mt-8 text-left print:hidden">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-4xl mx-auto mt-8 text-start print:hidden">
             <div className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3.5">
-              <div className="text-[11px] text-emerald-200 font-medium">Anggaran Dasar (AD)</div>
-              <div className="text-lg sm:text-xl font-black text-white mt-0.5">{adBabs.length} Bab • {totalPasal("AD")} Pasal</div>
-              <div className="text-[10px] text-emerald-300/80 mt-0.5">Aturan Dasar Organisasi</div>
+              <div className="text-[11px] text-emerald-200 font-medium">{t("adart.statAd")}</div>
+              <div className="text-lg sm:text-xl font-black text-white mt-0.5">{t("adart.statAdCount", { babs: adBabs.length, pasals: totalPasal("AD") })}</div>
+              <div className="text-[10px] text-emerald-300/80 mt-0.5">{t("adart.statAdHint")}</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3.5">
-              <div className="text-[11px] text-emerald-200 font-medium">Anggaran Rumah Tangga</div>
-              <div className="text-lg sm:text-xl font-black text-white mt-0.5">{artBabs.length} Bab • {totalPasal("ART")} Pasal</div>
-              <div className="text-[10px] text-emerald-300/80 mt-0.5">Tata Tertib &amp; Aturan Pelaksana</div>
+              <div className="text-[11px] text-emerald-200 font-medium">{t("adart.statArt")}</div>
+              <div className="text-lg sm:text-xl font-black text-white mt-0.5">{t("adart.statArtCount", { babs: artBabs.length, pasals: totalPasal("ART") })}</div>
+              <div className="text-[10px] text-emerald-300/80 mt-0.5">{t("adart.statArtHint")}</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3.5">
-              <div className="text-[11px] text-amber-200 font-medium">Perlu Konfirmasi</div>
-              <div className="text-lg sm:text-xl font-black text-amber-300 mt-0.5">{markerCount} Penanda</div>
-              <div className="text-[10px] text-amber-200/80 mt-0.5">Ditandai &ldquo;belum dikonfirmasi&rdquo;</div>
+              <div className="text-[11px] text-amber-200 font-medium">{t("adart.statConfirm")}</div>
+              <div className="text-lg sm:text-xl font-black text-amber-300 mt-0.5">{t("adart.statConfirmCount", { count: markerCount })}</div>
+              <div className="text-[10px] text-amber-200/80 mt-0.5">{t("adart.statConfirmHint")}</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3.5">
-              <div className="text-[11px] text-emerald-200 font-medium">Status Dokumen</div>
-              <div className="text-lg sm:text-xl font-black text-amber-300 mt-0.5">Draf Gabungan</div>
-              <div className="text-[10px] text-emerald-200/80 mt-0.5">Belum disahkan</div>
+              <div className="text-[11px] text-emerald-200 font-medium">{t("adart.statStatus")}</div>
+              <div className="text-lg sm:text-xl font-black text-amber-300 mt-0.5">{t("adart.statStatusValue")}</div>
+              <div className="text-[10px] text-emerald-200/80 mt-0.5">{t("adart.statStatusHint")}</div>
             </div>
           </div>
         </div>
@@ -235,14 +254,29 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
 
       {/* Main Content Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        {locale !== "id" && (
+          <div role="note" className="mb-4 rounded-2xl border border-sky-300 bg-sky-50 p-4 text-start text-sm text-sky-950">
+            <p>{t("adart.banner")}</p>
+            <button
+              type="button"
+              aria-pressed={showSource}
+              onClick={() => setShowSource((value) => !value)}
+              className="mt-2 inline-flex items-center px-3 py-1.5 rounded-lg bg-white border border-sky-300 text-xs font-bold text-sky-900 hover:bg-sky-100"
+            >
+              {showSource ? t("adart.hideSource") : t("adart.showSource")}
+            </button>
+          </div>
+        )}
         {adArtData.draftNotice && (
-          <div role="note" className="mb-8 rounded-2xl border-2 border-amber-400 bg-amber-50 p-4 sm:p-5 flex items-start gap-3 text-left">
+          <div role="note" className="mb-8 rounded-2xl border-2 border-amber-400 bg-amber-50 p-4 sm:p-5 flex items-start gap-3 text-start">
             <AlertTriangle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
             <div>
-              <div className="text-sm sm:text-base font-extrabold text-amber-950">{adArtData.draftNotice.title}</div>
-              <p className="text-xs sm:text-sm text-amber-900 mt-1 leading-relaxed">{adArtData.draftNotice.text}</p>
+              <div className="text-sm sm:text-base font-extrabold text-amber-950">{tx(adArtData.draftNotice.title)}</div>
+              <p className="text-xs sm:text-sm text-amber-900 mt-1 leading-relaxed">
+                <Translated text={adArtData.draftNotice.text} showSource={showSource} />
+              </p>
               <p className="text-xs text-amber-900 mt-2">
-                <b>Tahun dokumen:</b> <Marked text={adArtData.documentYear} />
+                <b>{t("adart.docYear")}</b> <Marked text={adArtData.documentYear} />
               </p>
             </div>
           </div>
@@ -250,31 +284,31 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
         <div className="grid lg:grid-cols-12 gap-8 items-start">
           
           {/* Left Sidebar: Daftar Isi & Navigasi Cepat (Hidden on Print) */}
-          <aside className="lg:col-span-4 xl:col-span-3 space-y-5 lg:sticky lg:top-36 print:hidden">
+          <aside className="lg:col-span-4 xl:col-span-3 space-y-5 lg:sticky lg:top-[calc(var(--site-header-h,5rem)+4.25rem)] print:hidden">
             {/* Search & Filter Box */}
             <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3">
               <div className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
                 <Search className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Pencarian Cepat Pasal</span>
+                <span>{t("adart.searchLabel")}</span>
               </div>
               <div className="relative">
-                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-slate-400 absolute start-3 top-1/2 -translate-y-1/2" />
                 <input
-                  type="text"
+                  type="search"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Ketik kata kunci (mis: musyawarah, kas)..."
-                  className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition"
+                  placeholder={t("adart.searchPlaceholder")}
+                  className="w-full ps-9 pe-3 py-2 text-xs rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition text-start"
                 />
               </div>
 
               {/* Filter Kategori */}
               <div className="grid grid-cols-2 gap-1.5 pt-1">
                 {[
-                  { id: "ALL", label: "Semua Pasal" },
-                  { id: "HIGHLIGHT", label: "⚠ Belum Dikonfirmasi" },
-                  { id: "AD", label: "Anggaran Dasar" },
-                  { id: "ART", label: "Rumah Tangga" },
+                  { id: "ALL", label: t("adart.tabAll") },
+                  { id: "HIGHLIGHT", label: t("adart.tabUnconfirmed") },
+                  { id: "AD", label: t("adart.tabAd") },
+                  { id: "ART", label: t("adart.tabArt") },
                 ].map((tab) => (
                   <button
                     key={tab.id}
@@ -293,21 +327,21 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
             </div>
 
             {/* Table of Contents (Daftar Isi) */}
-            <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs max-h-[60vh] overflow-y-auto space-y-4 text-left">
+            <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs max-h-[60vh] overflow-y-auto space-y-4 text-start">
               <div>
                 <button
                   type="button"
                   onClick={() => scrollToBab("mukadimah")}
-                  className="w-full text-left text-xs font-bold text-emerald-800 hover:text-emerald-600 flex items-center justify-between py-1 cursor-pointer"
+                  className="w-full text-start text-xs font-bold text-emerald-800 hover:text-emerald-600 flex items-center justify-between py-1 cursor-pointer"
                 >
-                  <span>📜 MUKADIMAH</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
+                  <span>📜 {t("adart.mukadimah")}</span>
+                  <ChevronRight className="w-3.5 h-3.5 rtl:rotate-180" />
                 </button>
               </div>
 
               <div className="border-t border-slate-100 pt-3">
                 <div className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-700 mb-2">
-                  Bagian I: Anggaran Dasar (AD)
+                  {t("adart.partAd")}
                 </div>
                 <ul className="space-y-1">
                   {adBabs.map((bab) => (
@@ -318,12 +352,12 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                           setActiveTab("ALL");
                           setTimeout(() => scrollToBab(bab.id), 50);
                         }}
-                        className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-800 transition flex items-start gap-2 cursor-pointer"
+                        className="w-full text-start px-2.5 py-1.5 rounded-lg text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-800 transition flex items-start gap-2 cursor-pointer"
                       >
                         <span className="font-mono font-bold text-[10px] text-emerald-700 shrink-0 mt-0.5">
-                          {bab.babNumber}
+                          {tx(bab.babNumber)}
                         </span>
-                        <span className="line-clamp-1 font-medium">{bab.title}</span>
+                        <span className="line-clamp-1 font-medium">{tx(bab.title)}</span>
                       </button>
                     </li>
                   ))}
@@ -332,7 +366,7 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
 
               <div className="border-t border-slate-100 pt-3">
                 <div className="text-[11px] font-extrabold uppercase tracking-wider text-amber-700 mb-2">
-                  Bagian II: Rumah Tangga (ART)
+                  {t("adart.partArt")}
                 </div>
                 <ul className="space-y-1">
                   {artBabs.map((bab) => (
@@ -343,12 +377,12 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                           setActiveTab("ALL");
                           setTimeout(() => scrollToBab(bab.id), 50);
                         }}
-                        className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs text-slate-600 hover:bg-amber-50 hover:text-amber-900 transition flex items-start gap-2 cursor-pointer"
+                        className="w-full text-start px-2.5 py-1.5 rounded-lg text-xs text-slate-600 hover:bg-amber-50 hover:text-amber-900 transition flex items-start gap-2 cursor-pointer"
                       >
                         <span className="font-mono font-bold text-[10px] text-amber-700 shrink-0 mt-0.5">
-                          {bab.babNumber}
+                          {tx(bab.babNumber)}
                         </span>
-                        <span className="line-clamp-1 font-medium">{bab.title}</span>
+                        <span className="line-clamp-1 font-medium">{tx(bab.title)}</span>
                       </button>
                     </li>
                   ))}
@@ -359,25 +393,25 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                 <button
                   type="button"
                   onClick={() => scrollToBab("susunan")}
-                  className="w-full text-left text-xs font-bold text-slate-700 hover:text-emerald-700 flex items-center justify-between py-1 cursor-pointer"
+                  className="w-full text-start text-xs font-bold text-slate-700 hover:text-emerald-700 flex items-center justify-between py-1 cursor-pointer"
                 >
-                  <span>👥 SUSUNAN KEPENGURUSAN</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
+                  <span>👥 {t("adart.tocSusunan")}</span>
+                  <ChevronRight className="w-3.5 h-3.5 rtl:rotate-180" />
                 </button>
                 <button
                   type="button"
                   onClick={() => scrollToBab("pengesahan")}
-                  className="w-full text-left text-xs font-bold text-slate-700 hover:text-emerald-700 flex items-center justify-between py-1 cursor-pointer"
+                  className="w-full text-start text-xs font-bold text-slate-700 hover:text-emerald-700 flex items-center justify-between py-1 cursor-pointer"
                 >
-                  <span>✒️ LEMBAR PENGESAHAN</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
+                  <span>✒️ {t("adart.tocPengesahan")}</span>
+                  <ChevronRight className="w-3.5 h-3.5 rtl:rotate-180" />
                 </button>
               </div>
             </div>
           </aside>
 
           {/* Right Main Document Column */}
-          <div className="lg:col-span-8 xl:col-span-9 space-y-8 text-left">
+          <div className="lg:col-span-8 xl:col-span-9 space-y-8 text-start">
             
             {/* 1. MUKADIMAH CARD */}
             {(activeTab === "ALL" || searchQuery.trim() === "") && activeTab !== "AD" && activeTab !== "ART" && activeTab !== "HIGHLIGHT" && (
@@ -385,30 +419,30 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                 id="mukadimah"
                 className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs relative overflow-hidden scroll-mt-36"
               >
-                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-600 via-amber-500 to-emerald-600" />
+                <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-emerald-600 via-amber-500 to-emerald-600" />
                 <div className="text-center mb-6">
-                  <div className="text-2xl sm:text-3xl font-bold text-emerald-900 mb-2 font-serif">
+                  <div className="bismillah text-2xl sm:text-3xl font-bold text-emerald-900 mb-2" dir="rtl" lang="ar">
                     {adArtData.mukadimah.bismillah}
                   </div>
                   <h2 className="text-lg sm:text-xl font-extrabold uppercase tracking-wider text-slate-900">
-                    MUKADIMAH
+                    {t("adart.mukadimah")}
                   </h2>
                 </div>
 
                 <div className="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
-                  <p>{adArtData.mukadimah.opening}</p>
+                  <p><Translated text={adArtData.mukadimah.opening} showSource={showSource} /></p>
 
                   {adArtData.mukadimah.quranQuote && (
-                    <blockquote className="bg-emerald-50/80 border-l-4 border-emerald-600 p-4 sm:p-5 rounded-r-2xl text-emerald-950 italic font-medium">
-                      &ldquo;{adArtData.mukadimah.quranQuote.text}&rdquo;
+                    <blockquote className="bg-emerald-50/80 border-s-4 border-emerald-600 p-4 sm:p-5 rounded-e-2xl text-emerald-950 italic font-medium">
+                      &ldquo;<Translated text={adArtData.mukadimah.quranQuote.text} showSource={showSource} />&rdquo;
                       <footer className="mt-2 font-bold not-italic text-emerald-800 text-xs">
-                        — {adArtData.mukadimah.quranQuote.source}
+                        — {tx(adArtData.mukadimah.quranQuote.source)}
                       </footer>
                     </blockquote>
                   )}
 
                   {adArtData.mukadimah.body.map((paragraph, i) => (
-                    <p key={i}>{paragraph}</p>
+                    <p key={i}><Translated text={paragraph} showSource={showSource} /></p>
                   ))}
                 </div>
               </div>
@@ -419,10 +453,10 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
               <div className="bg-white rounded-3xl p-10 text-center border border-slate-200">
                 <FileText className="w-10 h-10 text-slate-300 mx-auto mb-3" />
                 <div className="text-base font-bold text-slate-800">
-                  Tidak ditemukan pasal yang sesuai
+                  {t("adart.emptyTitle")}
                 </div>
                 <p className="text-xs text-slate-500 mt-1">
-                  Coba ubah kata kunci pencarian atau pilih tab &ldquo;Semua Pasal&rdquo;.
+                  {t("adart.emptyBody")}
                 </p>
                 <button
                   type="button"
@@ -432,7 +466,7 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                   }}
                   className="mt-4 px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition cursor-pointer"
                 >
-                  Reset Filter
+                  {t("adart.reset")}
                 </button>
               </div>
             ) : (
@@ -464,17 +498,15 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                             </div>
                             <div>
                               <div className="text-[10px] font-mono uppercase tracking-widest text-amber-300 font-bold">
-                                {isAD ? "Bagian Pertama • Aturan Dasar Organisasi" : "Bagian Kedua • Tata Tertib & Aturan Pelaksana"}
+                                {isAD ? t("adart.dividerAdKicker") : t("adart.dividerArtKicker")}
                               </div>
                               <h2 className="text-lg sm:text-xl font-extrabold tracking-tight">
-                                {isAD
-                                  ? "ANGGARAN DASAR (AD)"
-                                  : "ANGGARAN RUMAH TANGGA (ART)"}
+                                {isAD ? t("adart.dividerAdTitle") : t("adart.dividerArtTitle")}
                               </h2>
                             </div>
                           </div>
                           <span className="hidden sm:inline-block text-xs font-mono px-3 py-1 rounded-full bg-white/10 text-emerald-100">
-                            {isAD ? "Aturan Dasar Organisasi" : "Tata Tertib Organisasi"}
+                            {isAD ? t("adart.badgeAd") : t("adart.badgeArt")}
                           </span>
                         </div>
                       </div>
@@ -499,13 +531,17 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                                   : "bg-amber-600 text-white"
                               }`}
                             >
-                              {bab.part} • {bab.babNumber}
+                              {bab.part} • {tx(bab.babNumber)}
                             </span>
                             <h3 className="text-base sm:text-lg font-extrabold text-slate-900">
-                              {bab.title}
+                              {tx(bab.title)}
                             </h3>
                           </div>
-                          {bab.summary && <p className="text-xs text-slate-500 mt-1">{bab.summary}</p>}
+                          {bab.summary && (
+                            <p className="text-xs text-slate-500 mt-1">
+                              <Translated text={bab.summary} showSource={showSource} />
+                            </p>
+                          )}
                         </div>
                       </div>
 
@@ -523,30 +559,30 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                             <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                               <div className="flex items-center gap-2">
                                 <span className="font-mono font-extrabold text-xs sm:text-sm text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-lg border border-emerald-200">
-                                  {pasal.number}
+                                  {tx(pasal.number)}
                                 </span>
                                 {pasal.title && (
                                   <h4 className="text-sm sm:text-base font-bold text-slate-900">
-                                    {pasal.title}
+                                    {tx(pasal.title)}
                                   </h4>
                                 )}
                               </div>
                               {pasal.badge && (
                                 <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
                                   <Sparkles className="w-3 h-3 text-amber-700" />
-                                  {pasal.badge}
+                                  {tx(pasal.badge)}
                                 </span>
                               )}
                             </div>
                             {pasal.source && (
                               <p className={`-mt-1.5 mb-3 text-[11px] italic ${pasal.source.startsWith("Tambahan") ? "text-sky-700" : "text-slate-500"}`}>
-                                Sumber: {pasal.source}
+                                {t("adart.sumber")}: {tx(pasal.source)}
                               </p>
                             )}
 
                             {pasal.intro && (
                               <p className="text-xs sm:text-sm text-slate-800 font-medium mb-2.5">
-                                <Marked text={pasal.intro} />
+                                <Translated text={pasal.intro} showSource={showSource} />
                               </p>
                             )}
                             <ol className="space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
@@ -561,13 +597,13 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                                     )}
                                     <div className="flex-1 space-y-2">
                                       <p className={`text-slate-800 ${pasal.style === "bagian" ? "font-extrabold" : "font-medium"}`}>
-                                        <Marked text={item.text} />
+                                        <Translated text={item.text} showSource={showSource} />
                                       </p>
                                       {item.source && (
-                                        <p className="text-[11px] italic text-sky-700 -mt-1">({item.source})</p>
+                                        <p className="text-[11px] italic text-sky-700 -mt-1">({tx(item.source)})</p>
                                       )}
                                       {item.subItems && item.subItems.length > 0 && (
-                                        <ol className="space-y-1.5 pl-1 pt-1">
+                                        <ol className="space-y-1.5 ps-1 pt-1">
                                           {item.subItems.map((sub, subIdx) => (
                                             <li
                                               key={subIdx}
@@ -576,7 +612,7 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                                               <span className="font-mono font-bold text-emerald-700 shrink-0">
                                                 {item.subItemStyle === "huruf" ? String.fromCharCode(97 + subIdx) : subIdx + 1}.
                                               </span>
-                                              <span><Marked text={sub} /></span>
+                                              <span><Translated text={sub} showSource={showSource} /></span>
                                             </li>
                                           ))}
                                         </ol>
@@ -599,16 +635,16 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
             {adArtData.susunan && (
               <div id="susunan" className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs scroll-mt-36">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-                  Bagian Ketiga
+                  {t("adart.partThree")}
                 </span>
                 <h3 className="text-xl font-extrabold text-slate-900 mt-2 flex items-center gap-2">
-                  <Users className="w-5 h-5 text-emerald-700" /> Susunan Kepengurusan
+                  <Users className="w-5 h-5 text-emerald-700" /> {t("adart.susunanTitle")}
                 </h3>
-                <p className="text-xs text-slate-500 mt-1">{adArtData.susunan.note}</p>
+                <p className="text-xs text-slate-500 mt-1"><Translated text={adArtData.susunan.note} showSource={showSource} /></p>
                 <div className="grid sm:grid-cols-2 gap-3 mt-5">
                   {adArtData.susunan.groups.map((g) => (
                     <div key={g.title} className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                      <div className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-800">{g.title}</div>
+                      <div className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-800">{tx(g.title)}</div>
                       <ul className="mt-2 space-y-1 text-sm text-slate-800">
                         {g.members.map((m) => (
                           <li key={m}>• <Marked text={m} /></li>
@@ -618,7 +654,7 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                   ))}
                 </div>
                 <p className="text-xs text-slate-600 mt-4">
-                  <b>Ketentuan Susunan Kepengurusan:</b> {adArtData.susunan.ketentuan}
+                  <b>{t("adart.susunanRules")}</b> <Translated text={adArtData.susunan.ketentuan} showSource={showSource} />
                 </p>
               </div>
             )}
@@ -631,27 +667,27 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
                 <div>
                   <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-                    Bagian Keempat
+                    {t("adart.partFour")}
                   </span>
                   <h3 className="text-xl font-extrabold text-slate-900 mt-2">
-                    Lembar Pengesahan AD/ART RKM
+                    {t("adart.pengesahanTitle")}
                   </h3>
                 </div>
                 <div className="flex items-center gap-2 text-xs font-semibold text-amber-900 bg-amber-50 px-3.5 py-2 rounded-xl border border-amber-300 shrink-0">
                   <AlertTriangle className="w-4 h-4 text-amber-600" />
-                  <span>Draf &mdash; belum disahkan ulang</span>
+                  <span>{t("adart.draftChip")}</span>
                 </div>
               </div>
 
               {adArtData.pengesahan && (
                 <div className="space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed mt-5">
-                  {adArtData.pengesahan.paragraphs.map((t, i) => (
-                    <p key={i}><Marked text={t} /></p>
+                  {adArtData.pengesahan.paragraphs.map((paragraph, i) => (
+                    <p key={i}><Translated text={paragraph} showSource={showSource} /></p>
                   ))}
                   <p>
-                    Ditetapkan di: <b>{adArtData.pengesahan.place}</b>
+                    {t("adart.place")} <b>{tx(adArtData.pengesahan.place)}</b>
                     <br />
-                    Pada tanggal: <b><Marked text={adArtData.pengesahan.date} /></b>
+                    {t("adart.date")} <b><Marked text={adArtData.pengesahan.date} /></b>
                   </p>
                 </div>
               )}
@@ -664,7 +700,7 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                   >
                     <div>
                       <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-700">
-                        {sig.role}
+                        {tx(sig.role)}
                       </div>
                       <div className="text-sm font-extrabold text-slate-900 mt-1">
                         {sig.name}
@@ -678,7 +714,7 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
               </div>
               {adArtData.pengesahan?.signatureNote && (
                 <p className="text-xs text-slate-700 mt-4">
-                  <Marked text={adArtData.pengesahan.signatureNote} />
+                  <Translated text={adArtData.pengesahan.signatureNote} showSource={showSource} />
                 </p>
               )}
             </div>
@@ -686,10 +722,10 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
             {/* 5. PENUTUP */}
             {adArtData.penutup && (
               <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs">
-                <h3 className="text-lg font-extrabold uppercase tracking-wider text-slate-900 text-center">Penutup</h3>
+                <h3 className="text-lg font-extrabold uppercase tracking-wider text-slate-900 text-center">{t("adart.penutup")}</h3>
                 <div className="space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed mt-4">
-                  {adArtData.penutup.map((t, i) => (
-                    <p key={i}>{t}</p>
+                  {adArtData.penutup.map((paragraph, i) => (
+                    <p key={i}><Translated text={paragraph} showSource={showSource} /></p>
                   ))}
                 </div>
               </div>

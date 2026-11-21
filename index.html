@@ -2,6 +2,17 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <script>
+    (function () {
+      try {
+        var locale = localStorage.getItem("rkm-locale");
+        if (locale === "en" || locale === "ar") {
+          document.documentElement.lang = locale;
+          document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+        }
+      } catch (e) {}
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RKM Sukatani // Rukun Kematian Masyarakat</title>
   <meta name="description" content="Portal RKM Sukatani, Rukun Kematian Masyarakat (RKM) Kampung Sukatani RW 03 (RT 01–06, Kp. Sukatani &amp; Kp. Citespong), Desa Wangunsari, Cisolok, Sukabumi. Layanan fardhu kifayah pengurusan jenazah, iuran RKM, dan struktur organisasi.">

@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans Arabic", "Noto Naskh Arabic", Tahoma, sans-serif;
+}
+
 @layer base {
   :root {
     --primary: #059669;
@@ -9,6 +13,21 @@
     --gold-light: #f59e0b;
     --gold-bg: #fef3c7;
   }
+
+  /* Arabic UI uses locally installed Noto fonts. No webfont download. */
+  html[dir="rtl"] {
+    --font-sans: "Noto Sans Arabic", "Noto Naskh Arabic", Tahoma, "Segoe UI", sans-serif;
+  }
+
+  html[dir="rtl"] .tracking-wide,
+  html[dir="rtl"] .tracking-wider,
+  html[dir="rtl"] .tracking-widest {
+    letter-spacing: 0;
+  }
+}
+
+.bismillah {
+  font-family: "Noto Naskh Arabic", "Noto Sans Arabic", Tahoma, serif;
 }
 
 .bg-pattern {

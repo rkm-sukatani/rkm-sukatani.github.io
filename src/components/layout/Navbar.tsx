@@ -1,25 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Megaphone, Menu, X } from "lucide-react";
 import rkm from "@/data/rkm.json";
+import { useI18n } from "@/i18n/LanguageContext";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export interface NavbarProps {
   currentPath?: string;
   onNavigate?: (path: string) => void;
 }
 
-export const KABAR_DUKA_URL = `https://wa.me/${rkm.contact.whatsapp}?text=${encodeURIComponent(
-  `Assalamu'alaikum ${rkm.contact.name} (${rkm.contact.role}), saya ingin menyampaikan kabar duka.`
-)}`;
+export function kabarDukaUrl(message: string) {
+  return `https://wa.me/${rkm.contact.whatsapp}?text=${encodeURIComponent(message)}`;
+}
 
 export function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t, tx, locale } = useI18n();
+
+  useEffect(() => {
+    const header = document.querySelector("header");
+    if (!header) return;
+    const apply = () => {
+      document.documentElement.style.setProperty("--site-header-h", `${header.offsetHeight}px`);
+    };
+    apply();
+    const observer = new ResizeObserver(apply);
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, [mobileMenuOpen, locale]);
+  const role = tx(rkm.contact.role);
+  const waUrl = kabarDukaUrl(t("nav.waMessage", { name: rkm.contact.name, role }));
 
   const navLinks = [
-    { label: "Tentang RKM", shortLabel: "Tentang", href: "/tentang" },
-    { label: "Layanan Jenazah", shortLabel: "Layanan", href: "/layanan" },
-    { label: "Keuangan & Iuran", shortLabel: "Keuangan", href: "/keuangan" },
-    { label: "Struktur Organisasi", shortLabel: "Struktur", href: "/struktur-organisasi" },
-    { label: "AD/ART", shortLabel: "AD/ART", href: "/ad-art" },
+    { label: t("nav.tentang"), shortLabel: t("nav.tentangShort"), href: "/tentang" },
+    { label: t("nav.layanan"), shortLabel: t("nav.layananShort"), href: "/layanan" },
+    { label: t("nav.keuangan"), shortLabel: t("nav.keuanganShort"), href: "/keuangan" },
+    { label: t("nav.struktur"), shortLabel: t("nav.strukturShort"), href: "/struktur-organisasi" },
+    { label: t("nav.adart"), shortLabel: t("nav.adart"), href: "/ad-art" },
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -38,16 +55,16 @@ export function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur shadow-sm border-b border-slate-100 print:hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <a href="/" onClick={(e) => handleNavClick(e, "/")} className="flex items-center gap-2.5 sm:gap-3 group text-left shrink-0">
+        <div className="flex items-center justify-between gap-2 min-h-20 py-2">
+          <a href="/" onClick={(e) => handleNavClick(e, "/")} className="flex items-center gap-2.5 sm:gap-3 group text-start shrink-0">
             <img
               src="/favicon.svg"
-              alt={`Logo ${rkm.name}`}
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl shadow-md shadow-emerald-900/20 group-hover:scale-105 transition-transform"
+              alt={t("common.logoAlt", { name: rkm.name })}
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl shadow-md shadow-emerald-900/20 group-hover:scale-105 transition-transform shrink-0"
             />
-            <div>
-              <div className="font-bold text-base sm:text-lg leading-tight text-[#064e3b]">{rkm.name}</div>
-              <div className="text-[11px] sm:text-xs text-slate-500 font-medium tracking-wide">Rukun Kematian Masyarakat · Desa Wangunsari</div>
+            <div className="max-w-36 sm:max-w-none">
+              <div className="font-bold text-base sm:text-lg leading-tight text-[#064e3b] whitespace-nowrap">{rkm.name}</div>
+              <div className="hidden max-md:block xl:block text-[11px] sm:text-xs text-slate-500 font-medium tracking-wide max-w-[9.5rem] sm:max-w-[11rem] truncate">{t("nav.tagline")}</div>
             </div>
           </a>
 
@@ -55,30 +72,36 @@ export function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {
             <nav className="flex items-center gap-1 text-xs xl:text-sm font-semibold text-slate-600">
               {navLinks.map((link) => (
                 <a key={link.href} href={link.href} onClick={(e) => handleNavClick(e, link.href)} className={linkClass(currentPath === link.href)}>
-                  <span className="hidden lg:inline">{link.label}</span>
-                  <span className="lg:hidden">{link.shortLabel}</span>
+                  <span className="hidden xl:inline">{link.label}</span>
+                  <span className="xl:hidden">{link.shortLabel}</span>
                 </a>
               ))}
             </nav>
+            <LanguageSwitcher />
             <a
-              href={KABAR_DUKA_URL}
+              href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3.5 xl:px-4 py-2 rounded-xl bg-[#047857] hover:bg-[#065f46] text-white font-semibold text-xs xl:text-sm shadow-sm hover:shadow-md transition active:scale-95 ml-1 whitespace-nowrap shrink-0"
+              aria-label={t("nav.kabar")}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#047857] hover:bg-[#065f46] text-white font-semibold text-xs xl:text-sm shadow-sm hover:shadow-md transition active:scale-95 ms-1 whitespace-nowrap shrink-0"
             >
               <Megaphone className="w-4 h-4 text-amber-300" />
-              <span>Lapor Kabar Duka</span>
+              <span className="hidden xl:inline">{t("nav.kabar")}</span>
             </a>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none"
-            aria-label="Toggle Mobile Menu"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6 text-emerald-700" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="md:hidden flex items-center gap-1.5 shrink-0">
+            <LanguageSwitcher />
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#047857]"
+              aria-label={mobileMenuOpen ? t("nav.menuClose") : t("nav.menuOpen")}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6 text-emerald-700" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
         {mobileMenuOpen && (
@@ -97,13 +120,13 @@ export function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {
             ))}
             <div className="pt-2 px-2">
               <a
-                href={KABAR_DUKA_URL}
+                href={waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#047857] hover:bg-[#065f46] text-white font-medium text-sm shadow"
               >
                 <Megaphone className="w-4 h-4 text-amber-300" />
-                <span>Lapor Kabar Duka</span>
+                <span>{t("nav.kabar")}</span>
               </a>
             </div>
           </div>
