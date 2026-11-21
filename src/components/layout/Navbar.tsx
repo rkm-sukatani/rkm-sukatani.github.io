@@ -36,6 +36,7 @@ export function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {
     { label: t("nav.layanan"), shortLabel: t("nav.layananShort"), href: "/layanan" },
     { label: t("nav.keuangan"), shortLabel: t("nav.keuanganShort"), href: "/keuangan" },
     { label: t("nav.struktur"), shortLabel: t("nav.strukturShort"), href: "/struktur-organisasi" },
+    { label: t("nav.rencana"), shortLabel: t("nav.rencanaShort"), href: "/rencana" },
     { label: t("nav.adart"), shortLabel: t("nav.adart"), href: "/ad-art" },
   ];
 

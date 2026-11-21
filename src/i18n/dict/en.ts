@@ -707,5 +707,8 @@ export const dict: Record<string, string> = {
   "AD Pasal 21 ayat (1)": "AD Pasal 21 ayat (1)",
   "ART Pasal 20 ayat (7)": "ART Pasal 20 ayat (7)",
   "ART Pasal 20 ayat (8)": "ART Pasal 20 ayat (8)",
-  "AD Pasal 23 ayat (4)": "AD Pasal 23 ayat (4)"
+  "AD Pasal 23 ayat (4)": "AD Pasal 23 ayat (4)",
+  "Pembuatan jalan setapak di tengah lahan RKM": "Creating a footpath through the middle of the RKM land",
+  "Membuka jalur kecil di tengah lahan RKM sebagai persiapan jalan di masa depan.": "Opening a small path through the middle of the RKM land in preparation for a future road.",
+  "Rencana": "Planned",
 };

@@ -2366,5 +2366,17 @@
   "AD Pasal 23 ayat (4)": {
     "en": "AD Pasal 23 ayat (4)",
     "ar": "AD Pasal 23 ayat (4)"
+  },
+  "Pembuatan jalan setapak di tengah lahan RKM": {
+    "en": "Creating a footpath through the middle of the RKM land",
+    "ar": "إنشاء ممر مشاة في وسط أرض RKM"
+  },
+  "Membuka jalur kecil di tengah lahan RKM sebagai persiapan jalan di masa depan.": {
+    "en": "Opening a small path through the middle of the RKM land in preparation for a future road.",
+    "ar": "فتح مسار صغير في وسط أرض RKM تمهيدًا لطريق في المستقبل."
+  },
+  "Rencana": {
+    "en": "Planned",
+    "ar": "مخطط"
   }
 }

@@ -245,6 +245,15 @@
       "status": "Selesai"
     }
   ],
+  "rencanaKeDepan": {
+    "items": [
+      {
+        "title": "Pembuatan jalan setapak di tengah lahan RKM",
+        "text": "Membuka jalur kecil di tengah lahan RKM sebagai persiapan jalan di masa depan.",
+        "status": "Rencana"
+      }
+    ]
+  },
   "officialName": {
     "name": "Rukun Kematian Masyarakat (RKM)",
     "source": "Berita Acara No. 001/RKM/VIII/2023; Konfirmasi Ketua RKM, 3 Nov 2026"
