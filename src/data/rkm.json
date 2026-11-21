@@ -164,8 +164,8 @@
     "iuranLabel": "Iuran anggota (per anggota per bulan)",
     "iuranPendatang": "Rp 600.000",
     "iuranSource": "Konfirmasi Burhan, 3 Nov 2026",
-    "saldoKasRkm": "Rp 18.782.163",
-    "lastUpdate": "17 Oktober 2026",
+    "saldoKasRkm": "Rp 19.372.163",
+    "lastUpdate": "20 November 2026",
     "rekening": {
       "bankName": "Bank Syariah Indonesia (BSI)",
       "accountNumber": "7203516578",
@@ -175,16 +175,16 @@
     },
     "iuranNote": "Rp 4.000 per anggota per bulan, flat tanpa syarat.",
     "iuranPendatangNote": "Dibayar oleh non-anggota yang dimakamkan di TPU Sukatani.",
-    "laporanRkm": "ringkasan kas di atas (saldo berjalan per 17 Oktober 2026)",
+    "laporanRkm": "ringkasan kas di atas (saldo berjalan per 20 November 2026)",
     "laporan": {
-      "periode": "29 September 2023 – 17 Oktober 2026",
-      "asOf": "17 Oktober 2026",
+      "periode": "29 September 2023 – 20 November 2026",
+      "asOf": "20 November 2026",
       "saldoAwal": "Rp 7.590.000",
       "saldoAwalNote": "Mutasi dari Bpk. Holid ke DZ, 29 September 2023 (awal pencatatan)",
-      "pemasukan": "Rp 27.303.000",
+      "pemasukan": "Rp 27.893.000",
       "pengeluaran": "Rp 16.110.837",
-      "saldoAkhir": "Rp 18.782.163",
-      "source": "Google Sheet \"DKM dan RKM Nurul Falah Sukatani\", tab \"Jurnal - RKM\" (kolom Saldo, saldo berjalan); dibaca 17 November 2026"
+      "saldoAkhir": "Rp 19.372.163",
+      "source": "Google Sheet \"DKM dan RKM Nurul Falah Sukatani\", tab \"Jurnal - RKM\" (kolom Saldo, saldo berjalan); dibaca 21 November 2026"
     },
     "adArtCards": [
       {
