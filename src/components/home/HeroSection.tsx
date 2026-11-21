@@ -82,7 +82,7 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
                 </span>
               </div>
 
-              <h3 className="text-xl font-bold mb-1">{rkm.contact.role}</h3>
+              <h2 className="text-xl font-bold mb-1">{rkm.contact.role}</h2>
               <p className="text-slate-200 text-sm mb-4">{rkm.contact.name}</p>
 
               <div className="space-y-2 bg-emerald-950/40 p-3.5 rounded-xl border border-emerald-500/20 text-xs text-emerald-100 mb-5">

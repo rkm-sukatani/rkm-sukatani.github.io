@@ -32,18 +32,18 @@ export function Footer({ onNavigate }: FooterProps) {
               <img src="/favicon.svg" alt={`Logo ${rkm.name}`} className="w-7 h-7 rounded-lg shadow-sm" />
               <span>{rkm.name}</span>
             </div>
-            <p className="text-slate-400 leading-relaxed max-w-md">
+            <p className="text-slate-300 leading-relaxed max-w-md">
               {rkm.fullName}. {rkm.adArtQuotes.maksud.text}{" "}
-              <span className="text-slate-500">({rkm.adArtQuotes.maksud.source})</span>
+              <span className="text-emerald-200">({rkm.adArtQuotes.maksud.source})</span>
             </p>
-            <div className="text-slate-400">
+            <div className="text-slate-300">
               <b>Alamat:</b> {rkm.address.fullAddress}.<br />
               <b>Wilayah layanan:</b> {rkm.coverage.summary}.
             </div>
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-3 uppercase tracking-wider text-xs">Navigasi</h4>
+            <h2 className="text-white font-bold mb-3 uppercase tracking-wider text-xs">Navigasi</h2>
             <ul className="space-y-2">
               {links.map((l) => (
                 <li key={l.href}>
@@ -56,7 +56,7 @@ export function Footer({ onNavigate }: FooterProps) {
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-3 uppercase tracking-wider text-xs">Kanal Informasi</h4>
+            <h2 className="text-white font-bold mb-3 uppercase tracking-wider text-xs">Kanal Informasi</h2>
             <div className="space-y-2">
               <a
                 href={`https://wa.me/${rkm.contact.whatsapp}`}
@@ -70,7 +70,7 @@ export function Footer({ onNavigate }: FooterProps) {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-slate-400">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-slate-300">
           <div>&copy; 2026 {rkm.name}. Seluruh hak cipta dilindungi.</div>
           <div className="text-emerald-300 font-semibold">Amanah &amp; Transparan dalam Pelayanan Fardhu Kifayah</div>
         </div>

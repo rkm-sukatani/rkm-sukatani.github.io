@@ -64,7 +64,7 @@ export function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {
               href={KABAR_DUKA_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3.5 xl:px-4 py-2 rounded-xl bg-[#059669] hover:bg-[#047857] text-white font-semibold text-xs xl:text-sm shadow-sm hover:shadow-md transition active:scale-95 ml-1 whitespace-nowrap shrink-0"
+              className="inline-flex items-center gap-1.5 px-3.5 xl:px-4 py-2 rounded-xl bg-[#047857] hover:bg-[#065f46] text-white font-semibold text-xs xl:text-sm shadow-sm hover:shadow-md transition active:scale-95 ml-1 whitespace-nowrap shrink-0"
             >
               <Megaphone className="w-4 h-4 text-amber-300" />
               <span>Lapor Kabar Duka</span>
@@ -100,7 +100,7 @@ export function Navbar({ currentPath = "/", onNavigate }: NavbarProps) {
                 href={KABAR_DUKA_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#059669] hover:bg-[#047857] text-white font-medium text-sm shadow"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#047857] hover:bg-[#065f46] text-white font-medium text-sm shadow"
               >
                 <Megaphone className="w-4 h-4 text-amber-300" />
                 <span>Lapor Kabar Duka</span>
