@@ -29,7 +29,7 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
 
   return (
     <section id="beranda" className="relative bg-pattern text-white pt-16 pb-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-t from-[#064e3b]/90 via-transparent to-transparent pointer-events-none"></div>
+      <div className="absolute inset-0 hero-fade pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid lg:grid-cols-12 gap-10 items-center">

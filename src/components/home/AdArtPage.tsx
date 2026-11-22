@@ -552,7 +552,7 @@ export function AdArtPage({ onBackToHome }: AdArtPageProps) {
                             key={`${bab.id}-${pasal.number}`}
                             className={`pt-6 first:pt-0 ${
                               pasal.highlight
-                                ? "bg-gradient-to-r from-emerald-50/60 via-amber-50/30 to-transparent -mx-4 px-4 py-4 rounded-2xl border border-emerald-200/70"
+                                ? "adart-highlight -mx-4 px-4 py-4 rounded-2xl border border-emerald-200/70"
                                 : ""
                             }`}
                           >

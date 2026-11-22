@@ -32,11 +32,22 @@
 
 .bg-pattern {
   background-color: #064e3b;
-  background-image: 
-    radial-gradient(#10b981 0.75px, transparent 0.75px), 
+  /* Outer stop must stay zero-alpha green. `transparent` compiles to #0000,
+     which Safari paints as an opaque black rectangle over the top-left tiles. */
+  background-image:
+    radial-gradient(#10b981 0.75px, rgb(6 78 59 / 0) 0.75px),
     radial-gradient(#10b981 0.75px, #064e3b 0.75px);
   background-size: 30px 30px;
   background-position: 0 0, 15px 15px;
+}
+
+/* Same-color zero-alpha stops only. `transparent` / #0000 paint as opaque black on iPhone Safari. */
+.hero-fade {
+  background-image: linear-gradient(to top, rgb(6 78 59 / 0.9), rgb(6 78 59 / 0) 50%, rgb(6 78 59 / 0));
+}
+
+.adart-highlight {
+  background-image: linear-gradient(to right, rgb(236 253 245 / 0.6), rgb(255 251 235 / 0.3), rgb(255 255 255 / 0));
 }
 
 .hide-scrollbar::-webkit-scrollbar {
