@@ -18,6 +18,7 @@ import {
   FileText,
   Clock,
   HandCoins,
+  Route,
 } from "lucide-react";
 import rkm from "@/data/rkm.json";
 import { useI18n } from "@/i18n/LanguageContext";
@@ -676,6 +677,33 @@ export function CatatanSection() {
             </p>
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+export function RencanaSection() {
+  const { t, tx } = useI18n();
+  return (
+    <section id="rencana" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
+      <SectionHeader id="rencana" badge={t("rencana.badge")} title={t("rencana.title")} subtitle={t("rencana.subtitle")} />
+      <div className="w-full p-5 sm:p-6 rounded-2xl bg-white border border-slate-200 shadow-sm text-start">
+        <ul className="divide-y divide-slate-200">
+          {rkm.rencanaKeDepan.items.map((item) => (
+            <li key={item.title} className="py-5 first:pt-0 last:pb-0">
+              <div className="flex items-start justify-between gap-3 mb-2">
+                <h3 className="font-bold text-slate-900 flex items-start gap-2">
+                  <Route className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" aria-hidden="true" />
+                  <span>{tx(item.title)}</span>
+                </h3>
+                <span className="inline-block shrink-0 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-bold uppercase tracking-wider">
+                  {tx(item.status)}
+                </span>
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed ps-6">{tx(item.text)}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

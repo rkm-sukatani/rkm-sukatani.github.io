@@ -10,6 +10,7 @@ import {
   StrukturOrganisasiSection,
   AturanSection,
   CatatanSection,
+  RencanaSection,
 } from "@/components/home/Sections";
 
 const SECTION_PATH_MAP: Record<string, string> = {
@@ -19,6 +20,7 @@ const SECTION_PATH_MAP: Record<string, string> = {
   "/struktur-organisasi": "#struktur-organisasi",
   "/aturan": "#aturan",
   "/catatan": "#catatan",
+  "/rencana": "#rencana",
 };
 
 // Jalur lama yang dialihkan agar tautan lama tidak rusak.
@@ -113,6 +115,7 @@ export function App() {
           <StrukturOrganisasiSection />
           <AturanSection onOpenAdArt={() => handleNavigate("/ad-art")} />
           <CatatanSection />
+          <RencanaSection />
         </main>
       )}
 

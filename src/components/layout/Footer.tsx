@@ -23,6 +23,7 @@ export function Footer({ onNavigate }: FooterProps) {
     { href: "/layanan", label: t("footer.services") },
     { href: "/keuangan", label: t("footer.finance") },
     { href: "/struktur-organisasi", label: t("footer.structure") },
+    { href: "/rencana", label: t("footer.plans") },
     { href: "/ad-art", label: t("footer.adart") },
   ];
 
